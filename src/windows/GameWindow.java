@@ -114,18 +114,18 @@ public class GameWindow extends JFrame {
 	}
 	
 	/* Calcula y mueve al objeto si se paso de los límites de la ventana. */		
--	private void restrictBoundaries() {		
--		if( pacman.getX() < 0 ) /* Límite izquierdo */		
--			pacman.setLocation(0, pacman.getY());		
--		
--		if( pacman.getX() + pacman.getWidth() >= this.getWidth() ) /* Límite derecho */		
--			pacman.setLocation(this.getWidth() - pacman.getWidth(), pacman.getY());		
--		
--		if( pacman.getLocation().y < 0 ) /* Límite hacia arriba */		
--			pacman.setLocation(pacman.getX(), 0);		
--		
--		if( pacman.getY() + pacman.getHeight() >= this.getHeight() ) /* Límite hacia abajo (anda mal) */		
--			pacman.setLocation(pacman.getX(), this.getHeight() - pacman.getHeight());		
+	private void restrictBoundaries() {		
+		if( pacman.getX() < 0 ) /* Límite izquierdo */		
+			pacman.setLocation(0, pacman.getY());		
+		
+		if( pacman.getX() + pacman.getWidth() >= this.getWidth() ) /* Límite derecho */		
+			pacman.setLocation(this.getWidth() - pacman.getWidth(), pacman.getY());		
+		
+		if( pacman.getLocation().y < 0 ) /* Límite hacia arriba */		
+			pacman.setLocation(pacman.getX(), 0);		
+		
+		if( pacman.getY() + pacman.getHeight() >= this.getHeight() ) /* Límite hacia abajo (anda mal) */		
+			pacman.setLocation(pacman.getX(), this.getHeight() - pacman.getHeight());		
  	}
 	
 	private void handleKeyPress(KeyEvent key) {
