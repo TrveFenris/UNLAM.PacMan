@@ -26,9 +26,7 @@ public class ConfigWindow extends JFrame {
 	private TextField textFieldArriba;
 	private TextField textFieldAbajo;
 
-	/**
-	 * Create the frame.
-	 */
+	/* ConfigWindow Constructor */
 	public ConfigWindow(UserWindow window) {
 		userWindow=window;
 		setTitle("Configuraci\u00F3n");
@@ -51,11 +49,7 @@ public class ConfigWindow extends JFrame {
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
-		
-		//CONTROLES
-
-		//
-		
+		/* Controles */
 		JLabel lblTeclas = new JLabel("TECLAS");
 		lblTeclas.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		GridBagConstraints gbc_lblTeclas = new GridBagConstraints();
@@ -210,10 +204,7 @@ public class ConfigWindow extends JFrame {
 		cargarValoresActuales();
 	}
 	
-	/**
-	 * Métodos
-	 * */
-	
+	/* Métodos */
 	private void cargarValoresActuales(){
 		String[]controles=userWindow.getControles();
 		textFieldArriba.setText(controles[0]);
