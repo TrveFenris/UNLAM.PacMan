@@ -1,10 +1,11 @@
-package tallerjava.windows;
+package windows;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.GridBagConstraints;
 import java.awt.Font;
@@ -12,6 +13,7 @@ import java.awt.Insets;
 import java.awt.TextField;
 import java.awt.Button;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
@@ -25,11 +27,17 @@ public class ConfigWindow extends JFrame {
 	private TextField textFieldIzq;
 	private TextField textFieldArriba;
 	private TextField textFieldAbajo;
+	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
+		private final int ARRIBA=0;
+		private final int ABAJO=1;
+		private final int IZQUIERDA=2;
+		private final int DERECHA=3;
+	private int[] controles; 
 
 	/* ConfigWindow Constructor */
 	public ConfigWindow(UserWindow window) {
 		userWindow=window;
-		setTitle("Configuraci\u00F3n");
+		setTitle("Configuración");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -93,7 +101,8 @@ public class ConfigWindow extends JFrame {
 		gbc_textFieldArriba.gridy = 2;
 		contentPane.add(textFieldArriba, gbc_textFieldArriba);
 		
-		Button btnAbajo = new Button("Aabajo");
+		Button btnAbajo = new Button("Abajo");
+		btnAbajo.setActionCommand("Abajo");
 		btnAbajo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				leerControl(1);
@@ -186,11 +195,7 @@ public class ConfigWindow extends JFrame {
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String arriba=textFieldArriba.getText();
-				String abajo=textFieldAbajo.getText();
-				String izquierda=textFieldIzq.getText();
-				String derecha=textFieldDer.getText();
-				userWindow.setControles(arriba, abajo, derecha, izquierda);
+				userWindow.setControles(controles[0],controles[1],controles[2],controles[3]);
 				dispose();
 				userWindow.setVisible(true);
 			}
@@ -201,36 +206,63 @@ public class ConfigWindow extends JFrame {
 		gbc_btnGuardar.gridy = 9;
 		contentPane.add(btnGuardar, gbc_btnGuardar);
 		
-		cargarValoresActuales();
+		informarValoresActuales();
 	}
 	
 	/* Métodos */
-	private void cargarValoresActuales(){
-		String[]controles=userWindow.getControles();
-		textFieldArriba.setText(controles[0]);
-		textFieldAbajo.setText(controles[1]);
-		textFieldIzq.setText(controles[2]);
-		textFieldDer.setText(controles[3]);
+	private void informarValoresActuales(){
+		controles=userWindow.getControles();
+		textFieldArriba.setText(KeyEvent.getKeyText(controles[0]));
+		textFieldAbajo.setText(KeyEvent.getKeyText(controles[1]));
+		textFieldIzq.setText(KeyEvent.getKeyText(controles[3]));
+		textFieldDer.setText(KeyEvent.getKeyText(controles[2]));
 	}
 	
 	private void leerControl(int control){
 		KeyBindingsWindow cw = new KeyBindingsWindow(this,control);
+		cw.setLocationRelativeTo(null);
+		this.setEnabled(false);
 		cw.setVisible(true);
 	}
 	
-	public void setControlArriba(String s){
-		textFieldArriba.setText(s);
+	public void setControlArriba(int keyCode){
+		if(verificarControl(keyCode, ARRIBA)==false)
+			return;
+		controles[ARRIBA]=keyCode;
+		textFieldArriba.setText(KeyEvent.getKeyText(keyCode));
 	}
 	
-	public void setControlAbajo(String s){
-		textFieldAbajo.setText(s);
+	public void setControlAbajo(int keyCode){
+		if(verificarControl(keyCode, ABAJO)==false)
+			return;
+		controles[ABAJO]=keyCode;
+		textFieldAbajo.setText(KeyEvent.getKeyText(keyCode));
 	}
 	
-	public void setControlIzq(String s){
-		textFieldIzq.setText(s);
+	public void setControlIzq(int keyCode){
+		if(verificarControl(keyCode, IZQUIERDA)==false)
+			return;
+		controles[IZQUIERDA]=keyCode;
+		textFieldIzq.setText(KeyEvent.getKeyText(keyCode));
 	}
 	
-	public void setControlDer(String s){
-		textFieldDer.setText(s);
+	public void setControlDer(int keyCode){
+		if(verificarControl(keyCode, DERECHA)==false)
+			return;
+		controles[DERECHA]=keyCode;
+		textFieldDer.setText(KeyEvent.getKeyText(keyCode));
+	}
+	
+	private boolean verificarControl(int keyCode, int control){
+		for(int i=0;i<4;i++){
+			if(controles[i]==keyCode&&i!=control){
+				JOptionPane.showMessageDialog(this,
+							"Está tecla ya fue asignada",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		return true;
 	}
 }
