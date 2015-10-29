@@ -51,6 +51,7 @@ public class GameWindow extends JFrame {
 
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
+		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -108,8 +109,24 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void update(){
-		pacman.setLocation(pacman.getLocation().x+velX, pacman.getLocation().y+velY);
+		pacman.setLocation(pacman.getLocation().x + velX, pacman.getLocation().y + velY);
+		restrictBoundaries();
 	}
+	
+	/* Calcula y mueve al objeto si se paso de los límites de la ventana. */		
+-	private void restrictBoundaries() {		
+-		if( pacman.getX() < 0 ) /* Límite izquierdo */		
+-			pacman.setLocation(0, pacman.getY());		
+-		
+-		if( pacman.getX() + pacman.getWidth() >= this.getWidth() ) /* Límite derecho */		
+-			pacman.setLocation(this.getWidth() - pacman.getWidth(), pacman.getY());		
+-		
+-		if( pacman.getLocation().y < 0 ) /* Límite hacia arriba */		
+-			pacman.setLocation(pacman.getX(), 0);		
+-		
+-		if( pacman.getY() + pacman.getHeight() >= this.getHeight() ) /* Límite hacia abajo (anda mal) */		
+-			pacman.setLocation(pacman.getX(), this.getHeight() - pacman.getHeight());		
+ 	}
 	
 	private void handleKeyPress(KeyEvent key) {
 		if(key.getKeyCode() == KeyEvent.VK_ESCAPE) {
