@@ -85,7 +85,7 @@ public class MainWindow extends JFrame {
 		JButton btnCredits = new JButton("Cr\u00E9ditos");
 		btnCredits.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(frame, "Grupo 4: \n-Barja, Alex\n-Figueroa, Matías\n-Maidana, Diego\n-Maita, Martín");
+				JOptionPane.showMessageDialog(frame, "Grupo 4: \n-Barja, Alex\n-Figueroa, Matias\n-Maidana, Diego\n-Maita, Martin");
 			}
 		});
 		btnCredits.setBounds(100, 180, 120, 25);
@@ -96,8 +96,9 @@ public class MainWindow extends JFrame {
 		textFieldNombre.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				//¿keyTyped registra la 1ra letra recién la 2da vez que se llama?
 				verificarTextFields();
+				if(e.getKeyCode()==KeyEvent.VK_ENTER)
+					pwdFieldPassword.grabFocus();
 			}
 		});
 		textFieldNombre.setBounds(100, 50, 170, 20);
@@ -108,9 +109,13 @@ public class MainWindow extends JFrame {
 		pwdFieldPassword.setToolTipText("Introduzca su contrase\u00F1a aqu\u00ED");
 		pwdFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
-			//¿keyTyped registra la 1ra letra recién la 2da vez que se llama?
+			//¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
 				verificarTextFields();
+				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
+					UserName=new String(textFieldNombre.getText());
+					lanzarVentanaUsuario();
+				}
 			}
 		});
 		pwdFieldPassword.setBounds(100, 81, 170, 20);
@@ -150,7 +155,7 @@ public class MainWindow extends JFrame {
 		contentPane.add(lblBienvenida);
 	}
 	
-	/* Métodos */
+	/* Metodos */
 	private void verificarTextFields() {
 		if(textFieldNombre.getText().length()>0&&pwdFieldPassword.getPassword().length>0) {
 			btnLogin.setEnabled(true);
@@ -165,7 +170,7 @@ public class MainWindow extends JFrame {
 	private void lanzarVentanaUsuario() {
 		if(UserName.length() > 10) {
 			JOptionPane.showMessageDialog(frame,
-					"El nick debe contener diez caracteres como máximo.",
+					"El nick debe contener diez caracteres como maximo.",
 					 "Error",
 					 JOptionPane.ERROR_MESSAGE);
 			return;
@@ -178,7 +183,7 @@ public class MainWindow extends JFrame {
 	
 	private void mensajeSalida() {
 		int option = JOptionPane.showConfirmDialog(frame,
-			    "¿Está seguro que quiere salir?",
+			    "¿Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {
