@@ -134,8 +134,10 @@ public class UserWindow extends JFrame {
 	private void lanzarJuego(){
 		this.setVisible(false);
 		gameWindow = new GameWindow(this);
+		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
 		gameWindow.setVisible(true);
+		gameWindow.runGameLoop();
 	}
 
 	private void cargarControles() {
@@ -164,6 +166,7 @@ public class UserWindow extends JFrame {
 	private void lanzarVentanaConfiguracion() {
 		this.setVisible(false);
 		configWindow = new ConfigWindow(this);
+		configWindow.setLocationRelativeTo(null);
 		configWindow.setVisible(true);
 	}
 }
