@@ -195,7 +195,7 @@ public class ConfigWindow extends JFrame {
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				userWindow.setControles(controles[0],controles[1],controles[2],controles[3]);
+				userWindow.setControles(controles[ARRIBA],controles[ABAJO],controles[IZQUIERDA],controles[DERECHA]);
 				dispose();
 				userWindow.setVisible(true);
 			}
@@ -212,10 +212,10 @@ public class ConfigWindow extends JFrame {
 	/* Métodos */
 	private void informarValoresActuales(){
 		controles=userWindow.getControles();
-		textFieldArriba.setText(KeyEvent.getKeyText(controles[0]));
-		textFieldAbajo.setText(KeyEvent.getKeyText(controles[1]));
-		textFieldIzq.setText(KeyEvent.getKeyText(controles[3]));
-		textFieldDer.setText(KeyEvent.getKeyText(controles[2]));
+		textFieldArriba.setText(KeyEvent.getKeyText(controles[ARRIBA]));
+		textFieldAbajo.setText(KeyEvent.getKeyText(controles[ABAJO]));
+		textFieldIzq.setText(KeyEvent.getKeyText(controles[IZQUIERDA]));
+		textFieldDer.setText(KeyEvent.getKeyText(controles[DERECHA[]));
 	}
 	
 	private void leerControl(int control){
