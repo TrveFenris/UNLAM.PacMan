@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 public class GameWindow extends JFrame {
 	
 	public class GameThread extends Thread {
-		Timer timer;
+		private Timer timer;
 		public void run() {
 			System.out.println("Comienza el juego");
 			timer = new Timer();
@@ -42,10 +42,15 @@ public class GameWindow extends JFrame {
 	private int velX; //testing
 	private int velY; //testing
 	private GameThread gameLoopThread;
+	private int[]controles;
+	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
+	private final int ARRIBA=0;
+	private final int ABAJO=1;
+	private final int IZQUIERDA=2;
+	private final int DERECHA=3;
 
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
-		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -76,7 +81,7 @@ public class GameWindow extends JFrame {
 		pacman.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		pacman.setIcon(null);
 		pacman.setBackground(Color.YELLOW);
-		pacman.setBounds(44, 82, 50, 50);
+		pacman.setBounds(21, 56, 50, 50);
 		contentPane.add(pacman);
 		userWindow = window;
 		velX = 0;
@@ -91,7 +96,7 @@ public class GameWindow extends JFrame {
 	
 	private void mensajeSalida(){
 		int option = JOptionPane.showConfirmDialog(this,
-			    "Â¿EstÃ¡ seguro que quiere salir?",
+			    "¿Está seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
@@ -103,23 +108,7 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void update(){
-		pacman.setLocation(pacman.getLocation().x + velX, pacman.getLocation().y + velY);
-		restrictBoundaries();
-	}
-	
-	/* Calcula y mueve al objeto si se paso de los límites de la ventana. */
-	private void restrictBoundaries() {
-		if( pacman.getX() < 0 ) /* Límite izquierdo */
-			pacman.setLocation(0, pacman.getY());
-
-		if( pacman.getX() + pacman.getWidth() >= this.getWidth() ) /* Límite derecho */
-			pacman.setLocation(this.getWidth() - pacman.getWidth(), pacman.getY());
-
-		if( pacman.getLocation().y < 0 ) /* Límite hacia arriba */
-			pacman.setLocation(pacman.getX(), 0);
-
-		if( pacman.getY() + pacman.getHeight() >= this.getHeight() ) /* Límite hacia abajo (anda mal) */
-			pacman.setLocation(pacman.getX(), this.getHeight() - pacman.getHeight());
+		pacman.setLocation(pacman.getLocation().x+velX, pacman.getLocation().y+velY);
 	}
 	
 	private void handleKeyPress(KeyEvent key) {
@@ -128,21 +117,28 @@ public class GameWindow extends JFrame {
 				mensajeSalida();
 			}
 		}
-		else if(key.getKeyCode() == KeyEvent.VK_UP) {
+		else if(key.getKeyCode() == controles[ARRIBA]) {
 			velX = 0;
 			velY = -5;
 		}
-		else if(key.getKeyCode() == KeyEvent.VK_DOWN) {
+		else if(key.getKeyCode() == controles[ABAJO]) {
 			velX = 0;
 			velY = 5;
 		}
-		else if(key.getKeyCode() == KeyEvent.VK_LEFT) {
+		else if(key.getKeyCode() == controles[IZQUIERDA]) {
 			velX = -5;
 			velY = 0;
 		}
-		else if(key.getKeyCode() == KeyEvent.VK_RIGHT) {
+		else if(key.getKeyCode() == controles[DERECHA]) {
 			velX = 5;
 			velY = 0;
+		}
+	}
+	
+	public void setControles(int[] controles){
+		this.controles=new int[4];
+		for(int i=0;i<4;i++){
+			this.controles[i]=controles[i];
 		}
 	}
 	
