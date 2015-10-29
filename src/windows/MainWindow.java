@@ -1,4 +1,4 @@
-package tallerjava.windows;
+package windows;
 
 import java.awt.EventQueue;
 
