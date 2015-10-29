@@ -6,13 +6,13 @@ public class Bolita extends GameObject{
 	
 	public Bolita(int x, int y, boolean especial){
 		coordenadas = new Punto(x, y);
+		superpoder = especial;
 		if(superpoder == true) {
 			radio = 2;
 		}
 		else {
 			radio = 1;
 		}
-		superpoder = especial;
 	}
 	
 	public boolean isEspecial(){
