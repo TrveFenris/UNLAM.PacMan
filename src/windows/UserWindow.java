@@ -1,4 +1,4 @@
-package tallerjava.windows;
+package windows;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +16,7 @@ import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
 public class UserWindow extends JFrame {
@@ -31,10 +32,10 @@ public class UserWindow extends JFrame {
 	private JLabel lblBienvenida;
 	//CONFIGURACION
 	private String userName;
-	private String arriba;
-	private String abajo;
-	private String izquierda;
-	private String derecha;
+	private int arriba;
+	private int abajo;
+	private int izquierda;
+	private int derecha;
 	
 	/* UserWindow Constructor */
 	public UserWindow(MainWindow window,String nombre) {
@@ -66,7 +67,7 @@ public class UserWindow extends JFrame {
 		lblBienvenida.setForeground(new Color(51, 153, 204));
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setText("¡Bienvenid@ "+userName+"!");
+		lblBienvenida.setText("¡Bienvenid@ "+userName+"! ");
 		GridBagConstraints gbc_lblBienvenida = new GridBagConstraints();
 		gbc_lblBienvenida.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBienvenida.gridheight = 2;
@@ -88,7 +89,7 @@ public class UserWindow extends JFrame {
 		gbc_btnJugar.gridy = 4;
 		contentPane.add(btnJugar, gbc_btnJugar);
 		
-		btnConfig = new JButton("Configuraci\u00F3n");
+		btnConfig = new JButton("Configuración");
 		btnConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lanzarVentanaConfiguracion();
@@ -101,7 +102,7 @@ public class UserWindow extends JFrame {
 		gbc_btnConfig.gridy = 4;
 		contentPane.add(btnConfig, gbc_btnConfig);
 		
-		btnCerrarSesion = new JButton("Cerrar sesi\u00F3n");
+		btnCerrarSesion = new JButton("Cerrar sesión");
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				confirmarCerrarSesion();
@@ -138,28 +139,29 @@ public class UserWindow extends JFrame {
 		gameWindow.setNameLabel(userName);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
+		gameWindow.setControles(this.getControles());
 	}
 
 	private void cargarControles() {
-			this.arriba=new String("arriba");
-			this.abajo=new String("abajo");
-			this.derecha=new String("derecha");
-			this.izquierda=new String("izquierda");
+			this.arriba=KeyEvent.VK_UP;
+			this.abajo=KeyEvent.VK_DOWN;
+			this.derecha=KeyEvent.VK_RIGHT;
+			this.izquierda=KeyEvent.VK_LEFT;
 	}
 	
-	public void setControles(String arriba, String abajo, String derecha, String izquierda) {
+	public void setControles(int arriba, int abajo, int izquierda, int derecha) {
 		this.arriba=arriba;
 		this.abajo=abajo;
 		this.derecha=derecha;
 		this.izquierda=izquierda;
 	}
 	
-	public String[] getControles() {
-		String[] controles=new String[4];
+	public int[] getControles() {
+		int[] controles=new int[4];
 		controles[0]=arriba;
 		controles[1]=abajo;
-		controles[2]=derecha;
-		controles[3]=izquierda;
+		controles[2]=izquierda;
+		controles[3]=derecha;
 		return controles;
 	}
 	
