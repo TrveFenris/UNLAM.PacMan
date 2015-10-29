@@ -1,4 +1,4 @@
-package tallerjava.windows;
+package windows;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -19,9 +19,10 @@ import javax.swing.border.EmptyBorder;
 public class GameWindow extends JFrame {
 	
 	public class GameThread extends Thread {
+		Timer timer;
 		public void run() {
 			System.out.println("Comienza el juego");
-			Timer timer = new Timer();
+			timer = new Timer();
 			timer.schedule( new TimerTask() {
 			    public void run() {
 			       if(gameRunning){
@@ -44,6 +45,7 @@ public class GameWindow extends JFrame {
 
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
+		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -74,7 +76,7 @@ public class GameWindow extends JFrame {
 		pacman.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		pacman.setIcon(null);
 		pacman.setBackground(Color.YELLOW);
-		pacman.setBounds(21, 56, 50, 50);
+		pacman.setBounds(44, 82, 50, 50);
 		contentPane.add(pacman);
 		userWindow = window;
 		velX = 0;
@@ -89,18 +91,35 @@ public class GameWindow extends JFrame {
 	
 	private void mensajeSalida(){
 		int option = JOptionPane.showConfirmDialog(this,
-			    "¿Está seguro que quiere salir?",
+			    "Â¿EstÃ¡ seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
 			gameRunning = false;
+			gameLoopThread.timer.cancel();
 			this.dispose();
 			userWindow.setVisible(true);
 		}
 	}
 	
 	private void update(){
-		pacman.setLocation(pacman.getLocation().x+velX, pacman.getLocation().y+velY);
+		pacman.setLocation(pacman.getLocation().x + velX, pacman.getLocation().y + velY);
+		restrictBoundaries();
+	}
+	
+	/* Calcula y mueve al objeto si se paso de los límites de la ventana. */
+	private void restrictBoundaries() {
+		if( pacman.getX() < 0 ) /* Límite izquierdo */
+			pacman.setLocation(0, pacman.getY());
+
+		if( pacman.getX() + pacman.getWidth() >= this.getWidth() ) /* Límite derecho */
+			pacman.setLocation(this.getWidth() - pacman.getWidth(), pacman.getY());
+
+		if( pacman.getLocation().y < 0 ) /* Límite hacia arriba */
+			pacman.setLocation(pacman.getX(), 0);
+
+		if( pacman.getY() + pacman.getHeight() >= this.getHeight() ) /* Límite hacia abajo (anda mal) */
+			pacman.setLocation(pacman.getX(), this.getHeight() - pacman.getHeight());
 	}
 	
 	private void handleKeyPress(KeyEvent key) {
