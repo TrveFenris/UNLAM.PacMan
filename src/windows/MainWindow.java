@@ -43,6 +43,7 @@ public class MainWindow extends JFrame {
 			public void run() {
 				try {
 					frame = new MainWindow();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -171,6 +172,7 @@ public class MainWindow extends JFrame {
 		}
 		frame.setVisible(false);
 		userWindow = new UserWindow(frame,UserName);
+		userWindow.setLocationRelativeTo(null);
 		userWindow.setVisible(true);
 	}
 	
