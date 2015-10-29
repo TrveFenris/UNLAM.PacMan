@@ -1,4 +1,4 @@
-package tallerjava.windows;
+package windows;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,26 +25,30 @@ public class KeyBindingsWindow extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				switch(control){
 					case 0:
-						configWindow.setControlArriba(KeyEvent.getKeyText(e.getKeyCode()));
+						configWindow.setControlArriba(e.getKeyCode());
+						configWindow.setEnabled(true);
 						dispose();
 						break;
 					case 1:
-						configWindow.setControlAbajo(KeyEvent.getKeyText(e.getKeyCode()));
+						configWindow.setControlAbajo(e.getKeyCode());
+						configWindow.setEnabled(true);
 						dispose();
 						break;
 					case 2:
-						configWindow.setControlIzq(KeyEvent.getKeyText(e.getKeyCode()));
+						configWindow.setControlIzq(e.getKeyCode());
+						configWindow.setEnabled(true);
 						dispose();
 						break;
 					case 3:
-						configWindow.setControlDer(KeyEvent.getKeyText(e.getKeyCode()));
+						configWindow.setControlDer(e.getKeyCode());
+						configWindow.setEnabled(true);
 						dispose();
 						break;
 					default: break;
 					}
 			}
 		});
-		setTitle("Modificaci\u00F3n de controles");
+		setTitle("Modificación de controles");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 283, 97);
