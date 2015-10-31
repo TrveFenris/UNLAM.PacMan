@@ -36,6 +36,8 @@ public class MainWindow extends JFrame {
 	private JPasswordField pwdFieldPassword;
 	private JLabel lblBienvenida;
 	private UserWindow userWindow;
+	//AGREGADO
+	private BaseDatos bd=null;
 	
 	/* Main Application */
 	public static void main(String[] args) {
@@ -124,14 +126,31 @@ public class MainWindow extends JFrame {
 		
 		btnLogin = new JButton("Iniciar sesi\u00F3n");
 		btnLogin.setEnabled(false);
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				UserName=new String(textFieldNombre.getText());
-				lanzarVentanaUsuario();
-			}
-		});
 		btnLogin.setBounds(100, 112, 120, 23);
 		contentPane.add(btnLogin);
+		
+		//AGREGADO
+		bd = new BaseDatos();
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				UserName=new String(textFieldNombre.getText());
+				String password= new String(pwdFieldPassword.getPassword());
+				boolean estado = bd.Verificar(UserName,password);
+				try{
+					if(estado==true){
+						lanzarVentanaUsuario();
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Error al ingresar el usuario o contraseña");
+					}
+				}
+				catch(Exception e){
+					JOptionPane.showMessageDialog(null,"Error no de la base de datos","Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		//FIN
 		
 		lblNombre = new JLabel("Usuario");
 		lblNombre.setBounds(10, 53, 46, 14);
@@ -145,6 +164,32 @@ public class MainWindow extends JFrame {
 		btnRegistrarUsuario.setEnabled(false);
 		btnRegistrarUsuario.setBounds(100, 146, 120, 23);
 		contentPane.add(btnRegistrarUsuario);
+		
+		// Agregado
+		btnRegistrarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				UserName=new String(textFieldNombre.getText());
+				String password= new String(pwdFieldPassword.getPassword());
+				boolean estado = false;
+				try{
+					estado = bd.VerificarUsuario(UserName);
+					if(estado != true)
+					{
+						bd.agregar(UserName, password);
+						lanzarVentanaUsuario();
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Usuario ya registrado");
+						textFieldNombre.setText("");
+						pwdFieldPassword.setText("");
+					}
+				}
+				catch(Exception ex){
+					JOptionPane.showMessageDialog(null,"Error no de la base de datos","Error",JOptionPane.ERROR_MESSAGE);					
+				}
+			}
+		});
+		//FIN
 		
 		lblBienvenida = new JLabel("");
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
