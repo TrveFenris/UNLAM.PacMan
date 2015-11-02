@@ -48,7 +48,7 @@ public class KeyBindingsWindow extends JFrame {
 					}
 			}
 		});
-		setTitle("Modificación de controles");
+		setTitle("Modificaci\u00F3n de controles");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 283, 97);
