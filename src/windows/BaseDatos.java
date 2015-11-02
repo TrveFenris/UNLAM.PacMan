@@ -1,4 +1,4 @@
-package tallerjava.windows;
+package windows;
 
 import java.sql.*;
 
@@ -11,27 +11,25 @@ public class BaseDatos {
 		try{
 			//cargar el driver
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			
-			  String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=PACMAN";
+			String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=PACMAN";
 		    String user = "sa";
 		    String pass = "unlm2015";
-		    
 		    conexion = DriverManager.getConnection(dbURL, user, pass);
-			/*if(conexion!=null)
-				System.out.println("Conexion exitosa");*/
+			if(conexion!=null)
+				System.out.println("Conexion exitosa");
 		}
 		catch(ClassNotFoundException ex){
-			JOptionPane.showMessageDialog(null, ex, "Error1 en la Conexión con la BD "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, ex, "Error1 en la Conexion con la BD "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
             conexion=null;
         }
         catch(SQLException ex)
         {
-            JOptionPane.showMessageDialog(null, ex, "Error2 en la Conexión con la BD "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex, "Error2 en la Conexion con la BD "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
         	conexion=null;
         }
         catch(Exception ex)
         {
-            JOptionPane.showMessageDialog(null, ex, "Error3 en la Conexión con la BD "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex, "Error3 en la Conexion con la BD "+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
             conexion=null;
         }
 	}
@@ -49,7 +47,7 @@ public class BaseDatos {
 				estado=true;
 		}
 		catch(SQLException ex){
-			JOptionPane.showMessageDialog(null,"No se pudo lograr la coneccion con la base de datos1","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"No se pudo lograr la conexion con la base de datos","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		catch(Exception ex){
 			JOptionPane.showMessageDialog(null,"Error logico","Error",JOptionPane.ERROR_MESSAGE);
@@ -64,7 +62,7 @@ public class BaseDatos {
 	}
 	
 	public boolean Verificar(String usuario, String password){
-		String sql = "SELECT * FROM USUARIO WHERE Usuario='"+usuario+"' AND Contraseña='"+password+"'";
+		String sql = "SELECT * FROM USUARIO WHERE Usuario='"+usuario+"' AND Password='"+password+"'";
 		boolean estado= false;
 		
 		try{
