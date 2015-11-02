@@ -37,7 +37,7 @@ public class ConfigWindow extends JFrame {
 	/* ConfigWindow Constructor */
 	public ConfigWindow(UserWindow window) {
 		userWindow=window;
-		setTitle("Configuración");
+		setTitle("Configuraci\u00F3n");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -209,7 +209,7 @@ public class ConfigWindow extends JFrame {
 		informarValoresActuales();
 	}
 	
-	/* Métodos */
+	/* MÃ©todos */
 	private void informarValoresActuales(){
 		controles=userWindow.getControles();
 		textFieldArriba.setText(KeyEvent.getKeyText(controles[ARRIBA]));
@@ -257,7 +257,7 @@ public class ConfigWindow extends JFrame {
 		for(int i=0;i<4;i++){
 			if(controles[i]==keyCode&&i!=control){
 				JOptionPane.showMessageDialog(this,
-							"Está tecla ya fue asignada",
+							"Esta tecla ya fue asignada",
 							 "Error",
 							 JOptionPane.ERROR_MESSAGE);
 				return false;
