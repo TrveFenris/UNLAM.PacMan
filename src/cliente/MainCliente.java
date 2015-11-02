@@ -10,6 +10,7 @@ public class MainCliente {
 
         String host = "localhost";
         int puerto = 50000;
+        String nombre="User";
 
         System.out.println("CLIENTE DEL CHAT:\n----------------------------\n");
         System.out.println("Ingrese la IP o Nombre del Servidor a conectarse: ");
@@ -31,15 +32,16 @@ public class MainCliente {
             e2.printStackTrace();
         }
 
-        Cliente cliente = new Cliente(host, puerto);
         System.out.println("Ingrese su nombre de usuario: ");
         try {
             //System.in.skip(System.in.available());
-            cliente.setNombre(br.readLine());
+        	nombre=br.readLine();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        Cliente cliente = new Cliente(host, puerto,nombre);
+        
         System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
 
         new ThreadCliente(cliente.getSocket()).start();
