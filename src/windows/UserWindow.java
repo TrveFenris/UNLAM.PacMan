@@ -89,7 +89,7 @@ public class UserWindow extends JFrame {
 		gbc_btnJugar.gridy = 4;
 		contentPane.add(btnJugar, gbc_btnJugar);
 		
-		btnConfig = new JButton("Configuración");
+		btnConfig = new JButton("ConfiguraciÃ³n");
 		btnConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lanzarVentanaConfiguracion();
@@ -102,7 +102,7 @@ public class UserWindow extends JFrame {
 		gbc_btnConfig.gridy = 4;
 		contentPane.add(btnConfig, gbc_btnConfig);
 		
-		btnCerrarSesion = new JButton("Cerrar sesión");
+		btnCerrarSesion = new JButton("Cerrar sesi\u00F3n");
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				confirmarCerrarSesion();
@@ -119,10 +119,10 @@ public class UserWindow extends JFrame {
 		cargarControles();
 	}
 
-	/* Métodos */
+	/* MÃ©todos */
 	private void confirmarCerrarSesion(){
 		int res= JOptionPane.showConfirmDialog(this,
-			    "¿Está seguro?",
+			    "¿Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION){
