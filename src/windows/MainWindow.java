@@ -111,7 +111,7 @@ public class MainWindow extends JFrame {
 		pwdFieldPassword.setToolTipText("Introduzca su contrase\u00F1a aqu\u00ED");
 		pwdFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
-			//¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
+			//Â¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
 				verificarTextFields();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
@@ -142,7 +142,7 @@ public class MainWindow extends JFrame {
 						lanzarVentanaUsuario();
 					}
 					else{
-						JOptionPane.showMessageDialog(null, "Error al ingresar el usuario o contraseña");
+						JOptionPane.showMessageDialog(null, "Error al ingresar el usuario o contrase\u00F1a");
 					}
 				}
 				catch(Exception e){
