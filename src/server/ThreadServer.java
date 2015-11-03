@@ -2,6 +2,7 @@ package server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class ThreadServer extends Thread {
         String aux = null;
         try {
         	data= new DataInputStream(clientSocket.getInputStream());
-            do {
-                if (aux != null) {
+        	while ((aux = data.readUTF()) != null){
                     System.out.println(aux);
                     i = socketList.iterator();
                     while (i.hasNext()) {
@@ -45,13 +45,21 @@ public class ThreadServer extends Thread {
                             e.printStackTrace();
                         }
                     }
-                }
-            } while ((aux = data.readUTF()) != null);
-			//System.out.println("Cerrando cliente");
-			//socketList.remove(clientSocket);
-			//clientSocket.close();
-			//servidor.eliminarCliente();
-			//System.out.println("Un cliente se ha desconectado.");
+                    data= new DataInputStream(clientSocket.getInputStream());
+        	}
+            //NUNCA SE LLEGA A ESTE PUNTO
+        }
+        catch(EOFException e){
+            try {
+            	System.out.println("Cerrando cliente");
+                socketList.remove(clientSocket);
+                clientSocket.close();
+                servidor.eliminarCliente();
+                System.out.println("Un cliente se ha desconectado.");
+            }
+            catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         catch(IOException e) {
         	e.printStackTrace();
@@ -64,9 +72,6 @@ public class ThreadServer extends Thread {
             }
             catch (IOException e1) {
                 e1.printStackTrace();
-            }
-            finally {
-            	System.out.println("La conexion ha finalizado.");
             }
         }
     }
