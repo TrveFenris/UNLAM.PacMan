@@ -37,7 +37,7 @@ public class ConfigWindow extends JFrame {
 	/* ConfigWindow Constructor */
 	public ConfigWindow(UserWindow window) {
 		userWindow=window;
-		setTitle("Configuraci\u00F3n");
+		setTitle("Configuracion");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
