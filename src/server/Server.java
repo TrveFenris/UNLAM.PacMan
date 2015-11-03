@@ -80,7 +80,7 @@ public class Server {
             }
             else{
             	sockets.add(cliente);
-                System.out.println("La Conexion número " + cantActualClientes 
+                System.out.println("La Conexion numero " + cantActualClientes 
                 					+ " fue aceptada correctamente.");
             }
         } catch (IOException e) {
