@@ -50,7 +50,7 @@ public class UserWindow extends JFrame {
 		});
 		mainWindow = window;
 		userName=nombre;
-		setTitle("Men\u00FA principal");
+		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
 		contentPane = new JPanel();
@@ -89,7 +89,7 @@ public class UserWindow extends JFrame {
 		gbc_btnJugar.gridy = 4;
 		contentPane.add(btnJugar, gbc_btnJugar);
 		
-		btnConfig = new JButton("ConfiguraciÃ³n");
+		btnConfig = new JButton("Configuracion");
 		btnConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lanzarVentanaConfiguracion();
@@ -102,7 +102,7 @@ public class UserWindow extends JFrame {
 		gbc_btnConfig.gridy = 4;
 		contentPane.add(btnConfig, gbc_btnConfig);
 		
-		btnCerrarSesion = new JButton("Cerrar sesi\u00F3n");
+		btnCerrarSesion = new JButton("Cerrar sesion");
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				confirmarCerrarSesion();
@@ -119,7 +119,7 @@ public class UserWindow extends JFrame {
 		cargarControles();
 	}
 
-	/* MÃ©todos */
+	/* Metodos */
 	private void confirmarCerrarSesion(){
 		int res= JOptionPane.showConfirmDialog(this,
 			    "¿Esta seguro?",
