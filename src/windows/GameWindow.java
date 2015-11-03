@@ -6,6 +6,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,8 +15,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import game.Mapa;
+import game.PacMan;
+import game.Punto;
+import game.Jugador;
 
 public class GameWindow extends JFrame {
 	
@@ -29,18 +35,15 @@ public class GameWindow extends JFrame {
 			    	   update();
 			       }
 			    }
-			 }, 0, 100);
+			 }, 0, 16);
 		}
 	}
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblName;
-	private JLabel pacman;
 	private UserWindow userWindow;
 	private boolean gameRunning;
-	private int velX; //testing
-	private int velY; //testing
 	private GameThread gameLoopThread;
 	private int[]controles;
 	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
@@ -48,6 +51,10 @@ public class GameWindow extends JFrame {
 	private final int ABAJO=1;
 	private final int IZQUIERDA=2;
 	private final int DERECHA=3;
+	//Mapa
+	private Mapa mapa;
+	private ArrayList<Jugador> jugadores;
+	private PacMan pacman;
 
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
@@ -72,23 +79,29 @@ public class GameWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(Color.BLACK);
+		//contentPane.setOpaque(true);
 		
 		lblName = new JLabel("New label");
+		lblName.setForeground(Color.CYAN);
+		lblName.setFont(Font.getFont(Font.SANS_SERIF));
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
 		
-		pacman = new JLabel("A");
-		pacman.setHorizontalAlignment(SwingConstants.CENTER);
-		pacman.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		pacman.setIcon(null);
-		pacman.setBackground(Color.YELLOW);
-		pacman.setBounds(21, 56, 50, 50);
-		contentPane.add(pacman);
+		//MAPA
+		mapa = new Mapa(contentPane);
+		mapa.dibujar(); //Dibuja los caminos y genera las bolitas
+		jugadores=new ArrayList<Jugador>();
+		//Creación de pacman
+		Punto p = new Punto(5,25);
+		pacman = new PacMan(PacMan.crearLabel(p), lblName.getText());
+		pacman.dibujar(contentPane);
+		jugadores.add(pacman);
+		//
 		userWindow = window;
-		velX = 0;
-		velY = 0;
 		gameRunning = true;
 		gameLoopThread = new GameThread();
+		this.setTitle("PAC-MAN");
 	}
 	
 	public void setNameLabel(String s){
@@ -97,7 +110,7 @@ public class GameWindow extends JFrame {
 	
 	private void mensajeSalida(){
 		int option = JOptionPane.showConfirmDialog(this,
-			    "¿Está seguro que quiere salir?",
+			    "¿Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
@@ -109,23 +122,26 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void update(){
-		pacman.setLocation(pacman.getLocation().x + velX, pacman.getLocation().y + velY);
-		restrictBoundaries();
+		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();){
+			Jugador jug=j.next();
+			jug.mover();
+			restrictBoundaries(jug);
+		}
 	}
 	
-	/* Calcula y mueve al objeto si se paso de los límites de la ventana. */		
-	private void restrictBoundaries() {		
-		if( pacman.getX() < 0 ) /* Límite izquierdo */		
-			pacman.setLocation(0, pacman.getY());		
+	/* Calcula y mueve al objeto si se paso de los limites de la ventana. */		
+	private void restrictBoundaries(Jugador j) {
+		if( j.getX() < 0 ) /* Limite izquierdo */		
+			j.setLocation(0, j.getY());		
 		
-		if( pacman.getX() + pacman.getWidth() >= this.getWidth() ) /* Límite derecho */		
-			pacman.setLocation(this.getWidth() - pacman.getWidth(), pacman.getY());		
+		if( j.getX() + j.getWidth() >= this.getWidth() ) /* Limite derecho (anda mal) */		
+			j.setLocation(this.getWidth() - j.getWidth(), j.getY());		
 		
-		if( pacman.getLocation().y < 0 ) /* Límite hacia arriba */		
-			pacman.setLocation(pacman.getX(), 0);		
+		if( j.getLocation().getY() < 0 ) /* Limite hacia arriba */		
+			j.setLocation(j.getX(), 0);		
 		
-		if( pacman.getY() + pacman.getHeight() >= this.getHeight() ) /* Límite hacia abajo (anda mal) */		
-			pacman.setLocation(pacman.getX(), this.getHeight() - pacman.getHeight());		
+		if( j.getY() + j.getHeight() >= this.getHeight() ) /* Limite hacia abajo (anda mal) */		
+			j.setLocation(j.getX(), this.getHeight() - j.getHeight());		
  	}
 	
 	private void handleKeyPress(KeyEvent key) {
@@ -135,20 +151,16 @@ public class GameWindow extends JFrame {
 			}
 		}
 		else if(key.getKeyCode() == controles[ARRIBA]) {
-			velX = 0;
-			velY = -5;
+			pacman.cambiarSentido(Actions.ARRIBA);
 		}
 		else if(key.getKeyCode() == controles[ABAJO]) {
-			velX = 0;
-			velY = 5;
+			pacman.cambiarSentido(Actions.ABAJO);
 		}
 		else if(key.getKeyCode() == controles[IZQUIERDA]) {
-			velX = -5;
-			velY = 0;
+			pacman.cambiarSentido(Actions.IZQUIERDA);
 		}
 		else if(key.getKeyCode() == controles[DERECHA]) {
-			velX = 5;
-			velY = 0;
+			pacman.cambiarSentido(Actions.DERECHA);
 		}
 	}
 	
