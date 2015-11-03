@@ -1,27 +1,56 @@
 package game;
 
-import java.util.Calendar;
-
 import javax.swing.JLabel;
 
+import windows.Actions;
+
 public class Jugador extends GameObject{
+	protected int velocidad;
 	protected int velX;
 	protected int velY;
-	protected boolean superpoder;
-	protected Calendar timerSuperpoder;
-	//protected boolean movimientoX;
-	//protected boolean movimientoY;
+	protected String nombre;
+	protected int puntaje;
 	
-	//public Jugador(int x, int y, int r, JLabel img){
-	public Jugador(JLabel img){
+	public Jugador(JLabel img, String nombre, int velocidad){
 		super(img);
-		superpoder = false;
+		this.velocidad=velocidad;
+		this.nombre=nombre;
+		puntaje=0;
 		velX = 0;
 		velY = 0;
 	}
 	
 	public void input(){
 		
+	}
+	
+	public void cambiarSentido(Actions a){
+		switch(a){
+			case ARRIBA:
+				velX=0;
+				velY=-1*velocidad;
+				break;
+			case ABAJO:
+				velX=0;
+				velY=velocidad;
+				break;
+			case IZQUIERDA:
+				velX=-1*velocidad;
+				velY=0;
+				break;
+			case DERECHA:
+				velX=velocidad;
+				velY=0;
+				break;
+		}
+	}
+	
+	public void mover(){
+		setLocation(getLocation().getX() + velX, getLocation().getY() + velY);
+	}
+	
+	public void actualizarPuntaje(int cant){
+		puntaje=cant;
 	}
 	
 	//Reescribir los siguientes metodos:
@@ -44,16 +73,4 @@ public class Jugador extends GameObject{
 		return result;
 	}
 	*/
-	
-	public boolean tieneSuperpoder(){
-		return superpoder;
-	}
-	
-	public void startTimer() {
-		timerSuperpoder.clear();
-	}
-	
-	public long getTimerMilliseconds() {
-		return timerSuperpoder.getTimeInMillis();
-	}
 }
