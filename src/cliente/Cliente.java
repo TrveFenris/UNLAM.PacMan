@@ -18,10 +18,11 @@ public class Cliente {
         return puerto;
     }
 
-    public Cliente(String direccion, int port) {
+    public Cliente(String direccion, int port,String nombre) {
         try {
             puerto = port;
             cliente = new Socket(direccion, port);
+            this.nombre=nombre;
         }
         catch(UnknownHostException e1) {
         	System.out.println("No se pudo conectar con el servidor, cerrando el  programa...");
@@ -43,19 +44,18 @@ public class Cliente {
     public void enviarMensaje() {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-          	//Se lee desde el host del usuario y dirige el flujo o información al server
+          	//Se lee desde el host del usuario y dirige el flujo o informacion al server
             DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
             String data;
-            while ((data = br.readLine()) != null) {
-                if (data.contains(".exit")) {
-                    System.out.println("Cerrando Aplicacion...");
+            while ((data=br.readLine())!= null) {
+                if (data.contains(".exit")|| cliente.isClosed()) {
                     cerrarCliente();
-                    System.exit(1);
                 }
                 else if (!data.equals("")) {
                 	dos.writeUTF("["+horaDelMensaje()+"] " + nombre + ": " + data);
                 }
             }
+            cerrarCliente();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -65,6 +65,8 @@ public class Cliente {
     public void cerrarCliente() {
         try {
             cliente.close();
+            System.out.println("Cerrando Aplicacion...");
+            System.exit(1);
         }
         catch (IOException e) {
             e.printStackTrace();
