@@ -1,17 +1,52 @@
 package game;
 
+import java.util.Calendar;
+
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class PacMan extends Jugador {	
+	protected boolean superpoder;
+	protected Calendar timerSuperpoder;
+	protected int bolitasComidas;
+	protected int muertes;
+	protected int fantasmasComidos;
 	
-	//public PacMan(int x, int y, JLabel img) {
-	public PacMan(JLabel img) {
-		super(img);
+	public PacMan(JLabel img, String nombre) {
+		super(img,nombre,2);
+		superpoder = false;
+		bolitasComidas=muertes=fantasmasComidos=0;
 	}
-	public void mover(){
-		
-	}
+	
 	public void reaparecer(){
 		
+	}
+	
+	public boolean tieneSuperpoder(){
+		return superpoder;
+	}
+	
+	public void startTimer() {
+		timerSuperpoder.clear();
+	}
+	
+	public long getTimerMilliseconds() {
+		return timerSuperpoder.getTimeInMillis();
+	}
+	
+	public void dibujar(JPanel area){
+		area.add(getImagen());
+	}
+	
+	public void actualizarPuntaje(){
+		this.actualizarPuntaje(50*bolitasComidas-200*muertes+500*fantasmasComidos);
+	}
+	
+	public static JLabel crearLabel(Punto posInicial){
+		ImageIcon icon = new ImageIcon("img/pacman.gif");
+		JLabel l = new JLabel(icon);
+		l.setBounds(posInicial.getX(),posInicial.getY(), 50, 50);
+		return l;
 	}
 }
