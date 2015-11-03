@@ -22,8 +22,13 @@ public class Punto {
 	public boolean equals(Punto vec){
 		return (this.x == vec.x) && (this.y == vec.y);
 	}
+	
 	public double distanciaCon(Punto vec){
 		return Math.sqrt( Math.pow( (this.x - vec.x), 2) + Math.pow( (this.y - vec.y), 2) );
+	}
+	
+	public double modulo(){
+		return Math.sqrt((x*x)+(y*y));
 	}
 	//GETTERS
 	public int getX(){
