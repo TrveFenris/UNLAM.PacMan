@@ -24,6 +24,14 @@ public class Mapa {
 		agregarRecta(new Punto(30,50), new Punto(730,50));
 	}
 	
+	public ArrayList<Bolita> getArrayBolitas() {
+		return bolitas;
+	}
+	
+	public ArrayList<Recta> getArrayRectas() {
+		return rectas;
+	}
+	
 	private void agregarRecta(Punto p1, Punto p2) {
 		rectas.add(new Recta(p1,p2));
 	}

@@ -14,7 +14,7 @@ public class PacMan extends Jugador {
 	private int fantasmasComidos;
 	
 	public PacMan(JLabel img, String nombre) {
-		super(img,nombre,2);
+		super(img,nombre,1);
 		superpoder = false;
 		bolitasComidas=muertes=fantasmasComidos=0;
 	}

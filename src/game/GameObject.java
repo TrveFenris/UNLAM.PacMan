@@ -9,6 +9,10 @@ public class GameObject {
 		imagen = img;
 	}
 	
+	public Punto getCentroCoordenadas() {
+		return new Punto( (imagen.getWidth()/2) + getX(), (imagen.getHeight()/2) + getY());
+	}
+	
 	public int getX() {
 		return imagen.getX();
 	}

@@ -21,6 +21,7 @@ import game.Mapa;
 import game.PacMan;
 import game.Punto;
 import game.Jugador;
+import game.Recta;
 
 public class GameWindow extends JFrame {
 	
@@ -122,8 +123,13 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void update(){
-		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();){
+		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
 			Jugador jug=j.next();
+			for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
+				Recta rec = k.next();
+				if(jug.estaEn(rec))
+					System.out.println("Estoy en una recta");
+			}
 			jug.mover();
 			restrictBoundaries(jug);
 		}

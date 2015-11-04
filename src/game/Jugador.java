@@ -62,15 +62,21 @@ public class Jugador extends GameObject{
 	public boolean estaEn(Punto p){
 		return (coordenadas.getX() == p.getX() && coordenadas.getY() == p.getY());
 	}
-	
+	*/
 	public boolean estaEn(Recta r) {
 		boolean result = false;
-		
-		if(r.() == Rectas.VERTICAL){
-			
+		Punto p = getCentroCoordenadas();
+		if(r.tipo == Rectas.VERTICAL){
+			if(p.getX() == r.getPuntoInicial().getX() && ( p.getY() >= r.getPuntoInicial().getY() && p.getY() <= r.getPuntoFinal().getY() ) ) {
+				result = true;
+			}
 		}
-		if(r.tipo ==)
+		else if(r.tipo == Rectas.HORIZONTAL) {
+			if(p.getY() == r.getPuntoInicial().getY() && ( p.getX() >= r.getPuntoInicial().getX() && p.getX() <= r.getPuntoFinal().getX() ) ) {
+				result = true;
+			}
+		}
 		return result;
 	}
-	*/
+	
 }
