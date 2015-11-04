@@ -8,7 +8,7 @@ public class Recta {
 	protected Punto puntoInicial;
 	protected Punto puntoFinal;
 	protected Rectas tipo;
-	
+	/*
 	protected Recta(Punto p1, Punto p2) {
 		if(p1.modulo()>p2.modulo()){
 			puntoInicial = p2;
@@ -23,6 +23,32 @@ public class Recta {
 		else 
 			if(puntoInicial.getY() == puntoFinal.getY())
 				tipo = Rectas.HORIZONTAL;
+	}
+	*/
+	protected Recta(Punto p1, Punto p2) {
+		if(p1.getX() == p2.getX()) {
+			tipo = Rectas.VERTICAL;
+			if(p1.getX() <= p2.getX()) {
+				puntoInicial = p1;
+				puntoFinal = p2;
+			}
+			else {
+				puntoInicial = p2;
+				puntoFinal = p1;
+			}
+			
+		}
+		else if(p1.getY() == p2.getY()) {
+			tipo = Rectas.HORIZONTAL;
+			if(p1.getY() <= p2.getY()) {
+				puntoInicial = p1;
+				puntoFinal = p2;
+			}
+			else {
+				puntoInicial = p2;
+				puntoFinal = p1;
+			}
+		}
 	}
 	
 	public Rectas getTipo(){
