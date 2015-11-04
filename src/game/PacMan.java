@@ -7,11 +7,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PacMan extends Jugador {	
-	protected boolean superpoder;
-	protected Calendar timerSuperpoder;
-	protected int bolitasComidas;
-	protected int muertes;
-	protected int fantasmasComidos;
+	private boolean superpoder;
+	private Calendar timerSuperpoder;
+	private int bolitasComidas;
+	private int muertes;
+	private int fantasmasComidos;
 	
 	public PacMan(JLabel img, String nombre) {
 		super(img,nombre,2);
