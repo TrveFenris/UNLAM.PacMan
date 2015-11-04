@@ -23,7 +23,8 @@ public class UserWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private GameWindow gameWindow;
-	private MainWindow mainWindow;
+	//private MainWindow mainWindow;
+	private MainWindowSinDB mainWindow;
 	private ConfigWindow configWindow;
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
@@ -38,7 +39,8 @@ public class UserWindow extends JFrame {
 	private int derecha;
 	
 	/* UserWindow Constructor */
-	public UserWindow(MainWindow window,String nombre) {
+	//public UserWindow(MainWindow window,String nombre) {
+	public UserWindow(MainWindowSinDB window,String nombre) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override

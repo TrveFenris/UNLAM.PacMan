@@ -221,7 +221,7 @@ public class MainWindow extends JFrame {
 			return;
 		}
 		frame.setVisible(false);
-		userWindow = new UserWindow(frame,UserName);
+		//userWindow = new UserWindow(frame,UserName);
 		userWindow.setLocationRelativeTo(null);
 		userWindow.setVisible(true);
 	}

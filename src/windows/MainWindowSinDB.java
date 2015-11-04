@@ -21,11 +21,11 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainWindow extends JFrame {
+public class MainWindowSinDB extends JFrame {
 	/* Members */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	public static MainWindow frame;
+	public static MainWindowSinDB frame;
 	public static GameWindow gameWindow;
 	private JButton btnLogin;
 	private JButton btnRegistrarUsuario;
@@ -42,7 +42,7 @@ public class MainWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new MainWindow();
+					frame = new MainWindowSinDB();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -53,7 +53,7 @@ public class MainWindow extends JFrame {
 	}
 
 	/* MainWindow Constructor */
-	public MainWindow() {
+	public MainWindowSinDB() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
