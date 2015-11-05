@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 
 import rectas.Recta;
 import rectas.Rectas;
-import windows.Actions;
 
 public class Jugador extends GameObject{
 	protected int velocidad;

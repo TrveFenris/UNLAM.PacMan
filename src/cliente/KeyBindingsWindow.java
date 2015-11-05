@@ -1,4 +1,4 @@
-package windows;
+package cliente;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

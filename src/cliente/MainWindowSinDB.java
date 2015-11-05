@@ -1,4 +1,4 @@
-package windows;
+package cliente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -21,9 +21,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import cliente.Cliente;
-import cliente.ThreadCliente;
 
 public class MainWindowSinDB extends JFrame {
 	

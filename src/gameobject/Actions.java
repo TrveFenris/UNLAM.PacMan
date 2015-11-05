@@ -1,4 +1,4 @@
-package windows;
+package gameobject;
 
 public enum Actions {
 	ARRIBA,

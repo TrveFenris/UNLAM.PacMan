@@ -1,4 +1,4 @@
-package windows;
+package cliente;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,6 +21,7 @@ import rectas.Recta;
 import rectas.Rectas;
 import game.Mapa;
 import game.Punto;
+import gameobject.Actions;
 //import game.Rectas;
 import gameobject.Jugador;
 import gameobject.PacMan;

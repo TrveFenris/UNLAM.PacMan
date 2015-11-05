@@ -4,8 +4,6 @@ import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import windows.MainWindowSinDB;
 @Deprecated
 public class MainCliente {
 

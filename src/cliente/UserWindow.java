@@ -1,4 +1,4 @@
-package windows;
+package cliente;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,8 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import cliente.Cliente;
 
 public class UserWindow extends JFrame {
 
