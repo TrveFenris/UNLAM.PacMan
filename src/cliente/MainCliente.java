@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
+
 @Deprecated
 public class MainCliente {
 
@@ -56,14 +58,19 @@ public class MainCliente {
 				}
 			}
 		});
-        
-        //Cliente cliente = new Cliente(host, puerto,nombre);
-        
+        Cliente cliente = null;
+        try {
+        	cliente = new Cliente(host, puerto,nombre);
+        }
+        catch(UnknownHostException e1) {
+
+		}
+        catch (IOException e2) {
+
+        }
         System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
-
-        //new ThreadCliente(cliente.getSocket()).start();
-
-        //cliente.enviarMensaje();
-        //cliente.cerrarCliente();
+        new ThreadCliente(cliente.getSocket()).start();
+        cliente.enviarMensaje();
+        cliente.cerrarCliente();
     }
 }

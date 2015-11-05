@@ -123,7 +123,7 @@ public class MainWindowSinDB extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				verificarTextFields();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
-					lanzarVentanaUsuario(textFieldNombre.getText(), cliente);
+					lanzarVentanaUsuario(textFieldNombre.getText());
 				}
 			}
 		});
@@ -166,7 +166,7 @@ public class MainWindowSinDB extends JFrame {
 					String username = textFieldNombre.getText();
 					try {
 						cliente = new Cliente(server, puerto, username);
-						lanzarVentanaUsuario(username, cliente);
+						lanzarVentanaUsuario(username);
 						System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
 						new ThreadCliente(cliente.getSocket()).start();
 						new MainWindowThreadCliente().start();
@@ -243,7 +243,7 @@ public class MainWindowSinDB extends JFrame {
 		}
 	}
 	
-	private void lanzarVentanaUsuario(String username, Cliente cliente) {
+	private void lanzarVentanaUsuario(String username) {
 		if(username.length() > 10) {
 			JOptionPane.showMessageDialog(frame,
 					"El nick debe contener diez caracteres como maximo.",
@@ -252,7 +252,7 @@ public class MainWindowSinDB extends JFrame {
 			return;
 		}
 		frame.setVisible(false);
-		userWindow = new UserWindow(frame,username, cliente);
+		userWindow = new UserWindow(frame,username);
 		userWindow.setLocationRelativeTo(null);
 		userWindow.setVisible(true);
 	}
@@ -274,5 +274,9 @@ public class MainWindowSinDB extends JFrame {
 		pwdFieldPassword.setText(null);
 		btnLogin.setEnabled(false);
 		btnRegistrarUsuario.setEnabled(false);
+	}
+	
+	protected void cerrarCliente() {
+		cliente.cerrarCliente();
 	}
 }

@@ -24,7 +24,7 @@ public class MainWindowServer extends JFrame {
 	private class ListenThread extends Thread {
 		public void run() {
 			while (bandera) {
-	        	System.out.println("ESPERANDO");
+	        	//System.out.println("ESPERANDO");
 	            socket = servidor.aceptarConexion();
 	            if (socket != null)
 	            	new ThreadServerLogin(socket,servidor).start();

@@ -18,22 +18,10 @@ public class Cliente {
         return puerto;
     }
 
-    public Cliente(String direccion, int port, String nombre) throws UnknownHostException, IOException{
-        //try {
-            puerto = port;
-            cliente = new Socket(direccion, port);
-            this.nombre=nombre;
-        //}
-        /*
-        catch(UnknownHostException e1) {
-        	System.out.println("No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.");
-        	//System.exit(-1);
-        }
-        catch (IOException e2) {
-            System.out.println("No se pudo crear el socket.\nInténtelo nuevamente.");
-            //System.exit(-1);
-        }
-        */
+    public Cliente(String direccion, int port, String name) throws UnknownHostException, IOException{
+    	puerto = port;
+    	cliente = new Socket(direccion, port);
+        nombre = name;
     }
 
     public Socket getSocket() {
@@ -45,20 +33,28 @@ public class Cliente {
     }
 
     public void enviarMensaje() {
-        try {
+    	/* Seccion comentada porque readLine se comporta de modo bloqueante
+    	 * y no deja cerrar el thread que lanza la MainWindow, utilizado
+    	 * para ejecutar este metodo*/
+        /*
+    	try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
           	//Se lee desde el host del usuario y dirige el flujo o informacion al server
             DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
             String data;
+            while(!cliente.isClosed()) {}
+            
             while ((data=br.readLine())!= null) {
-                if (data.contains(".exit")|| cliente.isClosed()) {
+                if (data.contains(".exit")) {
                     cerrarCliente();
                 }
                 else if (!data.equals("")) {
                 	dos.writeUTF("["+horaDelMensaje()+"] " + nombre + ": " + data);
                 }
             }
-            //cerrarCliente();
+            
+            cerrarCliente();
+            System.out.println("Sali del while");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -66,11 +62,13 @@ public class Cliente {
         finally {
         	cerrarCliente();
         }
+        */
+        	 while(!cliente.isClosed()) {} //Ciclo mientras el socket este abierto
+        	 cerrarCliente();
     }
 
     public void cerrarCliente() {
         try {
-        	
         	if(cliente != null && !cliente.isClosed()) {
         		System.out.println("Cerrando cliente...");
         		cliente.close();

@@ -38,11 +38,9 @@ public class UserWindow extends JFrame {
 	private int izquierda;
 	private int derecha;
 	
-	private Cliente cliente;
-	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
-	public UserWindow(MainWindowSinDB window,String nombre, Cliente cliente) {
+	public UserWindow(MainWindowSinDB window,String nombre) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -54,7 +52,6 @@ public class UserWindow extends JFrame {
 		});
 		mainWindow = window;
 		userName=nombre;
-		this.cliente = cliente;
 		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
@@ -130,9 +127,9 @@ public class UserWindow extends JFrame {
 			    "¿Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
-		if(res == JOptionPane.YES_OPTION){
+		if(res == JOptionPane.YES_OPTION) {
+			mainWindow.cerrarCliente();
 			mainWindow.resetUserAndPassword();
-			cliente.cerrarCliente();
 			mainWindow.setVisible(true);
 			this.dispose();
 		}
