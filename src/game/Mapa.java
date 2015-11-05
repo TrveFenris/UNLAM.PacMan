@@ -7,6 +7,9 @@ import java.util.Iterator;
 
 import javax.swing.*;
 
+import rectas.Recta;
+import rectas.Rectas;
+
 
 public class Mapa {
 	
@@ -53,11 +56,11 @@ public class Mapa {
 			for(int i=0;i<cantBolitas;i++){
 				ImageIcon icon = new ImageIcon("img/bolitaNormal.gif");
 				JLabel l= new JLabel(icon);
-				if(rec.tipo==Rectas.HORIZONTAL){
-					l.setBounds(rec.puntoInicial.getX()+ i*20+10, rec.puntoInicial.getY()-9, 20, 20);
+				if(rec.getTipo()==Rectas.HORIZONTAL){
+					l.setBounds(rec.getPuntoInicialX() + i*20+10, rec.getPuntoInicialY()-9, 20, 20);
 				}
-				else if(rec.tipo==Rectas.VERTICAL){
-					l.setBounds(rec.puntoInicial.getX()-9,rec.puntoInicial.getY() +i*20+10, 20, 20);
+				else if(rec.getTipo()==Rectas.VERTICAL){
+					l.setBounds(rec.getPuntoInicialX() - 9,rec.getPuntoInicialY() + i*20+10, 20, 20);
 				}
 				l.setIcon(icon);
 				bolitas.add(new Bolita(l,false));

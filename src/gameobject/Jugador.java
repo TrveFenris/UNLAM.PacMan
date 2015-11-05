@@ -1,11 +1,11 @@
 package gameobject;
 
 import game.Punto;
-import game.Recta;
-import game.Rectas;
 
 import javax.swing.JLabel;
 
+import rectas.Recta;
+import rectas.Rectas;
 import windows.Actions;
 
 public class Jugador extends GameObject{

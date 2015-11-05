@@ -17,11 +17,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import rectas.Recta;
+import rectas.Rectas;
 import game.Mapa;
 import game.Punto;
-import game.Recta;
 //import game.Rectas;
-import game.Rectas;
 import gameobject.Jugador;
 import gameobject.PacMan;
 
@@ -148,26 +148,26 @@ public class GameWindow extends JFrame {
 				if(contadorRectas==1) {
 					if(jug.estaEn(rec)) {
 						if(rec.getTipo() == Rectas.HORIZONTAL) {
-							leftBound = rec.getPuntoInicial().getX();
-							rightBound = rec.getPuntoFinal().getX();
-							upperBound = lowerBound = rec.getPuntoInicial().getY();
+							leftBound = rec.getPuntoInicialX();
+							rightBound = rec.getPuntoFinalX();
+							upperBound = lowerBound = rec.getPuntoInicialY();
 						}
 						else if(rec.getTipo() == Rectas.VERTICAL) {
-							upperBound = rec.getPuntoInicial().getY();
-							lowerBound = rec.getPuntoFinal().getY();
-							leftBound = rightBound = rec.getPuntoInicial().getX();
+							upperBound = rec.getPuntoInicialY();
+							lowerBound = rec.getPuntoFinalY();
+							leftBound = rightBound = rec.getPuntoInicialX();
 						}
 					}
 				}
 				else if(contadorRectas>1) {
 					if(jug.estaEn(rec)) {
 						if(rec.getTipo() == Rectas.HORIZONTAL) {
-							leftBound = rec.getPuntoInicial().getX();
-							rightBound = rec.getPuntoFinal().getX();
+							leftBound = rec.getPuntoInicialX();
+							rightBound = rec.getPuntoFinalX();
 						}
 						else if(rec.getTipo() == Rectas.VERTICAL) {
-							upperBound = rec.getPuntoInicial().getY();
-							lowerBound = rec.getPuntoFinal().getY();
+							upperBound = rec.getPuntoInicialY();
+							lowerBound = rec.getPuntoFinalY();
 						}
 					}
 				}
@@ -196,16 +196,16 @@ public class GameWindow extends JFrame {
  	}
 	*/
 	private void restrictBoundaries(Jugador j) {
-		if( j.getCentroCoordenadas().getX() < leftBound ) /* Limite izquierdo */		
+		if( j.getCentroCoordenadasX() < leftBound ) /* Limite izquierdo */		
 			j.setLocation(leftBound - (j.getWidth()/2), j.getY());		
 		
-		if( j.getCentroCoordenadas().getX() > rightBound ) /* Limite derecho (anda mal) */		
+		if( j.getCentroCoordenadasX() > rightBound ) /* Limite derecho (anda mal) */		
 			j.setLocation(rightBound - (j.getWidth()/2), j.getY());		
 		
-		if( j.getCentroCoordenadas().getY() < upperBound ) /* Limite hacia arriba */		
+		if( j.getCentroCoordenadasY() < upperBound ) /* Limite hacia arriba */		
 			j.setLocation(j.getX(), upperBound - (j.getHeight()/2));		
 		
-		if( j.getCentroCoordenadas().getY() > lowerBound ) /* Limite hacia abajo (anda mal) */		
+		if( j.getCentroCoordenadasY() > lowerBound ) /* Limite hacia abajo (anda mal) */		
 			j.setLocation(j.getX(), lowerBound - (j.getHeight()/2));		
  	}
 	/*

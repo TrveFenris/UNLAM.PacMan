@@ -15,6 +15,14 @@ public class GameObject {
 		return new Punto( (imagen.getWidth()/2) + getX(), (imagen.getHeight()/2) + getY());
 	}
 	
+	public int getCentroCoordenadasX() {
+		return ((imagen.getWidth()/2) + getX());
+	}
+	
+	public int getCentroCoordenadasY() {
+		return ((imagen.getHeight()/2) + getY());
+	}
+	
 	public int getX() {
 		return imagen.getX();
 	}

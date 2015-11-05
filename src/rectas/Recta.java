@@ -1,6 +1,9 @@
-package game;
+package rectas;
+
+import game.Punto;
 
 import java.awt.Color;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -25,7 +28,7 @@ public class Recta {
 				tipo = Rectas.HORIZONTAL;
 	}
 	*/
-	protected Recta(Punto p1, Punto p2) {
+	public Recta(Punto p1, Punto p2) {
 		if(p1.getX() == p2.getX()) {
 			tipo = Rectas.VERTICAL;
 			if(p1.getX() <= p2.getX()) {
@@ -59,8 +62,24 @@ public class Recta {
 		return puntoInicial;
 	}
 	
+	public int getPuntoInicialX() {
+		return puntoInicial.getX();
+	}
+	
+	public int getPuntoInicialY() {
+		return puntoInicial.getY();
+	}
+	
 	public Punto getPuntoFinal() {
 		return puntoFinal;
+	}
+	
+	public int getPuntoFinalX() {
+		return puntoFinal.getX();
+	}
+	
+	public int getPuntoFinalY() {
+		return puntoFinal.getY();
 	}
 	
 	public int getLongitud(){
