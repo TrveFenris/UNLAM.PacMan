@@ -26,6 +26,7 @@ public class Cliente {
         }
         catch(UnknownHostException e1) {
         	System.out.println("No se pudo conectar con el servidor, cerrando el  programa...");
+        	System.exit(-1);
         }
         catch (IOException e2) {
             System.out.println("No se pudo crear el socket, cerrando el  programa...");
