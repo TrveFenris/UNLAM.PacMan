@@ -45,7 +45,7 @@ public class MainWindowServer extends JFrame {
 	public static MainWindowServer frame;
 	
 	private Server servidor = null;
-	private int puerto = 5053;
+	private int puerto = 5055;
 	private boolean bandera;
 	private int maxClientes=6;
 	private Socket socket = null;
