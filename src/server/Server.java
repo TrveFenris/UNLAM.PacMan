@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -69,6 +70,7 @@ public class Server {
 
     	cliente=null;
         try {
+        	servidor.setSoTimeout(1000);
             cliente = servidor.accept();
             cantActualClientes++;
             if (cantActualClientes > max_clientes) {
@@ -83,11 +85,15 @@ public class Server {
                 System.out.println("La Conexion numero " + cantActualClientes 
                 					+ " fue aceptada correctamente.");
             }
-        } catch (IOException e) {
+        } 
+        catch(SocketTimeoutException e){
+        	return null;
+        }
+        catch (IOException e) {
             System.out.println("Error al aceptar conexiones, Cerrando el Servidor...");
             e.printStackTrace();
             System.exit(-1);
-        }
+        } 
         return cliente;
     }
 

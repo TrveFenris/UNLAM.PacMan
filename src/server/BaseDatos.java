@@ -1,4 +1,4 @@
-package windows;
+package server;
 
 import java.sql.*;
 
