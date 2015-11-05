@@ -18,20 +18,22 @@ public class Cliente {
         return puerto;
     }
 
-    public Cliente(String direccion, int port,String nombre) {
-        try {
+    public Cliente(String direccion, int port, String nombre) throws UnknownHostException, IOException{
+        //try {
             puerto = port;
             cliente = new Socket(direccion, port);
             this.nombre=nombre;
-        }
+        //}
+        /*
         catch(UnknownHostException e1) {
-        	System.out.println("No se pudo conectar con el servidor, cerrando el  programa...");
-        	System.exit(-1);
+        	System.out.println("No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.");
+        	//System.exit(-1);
         }
         catch (IOException e2) {
-            System.out.println("No se pudo crear el socket, cerrando el  programa...");
-            System.exit(-1);
+            System.out.println("No se pudo crear el socket.\nInténtelo nuevamente.");
+            //System.exit(-1);
         }
+        */
     }
 
     public Socket getSocket() {

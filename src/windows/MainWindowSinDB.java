@@ -1,35 +1,33 @@
 package windows;
 
+import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-
 import java.awt.Font;
-
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import cliente.Cliente;
 import cliente.ThreadCliente;
 
-import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 public class MainWindowSinDB extends JFrame {
-	public class MainWindowThread extends Thread {
+	
+	public class MainWindowThreadCliente extends Thread {
 		public void run() {
 			cliente.enviarMensaje();
 		}
@@ -169,13 +167,27 @@ public class MainWindowSinDB extends JFrame {
 					}
 					
 					String username = textFieldNombre.getText();
-					cliente = new Cliente(server, puerto, username);
-					lanzarVentanaUsuario(username, cliente);
-					System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
-			        new ThreadCliente(cliente.getSocket()).start();
-			        new MainWindowThread().start();
-			        //cliente.enviarMensaje();
-			        //cliente.cerrarCliente();
+					try {
+						cliente = new Cliente(server, puerto, username);
+						lanzarVentanaUsuario(username, cliente);
+						System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
+						new ThreadCliente(cliente.getSocket()).start();
+						new MainWindowThreadCliente().start();
+					}
+					catch(UnknownHostException e1) {
+			        	JOptionPane.showMessageDialog(frame,
+			        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+			        catch (IOException e2) {
+			            JOptionPane.showMessageDialog(frame,
+			            		"No se pudo crear el socket.\nInténtelo nuevamente.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+			        }
 				}
 			}
 		});

@@ -59,13 +59,13 @@ public class MainCliente {
 			}
 		});
         
-        Cliente cliente = new Cliente(host, puerto,nombre);
+        //Cliente cliente = new Cliente(host, puerto,nombre);
         
         System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
 
-        new ThreadCliente(cliente.getSocket()).start();
+        //new ThreadCliente(cliente.getSocket()).start();
 
-        cliente.enviarMensaje();
-        cliente.cerrarCliente();
+        //cliente.enviarMensaje();
+        //cliente.cerrarCliente();
     }
 }
