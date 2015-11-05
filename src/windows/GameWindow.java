@@ -22,6 +22,8 @@ import game.PacMan;
 import game.Punto;
 import game.Jugador;
 import game.Recta;
+//import game.Rectas;
+import game.Rectas;
 
 public class GameWindow extends JFrame {
 	
@@ -56,7 +58,16 @@ public class GameWindow extends JFrame {
 	private Mapa mapa;
 	private ArrayList<Jugador> jugadores;
 	private PacMan pacman;
-
+	//Variables delimitadoras
+	private int upperBound;
+	private int lowerBound;
+	private int leftBound;
+	private int rightBound;
+	//Variables de acción segun presión de tecla
+	private boolean moverAbajo;
+	private boolean moverArriba;
+	private boolean moverIzquierda;
+	private boolean moverDerecha;
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
 		setResizable(false);
@@ -124,48 +135,108 @@ public class GameWindow extends JFrame {
 	
 	private void update(){
 		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
+			int contadorRectas=0;
 			Jugador jug=j.next();
 			for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
 				Recta rec = k.next();
-				if(jug.estaEn(rec))
-					System.out.println("Estoy en una recta");
+				if(jug.estaEn(rec)) {
+					contadorRectas++;
+				}
 			}
+			for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
+				Recta rec = k.next();
+				if(contadorRectas==1) {
+					if(jug.estaEn(rec)) {
+						if(rec.getTipo() == Rectas.HORIZONTAL) {
+							leftBound = rec.getPuntoInicial().getX();
+							rightBound = rec.getPuntoFinal().getX();
+							upperBound = lowerBound = rec.getPuntoInicial().getY();
+						}
+						else if(rec.getTipo() == Rectas.VERTICAL) {
+							upperBound = rec.getPuntoInicial().getY();
+							lowerBound = rec.getPuntoFinal().getY();
+							leftBound = rightBound = rec.getPuntoInicial().getX();
+						}
+					}
+				}
+				else if(contadorRectas>1) {
+					if(jug.estaEn(rec)) {
+						if(rec.getTipo() == Rectas.HORIZONTAL) {
+							leftBound = rec.getPuntoInicial().getX();
+							rightBound = rec.getPuntoFinal().getX();
+						}
+						else if(rec.getTipo() == Rectas.VERTICAL) {
+							upperBound = rec.getPuntoInicial().getY();
+							lowerBound = rec.getPuntoFinal().getY();
+						}
+					}
+				}
+			}
+					//System.out.println("Estoy en una recta");
+		
 			jug.mover();
 			restrictBoundaries(jug);
 		}
 	}
 	
-	/* Calcula y mueve al objeto si se paso de los limites de la ventana. */		
+	/* Calcula y mueve al objeto si se paso de los limites de la ventana. */
+	/*
 	private void restrictBoundaries(Jugador j) {
-		if( j.getX() < 0 ) /* Limite izquierdo */		
+		if( j.getX() < 0 ) // Limite izquierdo
 			j.setLocation(0, j.getY());		
 		
-		if( j.getX() + j.getWidth() >= this.getWidth() ) /* Limite derecho (anda mal) */		
+		if( j.getX() + j.getWidth() >= this.getWidth() ) // Limite derecho (anda mal)		
 			j.setLocation(this.getWidth() - j.getWidth(), j.getY());		
 		
-		if( j.getLocation().getY() < 0 ) /* Limite hacia arriba */		
+		if( j.getLocation().getY() < 0 ) // Limite hacia arriba		
 			j.setLocation(j.getX(), 0);		
 		
-		if( j.getY() + j.getHeight() >= this.getHeight() ) /* Limite hacia abajo (anda mal) */		
+		if( j.getY() + j.getHeight() >= this.getHeight() ) // Limite hacia abajo (anda mal)	
 			j.setLocation(j.getX(), this.getHeight() - j.getHeight());		
  	}
-	
+	*/
+	private void restrictBoundaries(Jugador j) {
+		if( j.getCentroCoordenadas().getX() < leftBound ) /* Limite izquierdo */		
+			j.setLocation(leftBound - (j.getWidth()/2), j.getY());		
+		
+		if( j.getCentroCoordenadas().getX() > rightBound ) /* Limite derecho (anda mal) */		
+			j.setLocation(rightBound - (j.getWidth()/2), j.getY());		
+		
+		if( j.getCentroCoordenadas().getY() < upperBound ) /* Limite hacia arriba */		
+			j.setLocation(j.getX(), upperBound - (j.getHeight()/2));		
+		
+		if( j.getCentroCoordenadas().getY() > lowerBound ) /* Limite hacia abajo (anda mal) */		
+			j.setLocation(j.getX(), lowerBound - (j.getHeight()/2));		
+ 	}
+	/*
+	private void calculateBounds() {
+		
+	}
+	*/
 	private void handleKeyPress(KeyEvent key) {
+		moverAbajo = false;
+		moverArriba = false;
+		moverIzquierda = false;
+		moverDerecha = false;
 		if(key.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if(userWindow != null) {
 				mensajeSalida();
 			}
 		}
 		else if(key.getKeyCode() == controles[ARRIBA]) {
+			moverArriba = true;
 			pacman.cambiarSentido(Actions.ARRIBA);
 		}
 		else if(key.getKeyCode() == controles[ABAJO]) {
+			moverAbajo = true;
 			pacman.cambiarSentido(Actions.ABAJO);
 		}
 		else if(key.getKeyCode() == controles[IZQUIERDA]) {
+			moverIzquierda = true;
 			pacman.cambiarSentido(Actions.IZQUIERDA);
 		}
 		else if(key.getKeyCode() == controles[DERECHA]) {
+			moverDerecha = true;
 			pacman.cambiarSentido(Actions.DERECHA);
 		}
 	}
