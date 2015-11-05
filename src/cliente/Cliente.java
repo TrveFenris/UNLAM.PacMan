@@ -56,18 +56,24 @@ public class Cliente {
                 	dos.writeUTF("["+horaDelMensaje()+"] " + nombre + ": " + data);
                 }
             }
-            cerrarCliente();
+            //cerrarCliente();
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+        	cerrarCliente();
         }
     }
 
     public void cerrarCliente() {
         try {
-            cliente.close();
-            System.out.println("Cerrando Aplicacion...");
-            System.exit(1);
+        	
+        	if(cliente != null && !cliente.isClosed()) {
+        		System.out.println("Cerrando cliente...");
+        		cliente.close();
+        	}
+            //System.exit(1);
         }
         catch (IOException e) {
             e.printStackTrace();

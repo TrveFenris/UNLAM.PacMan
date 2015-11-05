@@ -10,33 +10,48 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JPasswordField;
+
+import cliente.Cliente;
+import cliente.ThreadCliente;
+
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainWindowSinDB extends JFrame {
+	public class MainWindowThread extends Thread {
+		public void run() {
+			cliente.enviarMensaje();
+		}
+	}
+	
 	/* Members */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	public static MainWindowSinDB frame;
-	public static GameWindow gameWindow;
 	private JButton btnLogin;
 	private JButton btnRegistrarUsuario;
-	private String UserName;
 	private JLabel lblNombre;
 	private JLabel lblPassword;
+	private JLabel lblBienvenida;
 	private JTextField textFieldNombre;
 	private JPasswordField pwdFieldPassword;
-	private JLabel lblBienvenida;
+	private JTextField txtServidor;
+	private JTextField txtPuerto;
+	public static MainWindowSinDB frame;
+	public static GameWindow gameWindow;
 	private UserWindow userWindow;
 	
+	private Cliente cliente;
 	/* Main Application */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -51,9 +66,9 @@ public class MainWindowSinDB extends JFrame {
 			}
 		});
 	}
-
 	/* MainWindow Constructor */
 	public MainWindowSinDB() {
+		frame = this;
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -113,8 +128,7 @@ public class MainWindowSinDB extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				verificarTextFields();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
-					UserName=new String(textFieldNombre.getText());
-					lanzarVentanaUsuario();
+					lanzarVentanaUsuario(textFieldNombre.getText(), cliente);
 				}
 			}
 		});
@@ -126,8 +140,43 @@ public class MainWindowSinDB extends JFrame {
 		btnLogin.setEnabled(false);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UserName=new String(textFieldNombre.getText());
-				lanzarVentanaUsuario();
+				if(txtServidor.getText().equals(null) || txtServidor.getText().equals("")) {
+					JOptionPane.showMessageDialog(frame,
+							"Ingrese un servidor al que conectarse.",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				else if(txtPuerto.getText().equals(null) || txtPuerto.getText().equals("")) {
+					JOptionPane.showMessageDialog(frame,
+							"Ingrese un puerto al que conectarse.",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				else {
+					String server = txtServidor.getText();
+					int puerto;
+					try {
+						puerto = Integer.parseInt(txtPuerto.getText());
+					}
+					catch(NumberFormatException nfe) {
+						JOptionPane.showMessageDialog(frame,
+								"Los datos del puerto son inválidos.\nIngrese un número entero",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					String username = textFieldNombre.getText();
+					cliente = new Cliente(server, puerto, username);
+					lanzarVentanaUsuario(username, cliente);
+					System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
+			        new ThreadCliente(cliente.getSocket()).start();
+			        new MainWindowThread().start();
+			        //cliente.enviarMensaje();
+			        //cliente.cerrarCliente();
+				}
 			}
 		});
 		btnLogin.setBounds(100, 112, 120, 23);
@@ -153,6 +202,24 @@ public class MainWindowSinDB extends JFrame {
 		lblBienvenida.setBounds(10, 50, 295, 51);
 		lblBienvenida.setVisible(false);
 		contentPane.add(lblBienvenida);
+		
+		JLabel lblServidor = new JLabel("Servidor");
+		lblServidor.setBounds(230, 112, 46, 14);
+		contentPane.add(lblServidor);
+		
+		JLabel lblPuerto = new JLabel("Puerto");
+		lblPuerto.setBounds(230, 162, 46, 14);
+		contentPane.add(lblPuerto);
+		
+		txtServidor = new JTextField();
+		txtServidor.setBounds(230, 131, 86, 20);
+		contentPane.add(txtServidor);
+		txtServidor.setColumns(10);
+		
+		txtPuerto = new JTextField();
+		txtPuerto.setBounds(230, 181, 86, 20);
+		contentPane.add(txtPuerto);
+		txtPuerto.setColumns(10);
 	}
 	
 	/* Metodos */
@@ -167,8 +234,8 @@ public class MainWindowSinDB extends JFrame {
 		}
 	}
 	
-	private void lanzarVentanaUsuario() {
-		if(UserName.length() > 10) {
+	private void lanzarVentanaUsuario(String username, Cliente cliente) {
+		if(username.length() > 10) {
 			JOptionPane.showMessageDialog(frame,
 					"El nick debe contener diez caracteres como maximo.",
 					 "Error",
@@ -176,7 +243,7 @@ public class MainWindowSinDB extends JFrame {
 			return;
 		}
 		frame.setVisible(false);
-		userWindow = new UserWindow(frame,UserName);
+		userWindow = new UserWindow(frame,username, cliente);
 		userWindow.setLocationRelativeTo(null);
 		userWindow.setVisible(true);
 	}
@@ -187,6 +254,8 @@ public class MainWindowSinDB extends JFrame {
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {
+			if(cliente != null)
+				cliente.cerrarCliente();
 			frame.dispose();
 		}
 	}

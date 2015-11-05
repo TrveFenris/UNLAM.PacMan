@@ -1,9 +1,12 @@
 package cliente;
 
+import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import windows.MainWindowSinDB;
+@Deprecated
 public class MainCliente {
 
     public static void main(String args[]) {
@@ -24,7 +27,6 @@ public class MainCliente {
         }
         
         System.out.println("Ingrese el puerto del servidor a conectar: ");
-        //disServer = new BufferedReader(new InputStreamReader(System.in));
         try {
             puerto = Integer.parseInt(br.readLine());
         }
@@ -40,6 +42,23 @@ public class MainCliente {
         catch (IOException e) {
             e.printStackTrace();
         }
+        
+        EventQueue.invokeLater(new Runnable() {
+        	@Override
+			public void run() {
+				try {
+					MainWindowSinDB window = new MainWindowSinDB();
+					window.toFront();
+					window.repaint();
+					window.setLocationRelativeTo(null);
+					window.setVisible(true);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+        
         Cliente cliente = new Cliente(host, puerto,nombre);
         
         System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");

@@ -27,7 +27,7 @@ import gameobject.PacMan;
 
 public class GameWindow extends JFrame {
 	/*Thread que maneja el Game Loop */
-	public class GameThread extends Thread {
+	private class GameThread extends Thread {
 		private Timer timer;
 		public void run() {
 			System.out.println("Comienza el juego");

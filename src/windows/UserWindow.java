@@ -1,23 +1,25 @@
 package windows;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagConstraints;
-import javax.swing.SwingConstants;
-import java.awt.Font;
 import java.awt.Color;
-import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import cliente.Cliente;
 
 public class UserWindow extends JFrame {
 
@@ -38,9 +40,11 @@ public class UserWindow extends JFrame {
 	private int izquierda;
 	private int derecha;
 	
+	private Cliente cliente;
+	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
-	public UserWindow(MainWindowSinDB window,String nombre) {
+	public UserWindow(MainWindowSinDB window,String nombre, Cliente cliente) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -52,6 +56,7 @@ public class UserWindow extends JFrame {
 		});
 		mainWindow = window;
 		userName=nombre;
+		this.cliente = cliente;
 		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
@@ -129,8 +134,9 @@ public class UserWindow extends JFrame {
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION){
 			mainWindow.resetUserAndPassword();
-			dispose();
+			cliente.cerrarCliente();
 			mainWindow.setVisible(true);
+			this.dispose();
 		}
 	}
 
