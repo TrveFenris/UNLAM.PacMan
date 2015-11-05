@@ -1,4 +1,6 @@
-package game;
+package gameobject;
+
+import game.Punto;
 
 import javax.swing.JLabel;
 

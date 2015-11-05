@@ -18,12 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import game.Mapa;
-import game.PacMan;
 import game.Punto;
-import game.Jugador;
 import game.Recta;
 //import game.Rectas;
 import game.Rectas;
+import gameobject.Jugador;
+import gameobject.PacMan;
 
 public class GameWindow extends JFrame {
 	

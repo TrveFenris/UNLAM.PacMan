@@ -1,4 +1,8 @@
-package game;
+package gameobject;
+
+import game.Punto;
+import game.Recta;
+import game.Rectas;
 
 import javax.swing.JLabel;
 
@@ -66,12 +70,12 @@ public class Jugador extends GameObject{
 	public boolean estaEn(Recta r) {
 		boolean result = false;
 		Punto p = getCentroCoordenadas();
-		if(r.tipo == Rectas.VERTICAL){
+		if(r.getTipo() == Rectas.VERTICAL){
 			if(p.getX() == r.getPuntoInicial().getX() && ( p.getY() >= r.getPuntoInicial().getY() && p.getY() <= r.getPuntoFinal().getY() ) ) {
 				result = true;
 			}
 		}
-		else if(r.tipo == Rectas.HORIZONTAL) {
+		else if(r.getTipo() == Rectas.HORIZONTAL) {
 			if(p.getY() == r.getPuntoInicial().getY() && ( p.getX() >= r.getPuntoInicial().getX() && p.getX() <= r.getPuntoFinal().getX() ) ) {
 				result = true;
 			}

@@ -1,5 +1,7 @@
 package game;
 
+import gameobject.Bolita;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
