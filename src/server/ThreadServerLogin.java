@@ -8,19 +8,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ThreadServerLogin extends Thread {
 
     private Socket clientSocket;
-    private ArrayList<Socket> socketList;
     private Server servidor;
     private PaqueteLogin paquete;
     
-    public ThreadServerLogin(Socket socket, ArrayList<Socket> sockets,Server serv) {
-       	//super("ThreadServer");
+    public ThreadServerLogin(Socket socket,Server serv) {
         clientSocket = socket;
-        socketList = sockets;
         servidor=serv;
     }
 
@@ -48,7 +44,6 @@ public class ThreadServerLogin extends Thread {
         catch(EOFException e){
             try {
             	System.out.println("Cerrando cliente");
-                socketList.remove(clientSocket);
                 clientSocket.close();
                 servidor.eliminarCliente();
                 System.out.println("Un cliente se ha desconectado.");
@@ -61,7 +56,6 @@ public class ThreadServerLogin extends Thread {
         	e.printStackTrace();
             try {
             	System.out.println("Cerrando cliente");
-                socketList.remove(clientSocket);
                 clientSocket.close();
                 servidor.eliminarCliente();
                 System.out.println("Un cliente se ha desconectado.");

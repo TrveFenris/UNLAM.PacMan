@@ -27,7 +27,7 @@ public class MainWindowServer extends JFrame {
 	        	System.out.println("ESPERANDO");
 	            socket = servidor.aceptarConexion();
 	            if (socket != null)
-	            	new ThreadServerLogin(socket, servidor.getLista(),servidor).start();
+	            	new ThreadServerLogin(socket,servidor).start();
 	        }
 	        servidor.pararServidor();
 	        System.out.println("FIN DEL THREAD");
