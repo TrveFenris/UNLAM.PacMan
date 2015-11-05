@@ -15,10 +15,8 @@ public class Mapa {
 	
 	private ArrayList<Recta> rectas;
 	private ArrayList<Bolita> bolitas;
-	private JPanel area;
 	
-	public Mapa(JPanel a) {
-		area=a;
+	public Mapa() {
 		rectas = new ArrayList<Recta>();
 		bolitas = new ArrayList<Bolita>();
 		agregarRecta(new Punto(30,50), new Punto(30,530));
@@ -41,15 +39,15 @@ public class Mapa {
 		rectas.add(new Recta(p1,p2));
 	}
 	
-	public void dibujar(){
+	public void dibujar(JPanel area){
 		for(Iterator<Recta>r=rectas.iterator();r.hasNext();){
 			Recta rec=r.next();
 			rec.dibujar(area);
-			generarBolitas();
+			generarBolitas(area);
 		}
 	}
 	
-	public void generarBolitas(){
+	public void generarBolitas(JPanel area){
 		for(Iterator<Recta>r=rectas.iterator();r.hasNext();){
 			Recta rec=r.next();
 			int cantBolitas=(rec.getLongitud()-10)/20;

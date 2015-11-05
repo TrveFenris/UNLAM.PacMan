@@ -26,7 +26,7 @@ import gameobject.Jugador;
 import gameobject.PacMan;
 
 public class GameWindow extends JFrame {
-	
+	/*Thread que maneja el Game Loop */
 	public class GameThread extends Thread {
 		private Timer timer;
 		public void run() {
@@ -41,7 +41,7 @@ public class GameWindow extends JFrame {
 			 }, 0, 16);
 		}
 	}
-	
+	/* Variables Miembro */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblName;
@@ -68,6 +68,7 @@ public class GameWindow extends JFrame {
 	private boolean moverArriba;
 	private boolean moverIzquierda;
 	private boolean moverDerecha;
+	
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
 		setResizable(false);
@@ -93,31 +94,23 @@ public class GameWindow extends JFrame {
 		contentPane.setLayout(null);
 		contentPane.setBackground(Color.BLACK);
 		//contentPane.setOpaque(true);
-		
 		lblName = new JLabel("New label");
 		lblName.setForeground(Color.CYAN);
 		lblName.setFont(Font.getFont(Font.SANS_SERIF));
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
-		
 		//MAPA
-		mapa = new Mapa(contentPane);
-		mapa.dibujar(); //Dibuja los caminos y genera las bolitas
+		mapa = new Mapa();
+		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
-		//Creación de pacman
-		Punto p = new Punto(5,25);
-		pacman = new PacMan(PacMan.crearLabel(p), lblName.getText());
+		//Creacion de pacman
+		pacman = new PacMan(PacMan.crearLabel(new Punto(5,25)), lblName.getText());
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
-		//
 		userWindow = window;
 		gameRunning = true;
 		gameLoopThread = new GameThread();
 		this.setTitle("PAC-MAN");
-	}
-	
-	public void setNameLabel(String s){
-		lblName.setText(s);
 	}
 	
 	private void mensajeSalida(){
@@ -130,6 +123,38 @@ public class GameWindow extends JFrame {
 			gameLoopThread.timer.cancel();
 			this.dispose();
 			userWindow.setVisible(true);
+		}
+	}
+	
+	public void runGameLoop() {
+		gameLoopThread.start();
+	}
+	
+	private void handleKeyPress(KeyEvent key) {
+		moverAbajo = false;
+		moverArriba = false;
+		moverIzquierda = false;
+		moverDerecha = false;
+		if(key.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if(userWindow != null) {
+				mensajeSalida();
+			}
+		}
+		else if(key.getKeyCode() == controles[ARRIBA]) {
+			moverArriba = true;
+			pacman.cambiarSentido(Actions.ARRIBA);
+		}
+		else if(key.getKeyCode() == controles[ABAJO]) {
+			moverAbajo = true;
+			pacman.cambiarSentido(Actions.ABAJO);
+		}
+		else if(key.getKeyCode() == controles[IZQUIERDA]) {
+			moverIzquierda = true;
+			pacman.cambiarSentido(Actions.IZQUIERDA);
+		}
+		else if(key.getKeyCode() == controles[DERECHA]) {
+			moverDerecha = true;
+			pacman.cambiarSentido(Actions.DERECHA);
 		}
 	}
 	
@@ -172,29 +197,11 @@ public class GameWindow extends JFrame {
 					}
 				}
 			}
-					//System.out.println("Estoy en una recta");
-		
 			jug.mover();
 			restrictBoundaries(jug);
 		}
 	}
-	
-	/* Calcula y mueve al objeto si se paso de los limites de la ventana. */
-	/*
-	private void restrictBoundaries(Jugador j) {
-		if( j.getX() < 0 ) // Limite izquierdo
-			j.setLocation(0, j.getY());		
-		
-		if( j.getX() + j.getWidth() >= this.getWidth() ) // Limite derecho (anda mal)		
-			j.setLocation(this.getWidth() - j.getWidth(), j.getY());		
-		
-		if( j.getLocation().getY() < 0 ) // Limite hacia arriba		
-			j.setLocation(j.getX(), 0);		
-		
-		if( j.getY() + j.getHeight() >= this.getHeight() ) // Limite hacia abajo (anda mal)	
-			j.setLocation(j.getX(), this.getHeight() - j.getHeight());		
- 	}
-	*/
+
 	private void restrictBoundaries(Jugador j) {
 		if( j.getCentroCoordenadasX() < leftBound ) /* Limite izquierdo */		
 			j.setLocation(leftBound - (j.getWidth()/2), j.getY());		
@@ -208,38 +215,6 @@ public class GameWindow extends JFrame {
 		if( j.getCentroCoordenadasY() > lowerBound ) /* Limite hacia abajo (anda mal) */		
 			j.setLocation(j.getX(), lowerBound - (j.getHeight()/2));		
  	}
-	/*
-	private void calculateBounds() {
-		
-	}
-	*/
-	private void handleKeyPress(KeyEvent key) {
-		moverAbajo = false;
-		moverArriba = false;
-		moverIzquierda = false;
-		moverDerecha = false;
-		if(key.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			if(userWindow != null) {
-				mensajeSalida();
-			}
-		}
-		else if(key.getKeyCode() == controles[ARRIBA]) {
-			moverArriba = true;
-			pacman.cambiarSentido(Actions.ARRIBA);
-		}
-		else if(key.getKeyCode() == controles[ABAJO]) {
-			moverAbajo = true;
-			pacman.cambiarSentido(Actions.ABAJO);
-		}
-		else if(key.getKeyCode() == controles[IZQUIERDA]) {
-			moverIzquierda = true;
-			pacman.cambiarSentido(Actions.IZQUIERDA);
-		}
-		else if(key.getKeyCode() == controles[DERECHA]) {
-			moverDerecha = true;
-			pacman.cambiarSentido(Actions.DERECHA);
-		}
-	}
 	
 	public void setControles(int[] controles){
 		this.controles=new int[4];
@@ -247,8 +222,8 @@ public class GameWindow extends JFrame {
 			this.controles[i]=controles[i];
 		}
 	}
-	
-	public void runGameLoop() {
-		gameLoopThread.start();
+
+	public void setNameLabel(String s){
+		lblName.setText(s);
 	}
 }
