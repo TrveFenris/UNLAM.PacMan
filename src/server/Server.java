@@ -69,6 +69,10 @@ public class Server {
         return sockets;
     }
 
+    /**
+     * Acepta una conexion
+     * @return Socket con la informacion del cliente
+     */
     public Socket aceptarConexion() {
     	cliente=null;
         try {

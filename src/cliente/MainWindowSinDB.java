@@ -28,6 +28,8 @@ public class MainWindowSinDB extends JFrame {
 	private JPanel contentPane;
 	private JButton btnLogin;
 	private JButton btnRegistrarUsuario;
+	private JButton btnDesconectar;
+	private JButton btnConectar;
 	private JLabel lblNombre;
 	private JLabel lblPassword;
 	private JTextField textFieldNombre;
@@ -37,8 +39,8 @@ public class MainWindowSinDB extends JFrame {
 	public static MainWindowSinDB frame;
 	public static GameWindow gameWindow;
 	private UserWindow userWindow;
-	
 	private Cliente cliente;
+	
 	/* Main Application */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -65,7 +67,7 @@ public class MainWindowSinDB extends JFrame {
 		});
 		setTitle("Pac-Man");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 350, 343);
+		setBounds(100, 100, 350, 427);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -82,7 +84,7 @@ public class MainWindowSinDB extends JFrame {
 				mensajeSalida();
 			}
 		});
-		btnExit.setBounds(110, 266, 120, 25);
+		btnExit.setBounds(110, 322, 120, 25);
 		contentPane.add(btnExit);
 		JButton btnCredits = new JButton("Cr\u00E9ditos");
 		btnCredits.addActionListener(new ActionListener() {
@@ -90,36 +92,38 @@ public class MainWindowSinDB extends JFrame {
 				JOptionPane.showMessageDialog(frame, "Grupo 4: \n-Barja, Alex\n-Figueroa, Matias\n-Maidana, Diego\n-Maita, Martin");
 			}
 		});
-		btnCredits.setBounds(110, 230, 120, 25);
+		btnCredits.setBounds(110, 286, 120, 25);
 		contentPane.add(btnCredits);
 		
 		textFieldNombre = new JTextField();
+		textFieldNombre.setEditable(false);
 		textFieldNombre.setToolTipText("Introduzca su nombre aqu\u00ED");
 		textFieldNombre.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				verificarTextFields();
+				verificarTextFieldsUser();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 					pwdFieldPassword.grabFocus();
 			}
 		});
-		textFieldNombre.setBounds(110, 100, 170, 20);
+		textFieldNombre.setBounds(110, 156, 170, 20);
 		contentPane.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 		
 		pwdFieldPassword = new JPasswordField();
+		pwdFieldPassword.setEditable(false);
 		pwdFieldPassword.setToolTipText("Introduzca su contrase\u00F1a aqu\u00ED");
 		pwdFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			//Ã‚Â¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
-				verificarTextFields();
+				verificarTextFieldsUser();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
 					lanzarVentanaUsuario(textFieldNombre.getText());
 				}
 			}
 		});
-		pwdFieldPassword.setBounds(110, 131, 170, 20);
+		pwdFieldPassword.setBounds(110, 187, 170, 20);
 		contentPane.add(pwdFieldPassword);
 		pwdFieldPassword.setColumns(20);
 		
@@ -127,79 +131,72 @@ public class MainWindowSinDB extends JFrame {
 		btnLogin.setEnabled(false);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(txtServidor.getText().equals(null) || txtServidor.getText().equals("")) {
-					JOptionPane.showMessageDialog(frame,
-							"Ingrese un servidor al que conectarse.",
-							 "Error",
-							 JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				else if(txtPuerto.getText().equals(null) || txtPuerto.getText().equals("")) {
-					JOptionPane.showMessageDialog(frame,
-							"Ingrese un puerto al que conectarse.",
-							 "Error",
-							 JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				else {
-					String server = txtServidor.getText();
-					int puerto;
-					try {
-						puerto = Integer.parseInt(txtPuerto.getText());
+					cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
+					if(cliente.iniciarSesion()){
+						lanzarVentanaUsuario(textFieldNombre.getText());
 					}
-					catch(NumberFormatException nfe) {
+					else{
 						JOptionPane.showMessageDialog(frame,
-								"Los datos del puerto son inválidos.\nIngrese un número entero",
-								 "Error",
-								 JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					
-					String username = textFieldNombre.getText();
-					String password = new String(pwdFieldPassword.getPassword());
-					try {
-						cliente = new Cliente(server, puerto, username, password);
-						if(cliente.iniciarSesion()){
-							lanzarVentanaUsuario(username);
+							"Datos de usuario invalidos.\nIntentelo nuevamente.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+							return;
 						}
-						else{
-							 JOptionPane.showMessageDialog(frame,
-					            		"Datos de usuario invalidos.\nIntentelo nuevamente.",
-										 "Error",
-										 JOptionPane.ERROR_MESSAGE);
-								return;
-						}
-					}
-					catch(UnknownHostException e1) {
-			        	JOptionPane.showMessageDialog(frame,
-			        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
-								 "Error",
-								 JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-			        catch (IOException e2) {
-			            JOptionPane.showMessageDialog(frame,
-			            		"No se pudo crear el socket.\nInténtelo nuevamente.",
-								 "Error",
-								 JOptionPane.ERROR_MESSAGE);
-						return;
-			        }
-				}
 			}
 		});
-		btnLogin.setBounds(110, 162, 120, 23);
+		btnLogin.setBounds(110, 218, 120, 23);
 		contentPane.add(btnLogin);
 		
 		lblNombre = new JLabel("Usuario");
-		lblNombre.setBounds(20, 103, 46, 14);
+		lblNombre.setBounds(20, 159, 46, 14);
 		contentPane.add(lblNombre);
 		
 		lblPassword = new JLabel("Contrase\u00F1a");
-		lblPassword.setBounds(20, 134, 56, 14);
+		lblPassword.setBounds(20, 190, 56, 14);
 		contentPane.add(lblPassword);
 		
 		btnRegistrarUsuario = new JButton("Registrarse");
 		btnRegistrarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
+				if(cliente.registrarUsuario()){
+					lanzarVentanaUsuario(textFieldNombre.getText());
+				}
+				else{
+					JOptionPane.showMessageDialog(frame,
+							"Usuario ya registrado.\nIntentelo nuevamente.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+							return;
+					}
+			}
+		});
+		btnRegistrarUsuario.setEnabled(false);
+		btnRegistrarUsuario.setBounds(110, 252, 120, 23);
+		contentPane.add(btnRegistrarUsuario);
+		
+		JLabel lblServidor = new JLabel("Servidor");
+		lblServidor.setBounds(20, 59, 46, 14);
+		contentPane.add(lblServidor);
+		
+		JLabel lblPuerto = new JLabel("Puerto");
+		lblPuerto.setBounds(20, 84, 46, 14);
+		contentPane.add(lblPuerto);
+		
+		txtServidor = new JTextField();
+		txtServidor.setToolTipText("Introduzca el nombre o la ip del servidor");
+		txtServidor.setBounds(110, 56, 86, 20);
+		contentPane.add(txtServidor);
+		txtServidor.setColumns(10);
+		
+		txtPuerto = new JTextField();
+		txtPuerto.setToolTipText("Introduzca el puerto del servidor");
+		txtPuerto.setBounds(110, 81, 86, 20);
+		contentPane.add(txtPuerto);
+		txtPuerto.setColumns(10);
+		
+		btnConectar = new JButton("Conectar");
+		btnConectar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(txtServidor.getText().equals(null) || txtServidor.getText().equals("")) {
 					JOptionPane.showMessageDialog(frame,
@@ -228,21 +225,12 @@ public class MainWindowSinDB extends JFrame {
 								 JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					
-					String username = textFieldNombre.getText();
-					String password = new String(pwdFieldPassword.getPassword());
 					try {
-						cliente = new Cliente(server, puerto, username, password);
-						if(cliente.registrarUsuario()){
-							lanzarVentanaUsuario(username);
-						}
-						else{
-							 JOptionPane.showMessageDialog(frame,
-					            		"Usuario ya registrado.\nIntentelo nuevamente.",
-										 "Error",
-										 JOptionPane.ERROR_MESSAGE);
-								return;
-						}
+						cliente = new Cliente(server, puerto);
+						btnConectar.setEnabled(false);
+						btnDesconectar.setEnabled(true);
+						textFieldNombre.setEditable(true);
+						pwdFieldPassword.setEditable(true);
 					}
 					catch(UnknownHostException e1) {
 			        	JOptionPane.showMessageDialog(frame,
@@ -261,31 +249,35 @@ public class MainWindowSinDB extends JFrame {
 				}
 			}
 		});
-		btnRegistrarUsuario.setEnabled(false);
-		btnRegistrarUsuario.setBounds(110, 196, 120, 23);
-		contentPane.add(btnRegistrarUsuario);
+		btnConectar.setBounds(206, 55, 89, 23);
+		contentPane.add(btnConectar);
 		
-		JLabel lblServidor = new JLabel("Servidor");
-		lblServidor.setBounds(20, 59, 46, 14);
-		contentPane.add(lblServidor);
+		btnDesconectar = new JButton("Desconectar");
+		btnDesconectar.setEnabled(false);
+		btnDesconectar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cliente.cerrarCliente();
+				btnConectar.setEnabled(true);
+				btnDesconectar.setEnabled(false);
+				textFieldNombre.setEditable(false);
+				pwdFieldPassword.setEditable(false);
+				resetUserAndPassword();
+			}
+		});
+		btnDesconectar.setBounds(206, 80, 89, 23);
+		contentPane.add(btnDesconectar);
 		
-		JLabel lblPuerto = new JLabel("Puerto");
-		lblPuerto.setBounds(176, 59, 46, 14);
-		contentPane.add(lblPuerto);
-		
-		txtServidor = new JTextField();
-		txtServidor.setBounds(76, 57, 86, 20);
-		contentPane.add(txtServidor);
-		txtServidor.setColumns(10);
-		
-		txtPuerto = new JTextField();
-		txtPuerto.setBounds(223, 56, 86, 20);
-		contentPane.add(txtPuerto);
-		txtPuerto.setColumns(10);
+		JLabel lblSeparador = new JLabel("--------------------------------------------------------------");
+		lblSeparador.setBounds(43, 120, 280, 14);
+		contentPane.add(lblSeparador);
 	}
 	
 	/* Metodos */
-	private void verificarTextFields() {
+	/**
+	 * Activa los botones de login y registro si los campos de usuario y password no estan en blanco,
+	 * en caso contrario, los desactiva.
+	 */
+	private void verificarTextFieldsUser() {
 		if(textFieldNombre.getText().length()>0&&pwdFieldPassword.getPassword().length>0) {
 			btnLogin.setEnabled(true);
 			btnRegistrarUsuario.setEnabled(true);

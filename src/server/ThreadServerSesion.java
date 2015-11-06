@@ -24,28 +24,32 @@ public class ThreadServerSesion extends Thread {
 
     public void run() {
         try {
-        	DataInputStream data= new DataInputStream(clientSocket.getInputStream());
-        	ObjectInputStream is = new ObjectInputStream(data);
-        	paquete=(PaqueteSesion)is.readObject();
-            if (!clientSocket.isClosed()) {
-	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
-	            ObjectOutputStream o = new ObjectOutputStream(d);
-	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
-	            switch(paquete.getTipoPaquete()){
-	            	case LOGIN:
-	            		paquete.setAck(true);
-	            		//paquete.setAck(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
-	            		break;
-	            	case LOGOUT:
-	            		paquete.setAck(true);
-	            		break;
-	            	case REGISTRO:
-	            		paquete.setAck(false);
-	            		//paquete.setAck(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
-	            		break;
-	            }
-	            o.writeObject(paquete);
-            }
+        	boolean run=true;
+        	while(run){
+        		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
+            	ObjectInputStream is = new ObjectInputStream(data);
+        		paquete=(PaqueteSesion)is.readObject();
+                if (!clientSocket.isClosed()) {
+    	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
+    	            ObjectOutputStream o = new ObjectOutputStream(d);
+    	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
+    	            switch(paquete.getTipoPaquete()){
+    	            	case LOGIN:
+    	            		paquete.setAck(true);
+    	            		//paquete.setAck(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
+    	            		break;
+    	            	case LOGOUT:
+    	            		paquete.setAck(true);
+    	            		run=false;
+    	            		break;
+    	            	case REGISTRO:
+    	            		paquete.setAck(false);
+    	            		//paquete.setAck(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
+    	            		break;
+    	            }
+    	            o.writeObject(paquete);
+                }
+        	}
         }
         catch(EOFException e){
             try {

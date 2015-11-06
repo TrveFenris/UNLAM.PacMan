@@ -22,19 +22,24 @@ public class Cliente {
         return puerto;
     }
 
-    public Cliente(String direccion, int port, String name, String password) throws UnknownHostException, IOException{
+    public Cliente(String direccion, int port) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
-        nombre = name;
-        this.password=password;
+        nombre = password=null;
     }
 
     public Socket getSocket() {
         return cliente;
     }
 
-    public void setNombre(String nombre) {
+    /**
+     * Establece los datos del cliente
+     * @param nombre
+     * @param password
+     */
+    public void setDatos(String nombre, String password) {
         this.nombre = nombre;
+        this.password=password;
     }
 
     public void enviarMensaje() {

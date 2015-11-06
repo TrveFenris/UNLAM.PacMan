@@ -60,7 +60,7 @@ public class MainCliente {
 		});
         Cliente cliente = null;
         try {
-        	cliente = new Cliente(host, puerto,nombre,"password");
+        	cliente = new Cliente(host, puerto);
         }
         catch(UnknownHostException e1) {
 
