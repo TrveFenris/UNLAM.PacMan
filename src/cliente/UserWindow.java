@@ -146,10 +146,10 @@ public class UserWindow extends JFrame {
 	}
 
 	private void cargarControles() {
-			this.arriba=KeyEvent.VK_UP;
-			this.abajo=KeyEvent.VK_DOWN;
-			this.derecha=KeyEvent.VK_RIGHT;
-			this.izquierda=KeyEvent.VK_LEFT;
+			this.arriba=KeyEvent.VK_W;
+			this.abajo=KeyEvent.VK_S;
+			this.derecha=KeyEvent.VK_D;
+			this.izquierda=KeyEvent.VK_A;
 	}
 	
 	public void setControles(int arriba, int abajo, int izquierda, int derecha) {
