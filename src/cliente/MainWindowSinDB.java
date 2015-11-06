@@ -1,6 +1,5 @@
 package cliente;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -23,12 +22,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class MainWindowSinDB extends JFrame {
-	
-	public class MainWindowThreadCliente extends Thread {
-		public void run() {
-			cliente.enviarMensaje();
-		}
-	}
 	
 	/* Members */
 	private static final long serialVersionUID = 1L;
@@ -163,12 +156,19 @@ public class MainWindowSinDB extends JFrame {
 					}
 					
 					String username = textFieldNombre.getText();
+					String password = new String(pwdFieldPassword.getPassword());
 					try {
-						cliente = new Cliente(server, puerto, username);
-						lanzarVentanaUsuario(username);
-						System.out.println("(Ingrese .exit en cualquier momento para cerrar la aplicacion)");
-						new ThreadCliente(cliente.getSocket()).start();
-						new MainWindowThreadCliente().start();
+						cliente = new Cliente(server, puerto, username, password);
+						if(cliente.iniciarSesion()){
+							lanzarVentanaUsuario(username);
+						}
+						else{
+							 JOptionPane.showMessageDialog(frame,
+					            		"Datos de usuario invalidos.\nIntentelo nuevamente.",
+										 "Error",
+										 JOptionPane.ERROR_MESSAGE);
+								return;
+						}
 					}
 					catch(UnknownHostException e1) {
 			        	JOptionPane.showMessageDialog(frame,
@@ -250,7 +250,7 @@ public class MainWindowSinDB extends JFrame {
 	
 	private void mensajeSalida() {
 		int option = JOptionPane.showConfirmDialog(frame,
-			    "Â¿Esta seguro que quiere salir?",
+			    "¿Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {
