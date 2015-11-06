@@ -1,5 +1,6 @@
 package gameobject;
 
+import game.Configuracion;
 import game.Punto;
 
 import java.util.Calendar;
@@ -8,15 +9,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class PacMan extends Jugador {	
+public class Pacman extends Jugador {	
 	private boolean superpoder;
 	private Calendar timerSuperpoder;
 	private int bolitasComidas;
 	private int muertes;
 	private int fantasmasComidos;
 	
-	public PacMan(JLabel img, String nombre) {
-		super(img,nombre,1);
+	public Pacman(JLabel img, String nombre) {
+		super(img,nombre,Configuracion.PACMAN_VELOCIDAD.getValor());
 		superpoder = false;
 		bolitasComidas=muertes=fantasmasComidos=0;
 	}
@@ -42,9 +43,16 @@ public class PacMan extends Jugador {
 	}
 	
 	public void actualizarPuntaje(){
-		this.actualizarPuntaje(50*bolitasComidas-200*muertes+500*fantasmasComidos);
+		this.actualizarPuntaje(Configuracion.PACMAN_PUNTAJE_POR_BOLITA.getValor()*bolitasComidas
+								-Configuracion.PACMAN_PERDIDA_DE_PUNTAJE_POR_MUERTE.getValor()*muertes
+								+Configuracion.PACMAN_PUNTAJE_POR_FANTASMA_COMIDO.getValor()*fantasmasComidos);
 	}
 	
+	/**
+	 * Inicializa el label necesario para la construccion de un objeto Pacman
+	 * @param posInicial
+	 * @return
+	 */
 	public static JLabel crearLabel(Punto posInicial){
 		ImageIcon icon = new ImageIcon("img/pacman.gif");
 		JLabel l = new JLabel(icon);

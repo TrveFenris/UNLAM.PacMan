@@ -66,6 +66,11 @@ public class Jugador extends GameObject{
 		return (coordenadas.getX() == p.getX() && coordenadas.getY() == p.getY());
 	}
 	*/
+	
+	/**
+	 * @param Recta
+	 * @return Si el jugador esta o no sobre dicha recta.
+	 */
 	public boolean estaEn(Recta r) {
 		boolean result = false;
 		Punto p = getCentroCoordenadas();

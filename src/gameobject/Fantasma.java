@@ -1,5 +1,6 @@
 package gameobject;
 
+import game.Configuracion;
 import game.Punto;
 
 import javax.swing.ImageIcon;
@@ -12,7 +13,7 @@ public class Fantasma extends Jugador{
 	protected int muertes;
 
 	public Fantasma(JLabel img,String nombre) {
-		super(img,nombre,1);
+		super(img,nombre,Configuracion.FANTASMA_VELOCIDAD.getValor());
 		pacmansComidos=vecesAturdido=muertes=0;
 	}
 
@@ -25,7 +26,9 @@ public class Fantasma extends Jugador{
 	}
 	
 	public void actualizarPuntaje(){
-		this.actualizarPuntaje(500*pacmansComidos-100*vecesAturdido-200*muertes);
+		this.actualizarPuntaje(Configuracion.FANTASMA_PUNTAJE_POR_PACMAN_COMIDO.getValor()*pacmansComidos
+								-Configuracion.FANTASMA_PERDIDA_DE_PUNTAJE_POR_ATURDIMIENTO.getValor()*vecesAturdido
+								-Configuracion.FANTASMA_PERDIDA_DE_PUNTAJE_POR_MUERTE.getValor()*muertes);
 	}
 	
 	public static JLabel crearLabel(Punto posInicial){
