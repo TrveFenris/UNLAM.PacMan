@@ -77,9 +77,7 @@ public class PaqueteSesion implements java.io.Serializable{
 	}
 	
 	/**
-	 * Utilizado por el servidor para consultar si el cliente desea iniciar o cerrar una sesion.
-	 * @return	true: inicio de sesion -
-	 * 			false: cierre de sesion
+	 * Utilizado por el servidor para consultar la accion que desea realizar el cliente
 	 */
 	public TipoPaquete getTipoPaquete(){
 		return tipo;
