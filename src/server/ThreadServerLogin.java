@@ -12,7 +12,6 @@ public class ThreadServerLogin extends Thread {
 
     private Socket clientSocket;
     private Server servidor;
-    private PaqueteSesion paquete;
     
     public ThreadServerLogin(Socket socket,Server serv) {
         clientSocket = socket;
@@ -20,28 +19,20 @@ public class ThreadServerLogin extends Thread {
     }
 
     public void run() {
-        DataInputStream data;
         try {
-        	data= new DataInputStream(clientSocket.getInputStream());
+        	DataInputStream data= new DataInputStream(clientSocket.getInputStream());
         	ObjectInputStream is = new ObjectInputStream(data);
-        	paquete=(PaqueteSesion)is.readObject();
-            try {
-                 if (!clientSocket.isClosed()) {
-                	 DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
-                     ObjectOutputStream o = new ObjectOutputStream(d);
-                     //VERIFICAR USUARIO EN LA DATABASE
-                     if(paquete.getSesion()){
-                    	 
-                     }
-                     paquete.setAck(true);
-                     //
-                     o.writeObject(paquete);
-                 }
+        	PaqueteSesion paquete=(PaqueteSesion)is.readObject();
+            if (!clientSocket.isClosed()) {
+	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
+	            ObjectOutputStream o = new ObjectOutputStream(d);
+	            //VERIFICAR USUARIO EN LA DATABASE
+	            if(paquete.getSesion()){
+	            }
+	            paquete.setAck(false);
+	            //
+	            o.writeObject(paquete);
             }
-            catch (IOException e) {
-            	e.printStackTrace();
-            }
-            //NUNCA SE LLEGA A ESTE PUNTO
         }
         catch(EOFException e){
             try {
