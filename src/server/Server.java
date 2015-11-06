@@ -19,6 +19,7 @@ public class Server {
     private int puerto;
     private String nombreHost;
     private String IPHost;
+    private DataBase database;
 
     public String getNombreHost() {
         return nombreHost;
@@ -37,8 +38,6 @@ public class Server {
     }
 
     public Server(int port, int max_conexiones) {
-
-        // Nombre e IP del Servidor
         try {
             nombreHost = InetAddress.getLocalHost().getHostName().toString();
             IPHost = InetAddress.getLocalHost().getHostAddress().toString();
@@ -51,6 +50,7 @@ public class Server {
         max_clientes = max_conexiones;
         cantActualClientes = 0;
         sockets = new ArrayList<Socket>();
+        database = new DataBase();
 
         try {
         	servidor = new ServerSocket(puerto);
@@ -62,12 +62,14 @@ public class Server {
         }
     }
 
+    /**
+     * Devuelve la lista de sockets utilizados por el servidor
+     */
     public ArrayList<Socket> getLista() {
         return sockets;
     }
 
     public Socket aceptarConexion() {
-
     	cliente=null;
         try {
         	servidor.setSoTimeout(1000);
@@ -109,5 +111,12 @@ public class Server {
     
     public void eliminarCliente(){
     	cantActualClientes--;
+    }
+    
+    /**
+     * Devuelve el objeto DataBase utilizado por el servidor
+     */
+    public DataBase getDatabase(){
+    	return database;
     }
 }

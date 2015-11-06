@@ -12,17 +12,21 @@ public class ThreadServerSesion extends Thread {
 
     private Socket clientSocket;
     private Server servidor;
+    private DataBase database;
+    private PaqueteSesion paquete;
     
-    public ThreadServerSesion(Socket socket,Server serv) {
+    public ThreadServerSesion(Socket socket,Server serv, DataBase database) {
         clientSocket = socket;
         servidor=serv;
+        this.database=database;
+        paquete=null;
     }
 
     public void run() {
         try {
         	DataInputStream data= new DataInputStream(clientSocket.getInputStream());
         	ObjectInputStream is = new ObjectInputStream(data);
-        	PaqueteSesion paquete=(PaqueteSesion)is.readObject();
+        	paquete=(PaqueteSesion)is.readObject();
             if (!clientSocket.isClosed()) {
 	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
 	            ObjectOutputStream o = new ObjectOutputStream(d);
@@ -30,11 +34,14 @@ public class ThreadServerSesion extends Thread {
 	            switch(paquete.getTipoPaquete()){
 	            	case LOGIN:
 	            		paquete.setAck(true);
+	            		//paquete.setAck(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
 	            		break;
 	            	case LOGOUT:
+	            		paquete.setAck(true);
 	            		break;
 	            	case REGISTRO:
 	            		paquete.setAck(false);
+	            		//paquete.setAck(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
 	            		break;
 	            }
 	            o.writeObject(paquete);

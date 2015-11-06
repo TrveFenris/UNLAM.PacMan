@@ -4,10 +4,13 @@ import java.sql.*;
 
 import javax.swing.JOptionPane;
 
-public class BaseDatos {
+public class DataBase {
 	private Connection conexion = null;
-	private void Conectar(){
-		
+	
+	/**
+	 * Conecta a la base de datos establecida por defecto
+	 */
+	private void Conectar(){	
 		try{
 			//cargar el driver
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -34,6 +37,11 @@ public class BaseDatos {
         }
 	}
 	
+	/**
+	 * Ejecuta una consulta en la base de datos
+	 * @param SQL
+	 * @return si la cunsulta fue exitosa o no.
+	 */
 	public boolean Consultar(String SQL){
 		//primero establecer la coneccion
 		this.Conectar();
@@ -61,7 +69,12 @@ public class BaseDatos {
 		return estado;
 	}
 	
-	public boolean Verificar(String usuario, String password){
+	/**
+	 * @param usuario
+	 * @param password
+	 * @return Si la combinacion de usuario+password es valida o no.
+	 */
+	public boolean verificarDatos(String usuario, String password){
 		String sql = "SELECT * FROM USUARIO WHERE Usuario='"+usuario+"' AND Password='"+password+"'";
 		boolean estado= false;
 		
@@ -74,7 +87,12 @@ public class BaseDatos {
 		return estado;
 	}
 	
-	public boolean VerificarUsuario(String usuario){
+	
+	/**
+	 * @param usuario
+	 * @return si el usuario existe o no en la base de datos.
+	 */
+	private boolean verificarUsuario(String usuario){
 		String sql = "SELECT * FROM USUARIO WHERE Usuario='"+usuario+"'";
 		boolean estado= false;
 		
@@ -87,9 +105,16 @@ public class BaseDatos {
 		return estado;
 	}
 	
-	public void agregar( String usuario, String password) {
+	/**
+	 * Registra un usuario en la base de datos
+	 * @param usuario
+	 * @param password
+	 */
+	public boolean registrarUsuario( String usuario, String password) {
 			PreparedStatement pstmt = null;
 			this.Conectar();
+			if(verificarUsuario(usuario)==false)
+				return false;
 			try {
 					pstmt = conexion.prepareStatement("Insert into Usuario values(?, ?)");
 					pstmt.setString(1, usuario);
@@ -104,6 +129,7 @@ public class BaseDatos {
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null,"Error no de la base de datos","Error",JOptionPane.ERROR_MESSAGE);
 				}
-			}	
+			}
+			return true;
 		}
 }

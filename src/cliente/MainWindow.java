@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import server.BaseDatos;
+import server.DataBase;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -41,7 +41,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblBienvenida;
 	private UserWindow userWindow;
 	//AGREGADO
-	private BaseDatos bd=null;
+	private DataBase bd=null;
 	
 	/* Main Application */
 	public static void main(String[] args) {
@@ -134,13 +134,13 @@ public class MainWindow extends JFrame {
 		contentPane.add(btnLogin);
 		
 		//AGREGADO
-		bd = new BaseDatos();
+		bd = new DataBase();
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				UserName=new String(textFieldNombre.getText());
 				String password= new String(pwdFieldPassword.getPassword());
-				boolean estado = bd.Verificar(UserName,password);
+				boolean estado = bd.verificarDatos(UserName, password);
 				try{
 					if(estado==true){
 						lanzarVentanaUsuario();
@@ -174,12 +174,9 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				UserName=new String(textFieldNombre.getText());
 				String password= new String(pwdFieldPassword.getPassword());
-				boolean estado = false;
 				try{
-					estado = bd.VerificarUsuario(UserName);
-					if(estado != true)
+					if(bd.registrarUsuario(UserName, password)==true)
 					{
-						bd.agregar(UserName, password);
 						lanzarVentanaUsuario();
 					}
 					else{
