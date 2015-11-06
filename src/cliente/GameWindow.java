@@ -24,7 +24,7 @@ import game.Punto;
 import gameobject.Actions;
 //import game.Rectas;
 import gameobject.Jugador;
-import gameobject.PacMan;
+import gameobject.Pacman;
 
 public class GameWindow extends JFrame {
 	/*Thread que maneja el Game Loop */
@@ -58,7 +58,7 @@ public class GameWindow extends JFrame {
 	//Mapa
 	private Mapa mapa;
 	private ArrayList<Jugador> jugadores;
-	private PacMan pacman;
+	private Pacman pacman;
 	//Variables delimitadoras
 	private int upperBound;
 	private int lowerBound;
@@ -105,7 +105,7 @@ public class GameWindow extends JFrame {
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman
-		pacman = new PacMan(PacMan.crearLabel(new Punto(5,25)), lblName.getText());
+		pacman = new Pacman(Pacman.crearLabel(new Punto(5,25)), lblName.getText());
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
 		userWindow = window;
@@ -116,7 +116,7 @@ public class GameWindow extends JFrame {
 	
 	private void mensajeSalida(){
 		int option = JOptionPane.showConfirmDialog(this,
-			    "Â¿Esta seguro que quiere salir?",
+			    "¿Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
@@ -159,16 +159,26 @@ public class GameWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Cuenta las rectas sobre las que se encuentra el personaje controlado por un jugador
+	 * @param jugador
+	 * @return cantidad de rectas
+	 */
+	private int contarRectas(Jugador jugador){
+		int contadorRectas=0;
+		for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
+			Recta rec = k.next();
+			if(jugador.estaEn(rec)) {
+				contadorRectas++;
+			}
+		}
+		return contadorRectas;
+	}
+	
 	private void update(){
 		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
-			int contadorRectas=0;
 			Jugador jug=j.next();
-			for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
-				Recta rec = k.next();
-				if(jug.estaEn(rec)) {
-					contadorRectas++;
-				}
-			}
+			int contadorRectas=contarRectas(jug);
 			for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
 				Recta rec = k.next();
 				if(contadorRectas==1) {
@@ -203,6 +213,10 @@ public class GameWindow extends JFrame {
 		}
 	}
 
+	/**
+	 * Asegura que el personaje controlado por un jugador se mantenga sobre las rectas del mapa
+	 * @param Jugador
+	 */
 	private void restrictBoundaries(Jugador j) {
 		if( j.getCentroCoordenadasX() < leftBound ) /* Limite izquierdo */		
 			j.setLocation(leftBound - (j.getWidth()/2), j.getY());		
