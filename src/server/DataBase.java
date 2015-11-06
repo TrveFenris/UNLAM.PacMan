@@ -4,6 +4,9 @@ import java.sql.*;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Objeto que permite conectarse a una base de datos y realizar consultas sobre la misma
+ */
 public class DataBase {
 	private Connection conexion = null;
 	

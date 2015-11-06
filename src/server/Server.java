@@ -9,6 +9,9 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+/**
+ * Objeto que permite aceptar y manejar conexiones
+ */
 public class Server {
 
     private ServerSocket servidor;
@@ -21,22 +24,11 @@ public class Server {
     private String IPHost;
     private DataBase database;
 
-    public String getNombreHost() {
-        return nombreHost;
-    }
-
-    public String getIPHost() {
-        return IPHost;
-    }
-
-    public int getMax_clientes() {
-        return max_clientes;
-    }
-
-    public int getPuerto() {
-        return puerto;
-    }
-
+    /**
+     * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar
+     * @param port
+     * @param max_conexiones
+     */
     public Server(int port, int max_conexiones) {
         try {
             nombreHost = InetAddress.getLocalHost().getHostName().toString();
@@ -62,6 +54,34 @@ public class Server {
         }
     }
 
+    /**
+     * Devuelve el nombre del servidor
+     */
+    public String getNombreHost() {
+        return nombreHost;
+    }
+
+    /**
+     * Devuelve el ip del servidor
+     */
+    public String getIPHost() {
+        return IPHost;
+    }
+
+    /**
+     * Devuelve la cantidad maxima de clientes que maneja el servidor
+     */
+    public int getMax_clientes() {
+        return max_clientes;
+    }
+
+    /**
+     * Devuelve el puerto de escucha del servidor
+     */
+    public int getPuerto() {
+        return puerto;
+    }
+    
     /**
      * Devuelve la lista de sockets utilizados por el servidor
      */
@@ -103,6 +123,9 @@ public class Server {
         return cliente;
     }
 
+    /**
+     * Detiene el servidor
+     */
     public void pararServidor() {
         try {
         	if(!servidor.isClosed())
@@ -113,6 +136,9 @@ public class Server {
         }
     }
     
+    /**
+     * Actualiza el contador de clientes conectados
+     */
     public void eliminarCliente(){
     	cantActualClientes--;
     }

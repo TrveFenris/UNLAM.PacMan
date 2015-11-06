@@ -314,6 +314,9 @@ public class MainWindowSinDB extends JFrame {
 		}
 	}
 	
+	/**
+	 * Reinicia los textfield nombre y paswword
+	 */
 	public void resetUserAndPassword() {
 		textFieldNombre.setText(null);
 		pwdFieldPassword.setText(null);
