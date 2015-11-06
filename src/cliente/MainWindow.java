@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+@Deprecated
 public class MainWindow extends JFrame {
 	/* Members */
 	private static final long serialVersionUID = 1L;
