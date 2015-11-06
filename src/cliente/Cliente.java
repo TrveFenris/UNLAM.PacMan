@@ -1,27 +1,32 @@
 package cliente;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Calendar;
+import server.PaqueteSesion;
 
 public class Cliente {
 
     private Socket cliente;
-    private String nombre = null;
+    private String nombre;
+    private String password;
     private int puerto;
 
     public int getPuerto() {
         return puerto;
     }
 
-    public Cliente(String direccion, int port, String name) throws UnknownHostException, IOException{
+    public Cliente(String direccion, int port, String name, String password) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
         nombre = name;
+        this.password=password;
     }
 
     public Socket getSocket() {
@@ -84,5 +89,40 @@ public class Cliente {
         Calendar cal = Calendar.getInstance();
         return +cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE)
                 + ":" + cal.get(Calendar.SECOND);
+    }
+    
+    /**
+     * Inicia sesion en el servidor
+     * @return si el inicio de sesion fue exitoso o no.
+     */
+    public boolean iniciarSesion(){
+    	boolean respuesta=false;
+    	try {
+    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+            ObjectOutputStream o = new ObjectOutputStream(d);
+        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	paquete.setIniciarSesion();
+        	o.writeObject(paquete);
+        	//
+            DataInputStream data= new DataInputStream(cliente.getInputStream());
+            ObjectInputStream is = new ObjectInputStream(data);
+            paquete=(PaqueteSesion)is.readObject();
+            if(paquete.getAck()){
+            	respuesta=true;
+	        }
+            else
+            	respuesta=false;
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
+            cerrarCliente();
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (iniciarSesion)");
+        	cerrarCliente();
+        } catch (ClassNotFoundException e1) {
+			cerrarCliente();
+		}
+    	return respuesta;
     }
 }
