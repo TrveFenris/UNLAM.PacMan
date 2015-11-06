@@ -12,7 +12,7 @@ public class ThreadServerLogin extends Thread {
 
     private Socket clientSocket;
     private Server servidor;
-    private PaqueteLogin paquete;
+    private PaqueteSesion paquete;
     
     public ThreadServerLogin(Socket socket,Server serv) {
         clientSocket = socket;
@@ -24,12 +24,15 @@ public class ThreadServerLogin extends Thread {
         try {
         	data= new DataInputStream(clientSocket.getInputStream());
         	ObjectInputStream is = new ObjectInputStream(data);
-        	paquete=(PaqueteLogin)is.readObject();
+        	paquete=(PaqueteSesion)is.readObject();
             try {
                  if (!clientSocket.isClosed()) {
                 	 DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
                      ObjectOutputStream o = new ObjectOutputStream(d);
                      //VERIFICAR USUARIO EN LA DATABASE
+                     if(paquete.getSesion()){
+                    	 
+                     }
                      paquete.setAck(true);
                      //
                      o.writeObject(paquete);
