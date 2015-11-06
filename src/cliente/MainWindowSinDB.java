@@ -37,7 +37,6 @@ public class MainWindowSinDB extends JFrame {
 	private JButton btnRegistrarUsuario;
 	private JLabel lblNombre;
 	private JLabel lblPassword;
-	private JLabel lblBienvenida;
 	private JTextField textFieldNombre;
 	private JPasswordField pwdFieldPassword;
 	private JTextField txtServidor;
@@ -63,8 +62,8 @@ public class MainWindowSinDB extends JFrame {
 	}
 	/* MainWindow Constructor */
 	public MainWindowSinDB() {
-		frame = this;
 		setResizable(false);
+		frame = this;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -73,7 +72,7 @@ public class MainWindowSinDB extends JFrame {
 		});
 		setTitle("Pac-Man");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 331, 306);
+		setBounds(100, 100, 350, 343);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -90,7 +89,7 @@ public class MainWindowSinDB extends JFrame {
 				mensajeSalida();
 			}
 		});
-		btnExit.setBounds(100, 216, 120, 25);
+		btnExit.setBounds(110, 266, 120, 25);
 		contentPane.add(btnExit);
 		JButton btnCredits = new JButton("Cr\u00E9ditos");
 		btnCredits.addActionListener(new ActionListener() {
@@ -98,7 +97,7 @@ public class MainWindowSinDB extends JFrame {
 				JOptionPane.showMessageDialog(frame, "Grupo 4: \n-Barja, Alex\n-Figueroa, Matias\n-Maidana, Diego\n-Maita, Martin");
 			}
 		});
-		btnCredits.setBounds(100, 180, 120, 25);
+		btnCredits.setBounds(110, 230, 120, 25);
 		contentPane.add(btnCredits);
 		
 		textFieldNombre = new JTextField();
@@ -111,7 +110,7 @@ public class MainWindowSinDB extends JFrame {
 					pwdFieldPassword.grabFocus();
 			}
 		});
-		textFieldNombre.setBounds(100, 50, 170, 20);
+		textFieldNombre.setBounds(110, 100, 170, 20);
 		contentPane.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 		
@@ -127,7 +126,7 @@ public class MainWindowSinDB extends JFrame {
 				}
 			}
 		});
-		pwdFieldPassword.setBounds(100, 81, 170, 20);
+		pwdFieldPassword.setBounds(110, 131, 170, 20);
 		contentPane.add(pwdFieldPassword);
 		pwdFieldPassword.setColumns(20);
 		
@@ -188,45 +187,37 @@ public class MainWindowSinDB extends JFrame {
 				}
 			}
 		});
-		btnLogin.setBounds(100, 112, 120, 23);
+		btnLogin.setBounds(110, 162, 120, 23);
 		contentPane.add(btnLogin);
 		
 		lblNombre = new JLabel("Usuario");
-		lblNombre.setBounds(10, 53, 46, 14);
+		lblNombre.setBounds(20, 103, 46, 14);
 		contentPane.add(lblNombre);
 		
 		lblPassword = new JLabel("Contrase\u00F1a");
-		lblPassword.setBounds(10, 84, 56, 14);
+		lblPassword.setBounds(20, 134, 56, 14);
 		contentPane.add(lblPassword);
 		
 		btnRegistrarUsuario = new JButton("Registrarse");
 		btnRegistrarUsuario.setEnabled(false);
-		btnRegistrarUsuario.setBounds(100, 146, 120, 23);
+		btnRegistrarUsuario.setBounds(110, 196, 120, 23);
 		contentPane.add(btnRegistrarUsuario);
 		
-		lblBienvenida = new JLabel("");
-		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setForeground(new Color(102, 153, 204));
-		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
-		lblBienvenida.setBounds(10, 50, 295, 51);
-		lblBienvenida.setVisible(false);
-		contentPane.add(lblBienvenida);
-		
 		JLabel lblServidor = new JLabel("Servidor");
-		lblServidor.setBounds(230, 112, 46, 14);
+		lblServidor.setBounds(20, 59, 46, 14);
 		contentPane.add(lblServidor);
 		
 		JLabel lblPuerto = new JLabel("Puerto");
-		lblPuerto.setBounds(230, 162, 46, 14);
+		lblPuerto.setBounds(176, 59, 46, 14);
 		contentPane.add(lblPuerto);
 		
 		txtServidor = new JTextField();
-		txtServidor.setBounds(230, 131, 86, 20);
+		txtServidor.setBounds(76, 57, 86, 20);
 		contentPane.add(txtServidor);
 		txtServidor.setColumns(10);
 		
 		txtPuerto = new JTextField();
-		txtPuerto.setBounds(230, 181, 86, 20);
+		txtPuerto.setBounds(223, 56, 86, 20);
 		contentPane.add(txtPuerto);
 		txtPuerto.setColumns(10);
 	}
