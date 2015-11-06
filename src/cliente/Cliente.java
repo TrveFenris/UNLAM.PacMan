@@ -125,4 +125,39 @@ public class Cliente {
 		}
     	return respuesta;
     }
+    
+    /**
+     * Registra el usuario en el servidor
+     * @return si el registro fue exitoso o no.
+     */
+    public boolean registrarUsuario(){
+    	boolean respuesta=false;
+    	try {
+    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+            ObjectOutputStream o = new ObjectOutputStream(d);
+        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	paquete.setRegistrarUsuario();
+        	o.writeObject(paquete);
+        	//
+            DataInputStream data= new DataInputStream(cliente.getInputStream());
+            ObjectInputStream is = new ObjectInputStream(data);
+            paquete=(PaqueteSesion)is.readObject();
+            if(paquete.getAck()){
+            	respuesta=true;
+	        }
+            else
+            	respuesta=false;
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
+            cerrarCliente();
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (iniciarSesion)");
+        	cerrarCliente();
+        } catch (ClassNotFoundException e1) {
+			cerrarCliente();
+		}
+    	return respuesta;
+    }
 }

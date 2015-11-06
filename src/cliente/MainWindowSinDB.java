@@ -199,6 +199,68 @@ public class MainWindowSinDB extends JFrame {
 		contentPane.add(lblPassword);
 		
 		btnRegistrarUsuario = new JButton("Registrarse");
+		btnRegistrarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(txtServidor.getText().equals(null) || txtServidor.getText().equals("")) {
+					JOptionPane.showMessageDialog(frame,
+							"Ingrese un servidor al que conectarse.",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				else if(txtPuerto.getText().equals(null) || txtPuerto.getText().equals("")) {
+					JOptionPane.showMessageDialog(frame,
+							"Ingrese un puerto al que conectarse.",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				else {
+					String server = txtServidor.getText();
+					int puerto;
+					try {
+						puerto = Integer.parseInt(txtPuerto.getText());
+					}
+					catch(NumberFormatException nfe) {
+						JOptionPane.showMessageDialog(frame,
+								"Los datos del puerto son inválidos.\nIngrese un número entero",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					String username = textFieldNombre.getText();
+					String password = new String(pwdFieldPassword.getPassword());
+					try {
+						cliente = new Cliente(server, puerto, username, password);
+						if(cliente.registrarUsuario()){
+							lanzarVentanaUsuario(username);
+						}
+						else{
+							 JOptionPane.showMessageDialog(frame,
+					            		"Usuario ya registrado.\nIntentelo nuevamente.",
+										 "Error",
+										 JOptionPane.ERROR_MESSAGE);
+								return;
+						}
+					}
+					catch(UnknownHostException e1) {
+			        	JOptionPane.showMessageDialog(frame,
+			        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+			        catch (IOException e2) {
+			            JOptionPane.showMessageDialog(frame,
+			            		"No se pudo crear el socket.\nInténtelo nuevamente.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+			        }
+				}
+			}
+		});
 		btnRegistrarUsuario.setEnabled(false);
 		btnRegistrarUsuario.setBounds(110, 196, 120, 23);
 		contentPane.add(btnRegistrarUsuario);

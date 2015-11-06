@@ -26,7 +26,7 @@ public class MainWindowServer extends JFrame {
 			while (bandera) {
 	            socket = servidor.aceptarConexion();
 	            if (socket != null)
-	            	new ThreadServerLogin(socket,servidor).start();
+	            	new ThreadServerSesion(socket,servidor).start();
 	        }
 	        servidor.pararServidor();
 	        System.out.println("FIN DEL THREAD");

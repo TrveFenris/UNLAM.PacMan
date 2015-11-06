@@ -1,15 +1,17 @@
 package server;
 
+import cliente.TipoPaquete;
+
 public class PaqueteSesion implements java.io.Serializable{
 
 	private static final long serialVersionUID = 3L;
 	private String nombre;
 	private String password;
-	private boolean sesion; //true = inicio de sesion; false = cierre de sesion
+	private TipoPaquete tipo;
 	private boolean ack;
 	
 	/**
-	 * Crea un paquete de datos para la comunicacion durante el inicio y cierre de sesion
+	 * Crea un paquete de datos para la comunicacion durante el inicio y cierre de sesion.
 	 * @param nombre
 	 * @param password
 	 */
@@ -17,11 +19,11 @@ public class PaqueteSesion implements java.io.Serializable{
 		this.nombre=nombre;
 		this.password=password;
 		this.ack=false;
-		this.sesion=true;
+		this.tipo=TipoPaquete.LOGIN;
 	}
 	/**
 	 * 
-	 * @return nombre del usuario que envio el paquete
+	 * @return nombre del usuario que envio el paquete.
 	 */
 	public String getNombre(){
 		return nombre;
@@ -29,45 +31,55 @@ public class PaqueteSesion implements java.io.Serializable{
 	
 	/**
 	 * 
-	 * @return contraseña ingresada por el usuario que envio el paquete
+	 * @return contraseña ingresada por el usuario que envio el paquete.
 	 */
 	public String getPassword(){
 		return password;
 	}
 	
 	/**
-	 * Permite consultar si se pudo iniciar sesion correctamente
-	 * @return 	true: si el inicio de sesion fue exitoso -
-	 * 			false: si hubo algún problema
+	 * Permite consultar si se pudo realizar la operacion solicitada correctamente.
+	 * @return 	si la operacion fue exitosa o no.
 	 */
 	public boolean getAck(){
 		return this.ack;
 	}
 	
-	public void setAck(boolean v){
-		this.ack=v;
+	/**
+	 * Guarda el resultado de la operacion realizada
+	 * @param valor
+	 */
+	public void setAck(boolean valor){
+		this.ack=valor;
 	}
 	
 	/**
-	 * Indica que el paquete se utilizara para iniciar sesion
+	 * Indica que el paquete se utilizara para iniciar sesion.
 	 */
 	public void setIniciarSesion(){
-		this.sesion=true;
+		this.tipo=TipoPaquete.LOGIN;
 	}
 	
 	/**
-	 * Indica que el paquete se utilizara para cerrar sesion
+	 * Indica que el paquete se utilizara para cerrar sesion.
 	 */
 	public void setCerrarSesion(){
-		this.sesion=false;
+		this.tipo=TipoPaquete.LOGOUT;
 	}
 	
 	/**
-	 * Utilizado por el servidor para consultar si el cliente desea iniciar o cerrar una sesion
+	 * Indica que el paquete se utilizara para registrar un nuevo usuario en la base de datos del servidor.
+	 */
+	public void setRegistrarUsuario(){
+		this.tipo=TipoPaquete.REGISTRO;
+	}
+	
+	/**
+	 * Utilizado por el servidor para consultar si el cliente desea iniciar o cerrar una sesion.
 	 * @return	true: inicio de sesion -
 	 * 			false: cierre de sesion
 	 */
-	public boolean getSesion(){
-		return sesion;
+	public TipoPaquete getTipoPaquete(){
+		return tipo;
 	}
 }
