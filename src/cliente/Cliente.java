@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import server.PaqueteSesion;
+import java.util.*
 
 public class Cliente {
 
@@ -119,7 +120,7 @@ public class Cliente {
             	respuesta=false;
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
+        	System.out.println("Error en la comunicaciÃ³n con el servidor (iniciarSesion)");
             cerrarCliente();
         }
         catch(IOException e) {
@@ -154,7 +155,7 @@ public class Cliente {
             	respuesta=false;
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
+        	System.out.println("Error en la comunicaciÃ³n con el servidor (iniciarSesion)");
             cerrarCliente();
         }
         catch(IOException e) {
