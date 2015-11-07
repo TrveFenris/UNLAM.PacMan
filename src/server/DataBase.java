@@ -61,7 +61,7 @@ public class DataBase {
 			JOptionPane.showMessageDialog(null,"No se pudo lograr la conexion con la base de datos","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		catch(Exception ex){
-			JOptionPane.showMessageDialog(null,"Error logico","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Error logico existencia","Error",JOptionPane.ERROR_MESSAGE);
 		}finally {
 			try {
 			sentencia.close();
@@ -85,7 +85,7 @@ public class DataBase {
 			estado = this.Consultar(sql);
 		}
 		catch(Exception ex){
-			JOptionPane.showMessageDialog(null,"Error logico","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Error usuario y contraseña","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return estado;
 	}
@@ -103,7 +103,7 @@ public class DataBase {
 			estado = this.Consultar(sql);
 		}
 		catch(Exception ex){
-			JOptionPane.showMessageDialog(null,"Error no de la base de datos","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Error al comprobar existencia usuario","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return estado;
 	}
@@ -116,7 +116,7 @@ public class DataBase {
 	public boolean registrarUsuario( String usuario, String password) {
 			PreparedStatement pstmt = null;
 			this.Conectar();
-			if(verificarUsuario(usuario)==false)
+			if(verificarUsuario(usuario)==true)
 				return false;
 			try {
 					pstmt = conexion.prepareStatement("Insert into Usuario values(?, ?)");
