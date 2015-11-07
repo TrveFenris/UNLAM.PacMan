@@ -2,6 +2,9 @@ package gameobject;
 
 import game.Punto;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.JLabel;
 
 import rectas.Recta;
@@ -13,6 +16,7 @@ public class Jugador extends GameObject{
 	protected int velY;
 	protected String nombre;
 	protected int puntaje;
+	protected ArrayList<Recta> rectasActuales;
 	
 	public Jugador(JLabel img, String nombre, int velocidad){
 		super(img);
@@ -21,6 +25,7 @@ public class Jugador extends GameObject{
 		puntaje=0;
 		velX = 0;
 		velY = 0;
+		rectasActuales=new ArrayList<Recta>();
 	}
 	
 	public void input(){
@@ -45,6 +50,8 @@ public class Jugador extends GameObject{
 				velX=velocidad;
 				velY=0;
 				break;
+			case QUIETO:
+				break;
 		}
 	}
 	
@@ -61,11 +68,55 @@ public class Jugador extends GameObject{
 	public boolean colisionaCon(GameObject obj) {
 		return (this.coordenadas.distanciaCon(obj.coordenadas) <= this.radio + obj.radio);
 	}
-	
-	public boolean estaEn(Punto p){
-		return (coordenadas.getX() == p.getX() && coordenadas.getY() == p.getY());
-	}
 	*/
+	/**
+	 * Devuelve la recta sobre la que se encuentra el jugador. 
+	 * Ya que la lista de rectasActuales puede tener 1 o 2 rectas en un determinado momento, es necesario indicar el indice.
+	 * @param indice
+	 * @return null :si se especifica un indice mayor a la cantidad de rectas actuales.
+	 * @see #getCantRectasActuales()
+	 */
+	public Recta getRectaActual(int indice){
+		if(indice>=rectasActuales.size())
+			return null;
+		return rectasActuales.get(indice);
+	}
+	
+	/**
+	 * Devuelve la cantidad de rectas sobre las que se encuentra el jugador en un determinado momento.
+	 */
+	public int getCantRectasActuales(){
+		return rectasActuales.size();
+	}
+	
+	/**
+	 * Actualiza el campo "rectaActual", que indica sobre que recta se encuentra el jugador en cada momento.
+	 * @param rectas -Lista de rectas del mapa
+	 */
+	public void actualizarUbicacion(ArrayList<Recta> rectas){
+		//Remover las rectas anteriores
+		rectasActuales.clear();
+		//Agregar las rectas actuales
+		for(Iterator<Recta>k=rectas.iterator();k.hasNext();) {
+			Recta rec = k.next();
+				if(estaEn(rec)) {
+					rectasActuales.add(rec);
+			}
+		}
+	}
+	
+	/**
+	 * Devuelve si el jugador se encuentra en una recta HORIZONTAL, VERTICAL, o AMBAS
+	 */
+	public Rectas getTipoUbicacion(){
+		if(rectasActuales.size()>1)
+			return Rectas.AMBAS;
+		else
+			if(rectasActuales.size()>0)
+				return rectasActuales.get(0).getTipo();
+		System.out.println("ERROR EN TIPO DE UBICACION");
+		return Rectas.HORIZONTAL;
+	}
 	
 	/**
 	 * @param Recta
