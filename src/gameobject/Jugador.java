@@ -16,6 +16,11 @@ public class Jugador extends GameObject{
 	protected String nombre;
 	protected int puntaje;
 	protected ArrayList<Recta> rectasActuales;
+	//Variables delimitadoras
+	protected int upperBound;
+	protected int lowerBound;
+	protected int leftBound;
+	protected int rightBound;
 	
 	public Jugador(JLabel img, String nombre, int velocidad){
 		super(img);
@@ -117,6 +122,30 @@ public class Jugador extends GameObject{
 		return Rectas.HORIZONTAL;
 	}
 	
+	public int getUpperBound() {
+		return upperBound;
+	}
+	public int getLowerBound() {
+		return lowerBound;
+	}
+	public int getRightBound() {
+		return rightBound;
+	}
+	public int getLeftBound() {
+		return leftBound;
+	}
+	public void setUpperBound(int bound) {
+		upperBound = bound;
+	}
+	public void setLowerBound(int bound) {
+		lowerBound = bound;
+	}
+	public void setRightBound(int bound) {
+		rightBound = bound;
+	}
+	public void setLeftBound(int bound) {
+		leftBound = bound;
+	}
 	/**
 	 * @param Recta
 	 * @return Si el jugador esta o no sobre dicha recta.

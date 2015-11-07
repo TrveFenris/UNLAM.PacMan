@@ -21,7 +21,6 @@ import punto.Punto;
 import rectas.Rectas;
 import game.Mapa;
 import gameobject.Actions;
-//import game.Rectas;
 import gameobject.Jugador;
 import gameobject.Pacman;
 
@@ -59,10 +58,10 @@ public class GameWindow extends JFrame {
 	private ArrayList<Jugador> jugadores;
 	private Pacman pacman;
 	//Variables delimitadoras
-	private int upperBound;
-	private int lowerBound;
-	private int leftBound;
-	private int rightBound;
+	//private int upperBound;
+	//private int lowerBound;
+	//private int leftBound;
+	//private int rightBound;
 	//Variables de acción segun presión de tecla
 	private boolean moverAbajo;
 	private boolean moverArriba;
@@ -180,25 +179,38 @@ public class GameWindow extends JFrame {
 			ultimaDireccion=jug.getTipoUbicacion();
 			switch(ultimaDireccion){
 				case HORIZONTAL:
-					leftBound = jug.getRectaActual(0).getPuntoInicialX();
-					rightBound = jug.getRectaActual(0).getPuntoFinalX();
-					upperBound = lowerBound = jug.getRectaActual(0).getPuntoInicialY();
+					//leftBound = jug.getRectaActual(0).getPuntoInicialX();
+					//rightBound = jug.getRectaActual(0).getPuntoFinalX();
+					//upperBound = lowerBound = jug.getRectaActual(0).getPuntoInicialY();
+					jug.setLeftBound(jug.getRectaActual(0).getPuntoInicialX());
+					jug.setRightBound(jug.getRectaActual(0).getPuntoFinalX());
+					jug.setUpperBound(jug.getRectaActual(0).getPuntoInicialY());
+					jug.setLowerBound(jug.getRectaActual(0).getPuntoInicialY());
 					break;
 				case VERTICAL:
-					upperBound = jug.getRectaActual(0).getPuntoInicialY();
-					lowerBound = jug.getRectaActual(0).getPuntoFinalY();
-					leftBound = rightBound = jug.getRectaActual(0).getPuntoInicialX();
+					//upperBound = jug.getRectaActual(0).getPuntoInicialY();
+					//lowerBound = jug.getRectaActual(0).getPuntoFinalY();
+					//leftBound = rightBound = jug.getRectaActual(0).getPuntoInicialX();
+					jug.setUpperBound(jug.getRectaActual(0).getPuntoInicialY());
+					jug.setLowerBound(jug.getRectaActual(0).getPuntoFinalY());
+					jug.setLeftBound(jug.getRectaActual(0).getPuntoInicialX());
+					jug.setRightBound(jug.getRectaActual(0).getPuntoInicialX());
+					
 					break;
 				case AMBAS:
 					for(int i=0;i<2;i++){
 						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
-							leftBound = jug.getRectaActual(i).getPuntoInicialX();
-							rightBound = jug.getRectaActual(i).getPuntoFinalX();
+							//leftBound = jug.getRectaActual(i).getPuntoInicialX();
+							//rightBound = jug.getRectaActual(i).getPuntoFinalX();
+							jug.setLeftBound(jug.getRectaActual(i).getPuntoInicialX());
+							jug.setRightBound(jug.getRectaActual(i).getPuntoFinalX());
 						}
 						else
 							if(jug.getRectaActual(i).getTipo()==Rectas.VERTICAL){
-								upperBound = jug.getRectaActual(i).getPuntoInicialY();
-								lowerBound = jug.getRectaActual(i).getPuntoFinalY();
+								//upperBound = jug.getRectaActual(i).getPuntoInicialY();
+								//lowerBound = jug.getRectaActual(i).getPuntoFinalY();
+								jug.setUpperBound(jug.getRectaActual(i).getPuntoInicialY());
+								jug.setLowerBound(jug.getRectaActual(i).getPuntoFinalY());
 							}
 					}
 					jug.cambiarSentido(ultimaAccion);
@@ -214,17 +226,17 @@ public class GameWindow extends JFrame {
 	 * @param Jugador
 	 */
 	private void restrictBoundaries(Jugador j) {
-		if( j.getCentroCoordenadasX() < leftBound ) /* Limite izquierdo */		
-			j.setLocation(leftBound - (j.getWidth()/2), j.getY());		
+		if( j.getCentroCoordenadasX() < j.getLeftBound() ) /* Limite izquierdo */		
+			j.setLocation(j.getLeftBound() - (j.getWidth()/2), j.getY());		
 		
-		if( j.getCentroCoordenadasX() > rightBound ) /* Limite derecho (anda mal) */		
-			j.setLocation(rightBound - (j.getWidth()/2), j.getY());		
+		if( j.getCentroCoordenadasX() > j.getRightBound() ) /* Limite derecho (anda mal) */		
+			j.setLocation(j.getRightBound() - (j.getWidth()/2), j.getY());		
 		
-		if( j.getCentroCoordenadasY() < upperBound ) /* Limite hacia arriba */		
-			j.setLocation(j.getX(), upperBound - (j.getHeight()/2));		
+		if( j.getCentroCoordenadasY() < j.getUpperBound() ) /* Limite hacia arriba */		
+			j.setLocation(j.getX(), j.getUpperBound() - (j.getHeight()/2));		
 		
-		if( j.getCentroCoordenadasY() > lowerBound ) /* Limite hacia abajo (anda mal) */		
-			j.setLocation(j.getX(), lowerBound - (j.getHeight()/2));		
+		if( j.getCentroCoordenadasY() > j.getLowerBound() ) /* Limite hacia abajo (anda mal) */		
+			j.setLocation(j.getX(), j.getLowerBound() - (j.getHeight()/2));		
  	}
 	
 	public void setControles(int[] controles){
