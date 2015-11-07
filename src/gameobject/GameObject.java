@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import punto.Punto;
 
 public class GameObject {
+	protected boolean alive;
 	protected JLabel imagen;
 
 	protected GameObject(JLabel img) {
@@ -49,5 +50,17 @@ public class GameObject {
 	
 	public JLabel getImagen() {
 		return imagen;
+	}
+	
+	public void borrarImagen() {
+		imagen.setIcon(null);
+	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
+	
+	public void setAliveState(boolean state) {
+		alive = state;
 	}
 }
