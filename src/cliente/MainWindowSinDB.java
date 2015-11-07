@@ -115,7 +115,7 @@ public class MainWindowSinDB extends JFrame {
 		pwdFieldPassword.setToolTipText("Introduzca su contrase\u00F1a aqu\u00ED");
 		pwdFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
-			//Ã‚Â¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
+			//Ãƒâ€šÃ‚Â¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
 				verificarTextFieldsUser();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
@@ -160,7 +160,10 @@ public class MainWindowSinDB extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
 				if(cliente.registrarUsuario()){
-					lanzarVentanaUsuario(textFieldNombre.getText());
+					JOptionPane.showMessageDialog(frame,
+							"Registro exitoso.",
+							"Info",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					JOptionPane.showMessageDialog(frame,
@@ -220,7 +223,7 @@ public class MainWindowSinDB extends JFrame {
 					}
 					catch(NumberFormatException nfe) {
 						JOptionPane.showMessageDialog(frame,
-								"Los datos del puerto son inválidos.\nIngrese un número entero",
+								"Los datos del puerto son invÃ¡lidos.\nIngrese un nÃºmero entero",
 								 "Error",
 								 JOptionPane.ERROR_MESSAGE);
 						return;
@@ -234,14 +237,14 @@ public class MainWindowSinDB extends JFrame {
 					}
 					catch(UnknownHostException e1) {
 			        	JOptionPane.showMessageDialog(frame,
-			        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
+			        			"No se pudo conectar con el servidor.\nPuede que estÃ© ocupado o no estÃ© en lÃ­nea.",
 								 "Error",
 								 JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 			        catch (IOException e2) {
 			            JOptionPane.showMessageDialog(frame,
-			            		"No se pudo crear el socket.\nInténtelo nuevamente.",
+			            		"No se pudo crear el socket.\nIntÃ©ntelo nuevamente.",
 								 "Error",
 								 JOptionPane.ERROR_MESSAGE);
 						return;
@@ -304,7 +307,7 @@ public class MainWindowSinDB extends JFrame {
 	
 	private void mensajeSalida() {
 		int option = JOptionPane.showConfirmDialog(frame,
-			    "¿Esta seguro que quiere salir?",
+			    "Â¿Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {
