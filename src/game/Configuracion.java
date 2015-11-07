@@ -4,6 +4,8 @@ package game;
  * Contiene los distintos parametros configurables del juego
  */
 public enum Configuracion {
+	//PARTIDA
+	TIEMPO_PARTIDA(60), //En segundos
 	//PACMAN
 	PACMAN_VELOCIDAD (2),
 	PACMAN_PUNTAJE_POR_BOLITA (20),
