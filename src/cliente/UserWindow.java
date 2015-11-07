@@ -129,7 +129,6 @@ public class UserWindow extends JFrame {
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
-			//mainWindow.cerrarCliente();
 			mainWindow.resetUserAndPassword();
 			mainWindow.setVisible(true);
 			cliente.cerrarCliente();

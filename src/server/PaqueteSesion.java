@@ -1,6 +1,5 @@
 package server;
 
-import cliente.TipoPaquete;
 /**
  *Paquete de datos para el manejo de inicio de sesion, cierre de sesion, y registro de usuario
  */

@@ -1,4 +1,4 @@
-package cliente;
+package server;
 /**
  * Define los posibles tipos de PaqueteSesion
  *
