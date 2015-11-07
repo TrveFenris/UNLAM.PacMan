@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import rectas.Recta;
 import rectas.Rectas;
 import game.Mapa;
 import game.Punto;
@@ -69,6 +68,8 @@ public class GameWindow extends JFrame {
 	private boolean moverArriba;
 	private boolean moverIzquierda;
 	private boolean moverDerecha;
+	private Rectas ultimaDireccion;
+	private Actions ultimaAccion;
 	
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
@@ -106,6 +107,7 @@ public class GameWindow extends JFrame {
 		jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman
 		pacman = new Pacman(Pacman.crearLabel(new Punto(5,25)), lblName.getText());
+		ultimaAccion=Actions.QUIETO;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
 		userWindow = window;
@@ -143,18 +145,30 @@ public class GameWindow extends JFrame {
 		}
 		else if(key.getKeyCode() == controles[ARRIBA]) {
 			moverArriba = true;
+			ultimaAccion=Actions.ARRIBA;
+			if(ultimaDireccion==Rectas.HORIZONTAL)
+				return;
 			pacman.cambiarSentido(Actions.ARRIBA);
 		}
 		else if(key.getKeyCode() == controles[ABAJO]) {
 			moverAbajo = true;
+			ultimaAccion=Actions.ABAJO;
+			if(ultimaDireccion==Rectas.HORIZONTAL)
+				return;
 			pacman.cambiarSentido(Actions.ABAJO);
 		}
 		else if(key.getKeyCode() == controles[IZQUIERDA]) {
 			moverIzquierda = true;
+			ultimaAccion=Actions.IZQUIERDA;
+			if(ultimaDireccion==Rectas.VERTICAL)
+				return;
 			pacman.cambiarSentido(Actions.IZQUIERDA);
 		}
 		else if(key.getKeyCode() == controles[DERECHA]) {
 			moverDerecha = true;
+			ultimaAccion=Actions.DERECHA;
+			if(ultimaDireccion==Rectas.VERTICAL)
+				return;
 			pacman.cambiarSentido(Actions.DERECHA);
 		}
 	}
@@ -163,8 +177,8 @@ public class GameWindow extends JFrame {
 		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
 			Jugador jug=j.next();
 			jug.actualizarUbicacion(mapa.getArrayRectas());
-			System.out.println(jug.getTipoUbicacion());
-			switch(jug.getTipoUbicacion()){
+			ultimaDireccion=jug.getTipoUbicacion();
+			switch(ultimaDireccion){
 				case HORIZONTAL:
 					leftBound = jug.getRectaActual(0).getPuntoInicialX();
 					rightBound = jug.getRectaActual(0).getPuntoFinalX();
@@ -176,6 +190,7 @@ public class GameWindow extends JFrame {
 					leftBound = rightBound = jug.getRectaActual(0).getPuntoInicialX();
 					break;
 				case AMBAS:
+					System.out.println("INTERSECCION");
 					for(int i=0;i<2;i++){
 						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
 							leftBound = jug.getRectaActual(i).getPuntoInicialX();
@@ -187,6 +202,7 @@ public class GameWindow extends JFrame {
 								lowerBound = jug.getRectaActual(i).getPuntoFinalY();
 							}
 					}
+					jug.cambiarSentido(ultimaAccion);
 					break;
 			}
 			jug.mover();
