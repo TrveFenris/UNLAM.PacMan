@@ -69,7 +69,7 @@ public class UserWindow extends JFrame {
 		lblBienvenida.setForeground(new Color(51, 153, 204));
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setText("¡Bienvenid@ "+userName+"! ");
+		lblBienvenida.setText("Â¡Bienvenid@ "+userName+"! ");
 		GridBagConstraints gbc_lblBienvenida = new GridBagConstraints();
 		gbc_lblBienvenida.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBienvenida.gridheight = 2;
@@ -124,11 +124,11 @@ public class UserWindow extends JFrame {
 	/* Metodos */
 	private void confirmarCerrarSesion(){
 		int res= JOptionPane.showConfirmDialog(this,
-			    "¿Esta seguro?",
+			    "Â¿Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
-			mainWindow.cerrarCliente();
+			//mainWindow.cerrarCliente();
 			mainWindow.resetUserAndPassword();
 			mainWindow.setVisible(true);
 			this.dispose();
