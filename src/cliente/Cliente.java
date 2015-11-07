@@ -112,7 +112,7 @@ public class Cliente {
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             paquete=(PaqueteSesion)is.readObject();
-            if(paquete.getAck()){
+            if(paquete.getResultado()){
             	respuesta=true;
 	        }
             else
@@ -147,7 +147,7 @@ public class Cliente {
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             paquete=(PaqueteSesion)is.readObject();
-            if(paquete.getAck()){
+            if(paquete.getResultado()){
             	respuesta=true;
 	        }
             else
