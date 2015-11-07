@@ -1,11 +1,12 @@
 package gameobject;
 
 import game.Configuracion;
-import game.Punto;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import punto.Punto;
 
 public class Fantasma extends Jugador{
 	protected int pacmansComidos;

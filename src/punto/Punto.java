@@ -1,4 +1,4 @@
-package game;
+package punto;
 
 public class Punto {
 	private int x;

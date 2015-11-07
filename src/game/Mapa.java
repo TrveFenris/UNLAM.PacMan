@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 
+import punto.Punto;
 import rectas.Recta;
 import rectas.Rectas;
 

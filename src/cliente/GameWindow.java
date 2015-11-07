@@ -17,9 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import punto.Punto;
 import rectas.Rectas;
 import game.Mapa;
-import game.Punto;
 import gameobject.Actions;
 //import game.Rectas;
 import gameobject.Jugador;

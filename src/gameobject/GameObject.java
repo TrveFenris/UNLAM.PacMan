@@ -1,8 +1,8 @@
 package gameobject;
 
-import game.Punto;
-
 import javax.swing.JLabel;
+
+import punto.Punto;
 
 public class GameObject {
 	protected JLabel imagen;

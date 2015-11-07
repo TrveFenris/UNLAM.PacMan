@@ -1,12 +1,11 @@
 package gameobject;
 
-import game.Punto;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JLabel;
 
+import punto.Punto;
 import rectas.Recta;
 import rectas.Rectas;
 

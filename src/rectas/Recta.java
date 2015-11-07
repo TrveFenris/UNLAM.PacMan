@@ -1,16 +1,16 @@
 package rectas;
 
-import game.Punto;
-
 import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import punto.Punto;
+
 public class Recta {
-	protected Punto puntoInicial;
-	protected Punto puntoFinal;
-	protected Rectas tipo;
+	private Punto puntoInicial;
+	private Punto puntoFinal;
+	private Rectas tipo;
 
 	public Recta(Punto p1, Punto p2) {
 		if(p1.getX() == p2.getX()) {

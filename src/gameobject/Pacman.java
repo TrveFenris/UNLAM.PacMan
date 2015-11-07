@@ -1,13 +1,14 @@
 package gameobject;
 
 import game.Configuracion;
-import game.Punto;
 
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import punto.Punto;
 
 public class Pacman extends Jugador {	
 	private boolean superpoder;
