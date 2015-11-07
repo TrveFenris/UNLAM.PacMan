@@ -34,7 +34,13 @@ public class MainServer {
             System.exit(-1);
         }
 
-        servidor = new Server(puerto, maximoConexiones);
+        try {
+			servidor = new Server(puerto, maximoConexiones);
+		} catch (IOException e) {
+			System.out.println("No se puede escuchar desde el puerto elegido, "
+					+ "cerrando Servidor...");
+			System.exit(-1);
+		}
 
         System.out.println("DATOS DEL SERVIDOR:\n-------------------\n");
         System.out.println("Nombre del Servidor:\t" + servidor.getNombreHost());
