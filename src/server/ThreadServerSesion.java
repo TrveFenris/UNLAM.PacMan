@@ -36,7 +36,7 @@ public class ThreadServerSesion extends Thread {
     	            switch(paquete.getTipoPaquete()){
     	            	case LOGIN:
     	            		paquete.setResultado(true);
-    	            		//paquete.setAck(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
+    	            		//paquete.setResultado(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
     	            		break;
     	            	case LOGOUT:
     	            		paquete.setResultado(true);
@@ -44,7 +44,7 @@ public class ThreadServerSesion extends Thread {
     	            		break;
     	            	case REGISTRO:
     	            		paquete.setResultado(false);
-    	            		//paquete.setAck(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
+    	            		//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
     	            		break;
     	            }
     	            o.writeObject(paquete);
