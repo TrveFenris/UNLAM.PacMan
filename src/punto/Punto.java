@@ -9,22 +9,22 @@ public class Punto {
 		this.y = y;
 	}
 	
-	public Punto sumar(Punto vec){
-		return new Punto(this.x + vec.x, this.y + vec.y);
+	public Punto sumar(Punto p){
+		return new Punto(this.x + p.x, this.y + p.y);
 	}
-	public Punto restar(Punto vec){
-		return new Punto(this.x - vec.x, this.y - vec.y);
+	public Punto restar(Punto p){
+		return new Punto(this.x - p.x, this.y - p.y);
 	}
-	public int producto(Punto vec){
-		return (this.x * vec.x) + (this.y * vec.y);
-	}
-	
-	public boolean equals(Punto vec){
-		return (this.x == vec.x) && (this.y == vec.y);
+	public int producto(Punto p){
+		return (this.x * p.x) + (this.y * p.y);
 	}
 	
-	public double distanciaCon(Punto vec){
-		return Math.sqrt( Math.pow( (this.x - vec.x), 2) + Math.pow( (this.y - vec.y), 2) );
+	public boolean equals(Punto p){
+		return (this.x == p.x) && (this.y == p.y);
+	}
+	
+	public double distanciaCon(Punto p){
+		return Math.sqrt( Math.pow( (this.x - p.x), 2) + Math.pow( (this.y - p.y), 2) );
 	}
 	
 	public double modulo(){
