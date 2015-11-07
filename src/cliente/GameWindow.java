@@ -63,10 +63,6 @@ public class GameWindow extends JFrame {
 	//private int leftBound;
 	//private int rightBound;
 	//Variables de acción segun presión de tecla
-	private boolean moverAbajo;
-	private boolean moverArriba;
-	private boolean moverIzquierda;
-	private boolean moverDerecha;
 	private Rectas ultimaDireccion;
 	private Actions ultimaAccion;
 	
@@ -133,38 +129,30 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void handleKeyPress(KeyEvent key) {
-		moverAbajo = false;
-		moverArriba = false;
-		moverIzquierda = false;
-		moverDerecha = false;
 		if(key.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if(userWindow != null) {
 				mensajeSalida();
 			}
 		}
 		else if(key.getKeyCode() == controles[ARRIBA]) {
-			moverArriba = true;
 			ultimaAccion=Actions.ARRIBA;
 			if(ultimaDireccion==Rectas.HORIZONTAL)
 				return;
 			pacman.cambiarSentido(Actions.ARRIBA);
 		}
 		else if(key.getKeyCode() == controles[ABAJO]) {
-			moverAbajo = true;
 			ultimaAccion=Actions.ABAJO;
 			if(ultimaDireccion==Rectas.HORIZONTAL)
 				return;
 			pacman.cambiarSentido(Actions.ABAJO);
 		}
 		else if(key.getKeyCode() == controles[IZQUIERDA]) {
-			moverIzquierda = true;
 			ultimaAccion=Actions.IZQUIERDA;
 			if(ultimaDireccion==Rectas.VERTICAL)
 				return;
 			pacman.cambiarSentido(Actions.IZQUIERDA);
 		}
 		else if(key.getKeyCode() == controles[DERECHA]) {
-			moverDerecha = true;
 			ultimaAccion=Actions.DERECHA;
 			if(ultimaDireccion==Rectas.VERTICAL)
 				return;
