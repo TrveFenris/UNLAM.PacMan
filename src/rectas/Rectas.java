@@ -2,5 +2,6 @@ package rectas;
 
 public enum Rectas {
 	HORIZONTAL,
-	VERTICAL
+	VERTICAL,
+	AMBAS
 }
