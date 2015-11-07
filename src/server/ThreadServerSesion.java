@@ -40,6 +40,7 @@ public class ThreadServerSesion extends Thread {
     	            switch(paquete.getTipoPaquete()){
     	            	case LOGIN:
     	            		paquete.setResultado(true);
+    	            		servidor.agregarNombre(nombre);
     	            		//paquete.setResultado(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
     	            		break;
     	            	case LOGOUT:
@@ -56,13 +57,16 @@ public class ThreadServerSesion extends Thread {
                 }
         	}
         	 System.out.println(nombre+" se ha desconectado del servidor");
+        	 clientSocket.close();
+        	 servidor.removerNombre(nombre);
+             servidor.eliminarCliente();
         }
         catch(EOFException e){
             try {
-            	System.out.println("Cerrando cliente");
                 clientSocket.close();
+                servidor.removerNombre(nombre);
                 servidor.eliminarCliente();
-                System.out.println(nombre+" se ha desconectado del servidor");
+                System.out.println(nombre+" se ha desconectado del servidor (EOF)");
             }
             catch (IOException e1) {
                 e1.printStackTrace();
@@ -71,10 +75,10 @@ public class ThreadServerSesion extends Thread {
         catch(IOException e) {
         	e.printStackTrace();
             try {
-            	System.out.println("Cerrando cliente");
                 clientSocket.close();
+                servidor.removerNombre(nombre);
                 servidor.eliminarCliente();
-                System.out.println(nombre+" se ha desconectado del servidor");
+                System.out.println(nombre+" se ha desconectado del servidor (IO");
             }
             catch (IOException e1) {
                 e1.printStackTrace();

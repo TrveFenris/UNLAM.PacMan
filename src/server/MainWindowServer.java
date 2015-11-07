@@ -19,6 +19,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.awt.TextArea;
 
 public class MainWindowServer extends JFrame {
 	//Thread de escucha del servidor
@@ -29,8 +32,9 @@ public class MainWindowServer extends JFrame {
 	            if (socket != null)
 	            	new ThreadServerSesion(socket,servidor,servidor.getDatabase()).start();
 	        }
+			System.out.println("FIN DEL THREAD");
 	        servidor.pararServidor();
-	        System.out.println("FIN DEL THREAD");
+	        System.out.println("SERVER CERRADO");
 		}
 		public void pararThread(){
 			bandera=false;
@@ -45,11 +49,14 @@ public class MainWindowServer extends JFrame {
 	public static MainWindowServer frame;
 	
 	private Server servidor = null;
-	private int puerto = 5058;
+	private int puerto = 5063;
 	private boolean bandera;
 	private int maxClientes=6;
 	private Socket socket = null;
 	private ListenThread threadEscucha;
+	private TextArea textAreaListaDeNombres;
+	private JLabel lblClientesConectados;
+	private ArrayList<String>nombres;
 
 	/**
 	 * Launch the application.
@@ -79,6 +86,8 @@ public class MainWindowServer extends JFrame {
 				mensajeSalida();
 			}
 		});
+		//
+		nombres=new ArrayList<String>();
 		setTitle("Server PacMan");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -88,9 +97,9 @@ public class MainWindowServer extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 276, 22, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblServer = new JLabel("SERVER");
@@ -138,7 +147,7 @@ public class MainWindowServer extends JFrame {
 		
 		JLabel lblPuerto = new JLabel("Puerto");
 		GridBagConstraints gbc_lblPuerto = new GridBagConstraints();
-		gbc_lblPuerto.insets = new Insets(0, 0, 0, 5);
+		gbc_lblPuerto.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPuerto.gridx = 1;
 		gbc_lblPuerto.gridy = 3;
 		contentPane.add(lblPuerto, gbc_lblPuerto);
@@ -146,7 +155,7 @@ public class MainWindowServer extends JFrame {
 		textFieldPuerto = new JTextField();
 		textFieldPuerto.setEditable(false);
 		GridBagConstraints gbc_textFieldPuerto = new GridBagConstraints();
-		gbc_textFieldPuerto.insets = new Insets(0, 0, 0, 5);
+		gbc_textFieldPuerto.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldPuerto.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldPuerto.gridx = 3;
 		gbc_textFieldPuerto.gridy = 3;
@@ -155,7 +164,7 @@ public class MainWindowServer extends JFrame {
 		
 		//SERVIDOR
 		try {
-			servidor = new Server(puerto, maxClientes);
+			servidor = new Server(puerto, maxClientes,this);
 		} catch (IOException e) {
 			System.out.println("No se puede escuchar desde el puerto elegido, "
 					+ "cerrando Servidor...");
@@ -164,6 +173,24 @@ public class MainWindowServer extends JFrame {
 		textFieldNombre.setText(servidor.getNombreHost());
 		textFieldPuerto.setText(Integer.toString(servidor.getPuerto()));
 		textFieldIP.setText(servidor.getIPHost());
+		
+		lblClientesConectados = new JLabel("Clientes conectados");
+		GridBagConstraints gbc_lblClientesConectados = new GridBagConstraints();
+		gbc_lblClientesConectados.gridwidth = 3;
+		gbc_lblClientesConectados.insets = new Insets(0, 0, 5, 5);
+		gbc_lblClientesConectados.gridx = 1;
+		gbc_lblClientesConectados.gridy = 4;
+		contentPane.add(lblClientesConectados, gbc_lblClientesConectados);
+		
+		textAreaListaDeNombres = new TextArea();
+		textAreaListaDeNombres.setEditable(false);
+		GridBagConstraints gbc_textAreaListaDeNombres = new GridBagConstraints();
+		gbc_textAreaListaDeNombres.gridwidth = 3;
+		gbc_textAreaListaDeNombres.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textAreaListaDeNombres.insets = new Insets(0, 0, 0, 5);
+		gbc_textAreaListaDeNombres.gridx = 1;
+		gbc_textAreaListaDeNombres.gridy = 5;
+		contentPane.add(textAreaListaDeNombres, gbc_textAreaListaDeNombres);
 		bandera=true;
 		threadEscucha=new ListenThread();
 		threadEscucha.start();
@@ -177,8 +204,25 @@ public class MainWindowServer extends JFrame {
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {
 			threadEscucha.pararThread();
-			System.out.println("SERVER CERRADO");
 			frame.dispose();
+		}
+	}
+	
+	public void agregarNombre(String nombre){
+		nombres.add(nombre);
+		actualizarListaDeNombres();
+	}
+	
+	public void removerNombre(String nombre){
+		nombres.remove(nombre);
+		actualizarListaDeNombres();
+	}
+	
+	public void actualizarListaDeNombres(){
+		textAreaListaDeNombres.setText("");
+		for(Iterator<String>s=nombres.iterator();s.hasNext();){
+			String cadena=s.next();
+			textAreaListaDeNombres.append(cadena+"\n");
 		}
 	}
 }

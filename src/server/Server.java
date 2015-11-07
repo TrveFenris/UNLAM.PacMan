@@ -23,13 +23,15 @@ public class Server {
     private String nombreHost;
     private String IPHost;
     private DataBase database;
+    private MainWindowServer serverWindow;
 
     /**
-     * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar
+     * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar,
+     * y la ventana principal, donde escribirá su lista de nombres.
      * @param port
      * @param max_conexiones
      */
-    public Server(int port, int max_conexiones) throws IOException{
+    public Server(int port, int max_conexiones, MainWindowServer serverWindow) throws IOException{
         try {
             nombreHost = InetAddress.getLocalHost().getHostName().toString();
             IPHost = InetAddress.getLocalHost().getHostAddress().toString();
@@ -37,7 +39,7 @@ public class Server {
         catch (UnknownHostException e1) {
             e1.printStackTrace();
         }
-
+        this.serverWindow=serverWindow;
         puerto = port;
         max_clientes = max_conexiones;
         cantActualClientes = 0;
@@ -130,7 +132,7 @@ public class Server {
     }
     
     /**
-     * Actualiza el contador de clientes conectados
+     *Actualiza el contador de clientes conectados, y lo elimina de la lista de nombres del MainWindow
      */
     public void eliminarCliente(){
     	cantActualClientes--;
@@ -142,4 +144,12 @@ public class Server {
     public DataBase getDatabase(){
     	return database;
     }
+    
+    public void agregarNombre(String nombre){
+		serverWindow.agregarNombre(nombre);
+	}
+	
+	public void removerNombre(String nombre){
+		serverWindow.removerNombre(nombre);
+	}
 }

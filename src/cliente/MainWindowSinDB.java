@@ -257,13 +257,6 @@ public class MainWindowSinDB extends JFrame {
 	}
 	
 	/**
-	 * Cierra la conexion con el servidor
-	 */
-	private void desconectar() {
-		cliente.cerrarCliente();
-	}
-	
-	/**
 	 * Conecta con el servidor
 	 * @return -True/False, Informando si la conexion fue exitosa, o no.
 	 */
