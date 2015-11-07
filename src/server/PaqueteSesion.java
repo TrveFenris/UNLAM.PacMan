@@ -10,7 +10,7 @@ public class PaqueteSesion implements java.io.Serializable{
 	private String nombre;
 	private String password;
 	private TipoPaquete tipo;
-	private boolean ack;
+	private boolean resultado;
 	
 	/**
 	 * Crea un paquete de datos para la comunicacion durante el inicio y cierre de sesion.
@@ -20,7 +20,7 @@ public class PaqueteSesion implements java.io.Serializable{
 	public PaqueteSesion(String nombre, String password){
 		this.nombre=nombre;
 		this.password=password;
-		this.ack=false;
+		this.resultado=false;
 		this.tipo=TipoPaquete.LOGIN;
 	}
 	/**
@@ -43,16 +43,15 @@ public class PaqueteSesion implements java.io.Serializable{
 	 * Permite consultar si se pudo realizar la operacion solicitada correctamente.
 	 * @return 	si la operacion fue exitosa o no.
 	 */
-	public boolean getAck(){
-		return this.ack;
+	public boolean getResultado(){
+		return this.resultado;
 	}
 	
 	/**
 	 * Guarda el resultado de la operacion realizada
-	 * @param valor
 	 */
-	public void setAck(boolean valor){
-		this.ack=valor;
+	public void setResultado(boolean valor){
+		this.resultado=valor;
 	}
 	
 	/**
