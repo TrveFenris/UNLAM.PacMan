@@ -47,6 +47,12 @@ public class Punto {
 		this.x = x;
 		this.y = y;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
+
 	//Metodos Estaticos
 	public static Punto sumar(Punto a, Punto b){
 		return new Punto(a.x + b.x, a.y + b.y);

@@ -11,23 +11,7 @@ public class Recta {
 	protected Punto puntoInicial;
 	protected Punto puntoFinal;
 	protected Rectas tipo;
-	/*
-	protected Recta(Punto p1, Punto p2) {
-		if(p1.modulo()>p2.modulo()){
-			puntoInicial = p2;
-			puntoFinal = p1;
-		}
-		else{
-			puntoInicial = p1;
-			puntoFinal = p2;
-		}
-		if(puntoInicial.getX() == puntoFinal.getX())
-			tipo = Rectas.VERTICAL;
-		else 
-			if(puntoInicial.getY() == puntoFinal.getY())
-				tipo = Rectas.HORIZONTAL;
-	}
-	*/
+
 	public Recta(Punto p1, Punto p2) {
 		if(p1.getX() == p2.getX()) {
 			tipo = Rectas.VERTICAL;
@@ -101,5 +85,11 @@ public class Recta {
 		camino.setBackground(Color.GREEN);
 		camino.setOpaque(true);
 		area.add(camino);
+	}
+	
+	@Override
+	public String toString() {
+		return "PI: ("+puntoInicial.getX()+", "+puntoInicial.getY()+") "
+				+ "| PF: ("+puntoFinal.getX()+", "+puntoFinal.getY()+")";
 	}
 }
