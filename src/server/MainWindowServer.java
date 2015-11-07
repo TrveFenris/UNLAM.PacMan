@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.net.Socket;
 
 public class MainWindowServer extends JFrame {
@@ -44,7 +45,7 @@ public class MainWindowServer extends JFrame {
 	public static MainWindowServer frame;
 	
 	private Server servidor = null;
-	private int puerto = 5055;
+	private int puerto = 5057;
 	private boolean bandera;
 	private int maxClientes=6;
 	private Socket socket = null;
@@ -153,7 +154,13 @@ public class MainWindowServer extends JFrame {
 		textFieldPuerto.setColumns(10);
 		
 		//SERVIDOR
-		servidor = new Server(puerto, maxClientes);
+		try {
+			servidor = new Server(puerto, maxClientes);
+		} catch (IOException e) {
+			System.out.println("No se puede escuchar desde el puerto elegido, "
+					+ "cerrando Servidor...");
+			System.exit(-1);
+		}
 		textFieldNombre.setText(servidor.getNombreHost());
 		textFieldPuerto.setText(Integer.toString(servidor.getPuerto()));
 		textFieldIP.setText(servidor.getIPHost());
