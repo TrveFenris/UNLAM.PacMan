@@ -89,7 +89,8 @@ public class Recta {
 	
 	@Override
 	public String toString() {
-		return "PI: ("+puntoInicial.getX()+", "+puntoInicial.getY()+") "
-				+ "| PF: ("+puntoFinal.getX()+", "+puntoFinal.getY()+")";
+		
+		return "PI: " + puntoInicial.toString() +
+				" | PF: " + puntoFinal.toString();
 	}
 }
