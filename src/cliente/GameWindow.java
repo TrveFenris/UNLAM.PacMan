@@ -1,5 +1,11 @@
 package cliente;
 
+import game.Mapa;
+import gameobject.Actions;
+import gameobject.Bolita;
+import gameobject.Jugador;
+import gameobject.Pacman;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -19,10 +25,6 @@ import javax.swing.border.EmptyBorder;
 
 import punto.Punto;
 import rectas.Rectas;
-import game.Mapa;
-import gameobject.Actions;
-import gameobject.Jugador;
-import gameobject.Pacman;
 
 public class GameWindow extends JFrame {
 	/*Thread que maneja el Game Loop */
@@ -57,11 +59,6 @@ public class GameWindow extends JFrame {
 	private Mapa mapa;
 	private ArrayList<Jugador> jugadores;
 	private Pacman pacman;
-	//Variables delimitadoras
-	//private int upperBound;
-	//private int lowerBound;
-	//private int leftBound;
-	//private int rightBound;
 	//Variables de acción segun presión de tecla
 	private Rectas ultimaDireccion;
 	private Actions ultimaAccion;
@@ -167,18 +164,12 @@ public class GameWindow extends JFrame {
 			ultimaDireccion=jug.getTipoUbicacion();
 			switch(ultimaDireccion){
 				case HORIZONTAL:
-					//leftBound = jug.getRectaActual(0).getPuntoInicialX();
-					//rightBound = jug.getRectaActual(0).getPuntoFinalX();
-					//upperBound = lowerBound = jug.getRectaActual(0).getPuntoInicialY();
 					jug.setLeftBound(jug.getRectaActual(0).getPuntoInicialX());
 					jug.setRightBound(jug.getRectaActual(0).getPuntoFinalX());
 					jug.setUpperBound(jug.getRectaActual(0).getPuntoInicialY());
 					jug.setLowerBound(jug.getRectaActual(0).getPuntoInicialY());
 					break;
 				case VERTICAL:
-					//upperBound = jug.getRectaActual(0).getPuntoInicialY();
-					//lowerBound = jug.getRectaActual(0).getPuntoFinalY();
-					//leftBound = rightBound = jug.getRectaActual(0).getPuntoInicialX();
 					jug.setUpperBound(jug.getRectaActual(0).getPuntoInicialY());
 					jug.setLowerBound(jug.getRectaActual(0).getPuntoFinalY());
 					jug.setLeftBound(jug.getRectaActual(0).getPuntoInicialX());
@@ -188,15 +179,11 @@ public class GameWindow extends JFrame {
 				case AMBAS:
 					for(int i=0;i<2;i++){
 						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
-							//leftBound = jug.getRectaActual(i).getPuntoInicialX();
-							//rightBound = jug.getRectaActual(i).getPuntoFinalX();
 							jug.setLeftBound(jug.getRectaActual(i).getPuntoInicialX());
 							jug.setRightBound(jug.getRectaActual(i).getPuntoFinalX());
 						}
 						else
 							if(jug.getRectaActual(i).getTipo()==Rectas.VERTICAL){
-								//upperBound = jug.getRectaActual(i).getPuntoInicialY();
-								//lowerBound = jug.getRectaActual(i).getPuntoFinalY();
 								jug.setUpperBound(jug.getRectaActual(i).getPuntoInicialY());
 								jug.setLowerBound(jug.getRectaActual(i).getPuntoFinalY());
 							}
@@ -206,6 +193,7 @@ public class GameWindow extends JFrame {
 			}
 			jug.mover();
 			restrictBoundaries(jug);
+			calcularColisiones (jug);
 		}
 	}
 
@@ -226,6 +214,14 @@ public class GameWindow extends JFrame {
 		if( j.getCentroCoordenadasY() > j.getLowerBound() ) /* Limite hacia abajo (anda mal) */		
 			j.setLocation(j.getX(), j.getLowerBound() - (j.getHeight()/2));		
  	}
+	
+	private void calcularColisiones(Jugador j) {
+		for(Bolita b : mapa.getArrayBolitas()) {
+			if(b.isAlive() && j.colisionaCon(b)) {
+				b.borrarImagen();
+			}
+		}
+	}
 	
 	public void setControles(int[] controles){
 		this.controles=new int[4];
