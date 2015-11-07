@@ -222,7 +222,7 @@ public class MainWindowServer extends JFrame {
 		textAreaListaDeNombres.setText("");
 		for(Iterator<String>s=nombres.iterator();s.hasNext();){
 			String cadena=s.next();
-			textAreaListaDeNombres.append(cadena+"\n");
+			textAreaListaDeNombres.setText(textAreaListaDeNombres.getText()+cadena+"\n");
 		}
 	}
 }
