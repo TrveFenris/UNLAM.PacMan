@@ -78,7 +78,6 @@ public class MainWindowServer extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindowServer() {
-		setAlwaysOnTop(true);
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
