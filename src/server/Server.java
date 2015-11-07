@@ -29,7 +29,7 @@ public class Server {
      * @param port
      * @param max_conexiones
      */
-    public Server(int port, int max_conexiones) {
+    public Server(int port, int max_conexiones) throws IOException{
         try {
             nombreHost = InetAddress.getLocalHost().getHostName().toString();
             IPHost = InetAddress.getLocalHost().getHostAddress().toString();
@@ -43,15 +43,8 @@ public class Server {
         cantActualClientes = 0;
         sockets = new ArrayList<Socket>();
         database = new DataBase();
-
-        try {
-        	servidor = new ServerSocket(puerto);
-        }
-        catch (IOException e) {
-            System.out.println("No se puede escuchar desde el puerto elegido, "
-            					+ "cerrando Servidor...");
-            System.exit(-1);
-        }
+        servidor = new ServerSocket(puerto);
+        
     }
 
     /**
