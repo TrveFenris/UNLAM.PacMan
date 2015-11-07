@@ -165,4 +165,43 @@ public class Cliente {
 		}
     	return respuesta;
     }
+    
+    /**
+     * Cierra una sesion de usuario, desconectandose del servidor
+     * @return true/false, si el cierre de sesion fue exitoso o no.
+     */
+    public boolean cerrarSesion(){
+    	boolean respuesta=false;
+    	try {
+    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+            ObjectOutputStream o = new ObjectOutputStream(d);
+        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	paquete.setCerrarSesion();
+        	o.writeObject(paquete);
+        	//
+            DataInputStream data= new DataInputStream(cliente.getInputStream());
+            ObjectInputStream is = new ObjectInputStream(data);
+            paquete=(PaqueteSesion)is.readObject();
+            if(paquete.getResultado()){
+            	respuesta=true;
+	        }
+            else
+            	respuesta=false;
+            cerrarCliente();
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
+        	respuesta=false;
+            cerrarCliente();
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (iniciarSesion)");
+        	respuesta=false;
+        	cerrarCliente();
+        } catch (ClassNotFoundException e1) {
+        	respuesta=false;
+			cerrarCliente();
+		}
+    	return respuesta;
+    }
 }

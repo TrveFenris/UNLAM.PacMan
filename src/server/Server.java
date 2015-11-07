@@ -101,8 +101,8 @@ public class Server {
             }
             else{
             	sockets.add(cliente);
-                System.out.println("La Conexion numero " + cantActualClientes 
-                					+ " fue aceptada correctamente.");
+               // System.out.println("La Conexion numero " + cantActualClientes 
+               // 					+ " fue aceptada correctamente.");
             }
         } 
         catch(SocketTimeoutException e){

@@ -28,8 +28,6 @@ public class MainWindowSinDB extends JFrame {
 	private JPanel contentPane;
 	private JButton btnLogin;
 	private JButton btnRegistrarUsuario;
-	private JButton btnDesconectar;
-	private JButton btnConectar;
 	private JLabel lblNombre;
 	private JLabel lblPassword;
 	private JTextField textFieldNombre;
@@ -96,7 +94,6 @@ public class MainWindowSinDB extends JFrame {
 		contentPane.add(btnCredits);
 		
 		textFieldNombre = new JTextField();
-		textFieldNombre.setEditable(false);
 		textFieldNombre.setToolTipText("Introduzca su nombre aqu\u00ED");
 		textFieldNombre.addKeyListener(new KeyAdapter() {
 			@Override
@@ -111,11 +108,10 @@ public class MainWindowSinDB extends JFrame {
 		textFieldNombre.setColumns(10);
 		
 		pwdFieldPassword = new JPasswordField();
-		pwdFieldPassword.setEditable(false);
 		pwdFieldPassword.setToolTipText("Introduzca su contrase\u00F1a aqu\u00ED");
 		pwdFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
-			//Ã‚Â¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
+			//�keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
 				verificarTextFieldsUser();
 				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
@@ -131,6 +127,7 @@ public class MainWindowSinDB extends JFrame {
 		btnLogin.setEnabled(false);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(conectar()){
 					cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
 					if(cliente.iniciarSesion()){
 						lanzarVentanaUsuario(textFieldNombre.getText());
@@ -142,6 +139,7 @@ public class MainWindowSinDB extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 							return;
 						}
+				}
 			}
 		});
 		btnLogin.setBounds(110, 218, 120, 23);
@@ -158,20 +156,23 @@ public class MainWindowSinDB extends JFrame {
 		btnRegistrarUsuario = new JButton("Registrarse");
 		btnRegistrarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
-				if(cliente.registrarUsuario()){
-					JOptionPane.showMessageDialog(frame,
-							"Registro exitoso.",
-							"Info",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
-				else{
-					JOptionPane.showMessageDialog(frame,
-							"Usuario ya registrado.\nIntentelo nuevamente.",
-							"Error",
-							JOptionPane.ERROR_MESSAGE);
-							return;
+				if(conectar()){
+					cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
+					if(cliente.registrarUsuario()){
+						JOptionPane.showMessageDialog(frame,
+								"Registro exitoso.",
+								"Info",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
+					else{
+						JOptionPane.showMessageDialog(frame,
+								"Usuario ya registrado.\nIntentelo nuevamente.",
+								"Error",
+								JOptionPane.ERROR_MESSAGE);
+								return;
+						}
+					cliente.cerrarSesion();
+				}
 			}
 		});
 		btnRegistrarUsuario.setEnabled(false);
@@ -197,78 +198,6 @@ public class MainWindowSinDB extends JFrame {
 		txtPuerto.setBounds(110, 81, 86, 20);
 		contentPane.add(txtPuerto);
 		txtPuerto.setColumns(10);
-		
-		btnConectar = new JButton("Conectar");
-		btnConectar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(txtServidor.getText().equals(null) || txtServidor.getText().equals("")) {
-					JOptionPane.showMessageDialog(frame,
-							"Ingrese un servidor al que conectarse.",
-							 "Error",
-							 JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				else if(txtPuerto.getText().equals(null) || txtPuerto.getText().equals("")) {
-					JOptionPane.showMessageDialog(frame,
-							"Ingrese un puerto al que conectarse.",
-							 "Error",
-							 JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				else {
-					String server = txtServidor.getText();
-					int puerto;
-					try {
-						puerto = Integer.parseInt(txtPuerto.getText());
-					}
-					catch(NumberFormatException nfe) {
-						JOptionPane.showMessageDialog(frame,
-								"Los datos del puerto son inválidos.\nIngrese un número entero",
-								 "Error",
-								 JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					try {
-						cliente = new Cliente(server, puerto);
-						btnConectar.setEnabled(false);
-						btnDesconectar.setEnabled(true);
-						textFieldNombre.setEditable(true);
-						pwdFieldPassword.setEditable(true);
-					}
-					catch(UnknownHostException e1) {
-			        	JOptionPane.showMessageDialog(frame,
-			        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
-								 "Error",
-								 JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-			        catch (IOException e2) {
-			            JOptionPane.showMessageDialog(frame,
-			            		"No se pudo crear el socket.\nInténtelo nuevamente.",
-								 "Error",
-								 JOptionPane.ERROR_MESSAGE);
-						return;
-			        }
-				}
-			}
-		});
-		btnConectar.setBounds(206, 55, 89, 23);
-		contentPane.add(btnConectar);
-		
-		btnDesconectar = new JButton("Desconectar");
-		btnDesconectar.setEnabled(false);
-		btnDesconectar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cliente.cerrarCliente();
-				btnConectar.setEnabled(true);
-				btnDesconectar.setEnabled(false);
-				textFieldNombre.setEditable(false);
-				pwdFieldPassword.setEditable(false);
-				resetUserAndPassword();
-			}
-		});
-		btnDesconectar.setBounds(206, 80, 89, 23);
-		contentPane.add(btnDesconectar);
 		
 		JLabel lblSeparador = new JLabel("--------------------------------------------------------------");
 		lblSeparador.setBounds(43, 120, 280, 14);
@@ -300,7 +229,7 @@ public class MainWindowSinDB extends JFrame {
 			return;
 		}
 		frame.setVisible(false);
-		userWindow = new UserWindow(frame,username);
+		userWindow = new UserWindow(frame,username,cliente);
 		userWindow.setLocationRelativeTo(null);
 		userWindow.setVisible(true);
 	}
@@ -327,7 +256,63 @@ public class MainWindowSinDB extends JFrame {
 		btnRegistrarUsuario.setEnabled(false);
 	}
 	
-	protected void cerrarCliente() {
+	/**
+	 * Cierra la conexion con el servidor
+	 */
+	private void desconectar() {
 		cliente.cerrarCliente();
+	}
+	
+	/**
+	 * Conecta con el servidor
+	 * @return -True/False, Informando si la conexion fue exitosa, o no.
+	 */
+	private boolean conectar(){
+		if(txtServidor.getText().equals(null) || txtServidor.getText().equals("")) {
+			JOptionPane.showMessageDialog(frame,
+					"Ingrese un servidor al que conectarse.",
+					 "Error",
+					 JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(txtPuerto.getText().equals(null) || txtPuerto.getText().equals("")) {
+			JOptionPane.showMessageDialog(frame,
+					"Ingrese un puerto al que conectarse.",
+					 "Error",
+					 JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else {
+			String server = txtServidor.getText();
+			int puerto;
+			try {
+				puerto = Integer.parseInt(txtPuerto.getText());
+			}
+			catch(NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(frame,
+						"Los datos del puerto son inválidos.\nIngrese un número entero",
+						 "Error",
+						 JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			try {
+				cliente = new Cliente(server, puerto);
+				return true;
+			}
+			catch(UnknownHostException e1) {
+	        	JOptionPane.showMessageDialog(frame,
+	        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
+						 "Error",
+						 JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+	        catch (IOException e2) {
+	            JOptionPane.showMessageDialog(frame,
+	            		"No se pudo crear el socket.\nInténtelo nuevamente.",
+						 "Error",
+						 JOptionPane.ERROR_MESSAGE);
+				return false;
+	        }
+		}
 	}
 }

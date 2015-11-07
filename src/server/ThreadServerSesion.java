@@ -14,12 +14,14 @@ public class ThreadServerSesion extends Thread {
     private Server servidor;
     private DataBase database;
     private PaqueteSesion paquete;
+    private String nombre;
     
     public ThreadServerSesion(Socket socket,Server serv, DataBase database) {
         clientSocket = socket;
         servidor=serv;
         this.database=database;
         paquete=null;
+        nombre="user";
     }
 
     public void run() {
@@ -29,6 +31,8 @@ public class ThreadServerSesion extends Thread {
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
         		paquete=(PaqueteSesion)is.readObject();
+        		nombre=paquete.getNombre();
+        		System.out.println(paquete.getNombre()+" se ha conectado al servidor");
                 if (!clientSocket.isClosed()) {
     	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
     	            ObjectOutputStream o = new ObjectOutputStream(d);
@@ -45,18 +49,20 @@ public class ThreadServerSesion extends Thread {
     	            	case REGISTRO:
     	            		paquete.setResultado(false);
     	            		//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
+    	            		run=false;
     	            		break;
     	            }
     	            o.writeObject(paquete);
                 }
         	}
+        	 System.out.println(nombre+" se ha desconectado del servidor");
         }
         catch(EOFException e){
             try {
             	System.out.println("Cerrando cliente");
                 clientSocket.close();
                 servidor.eliminarCliente();
-                System.out.println("Un cliente se ha desconectado.");
+                System.out.println(nombre+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
                 e1.printStackTrace();
@@ -68,7 +74,7 @@ public class ThreadServerSesion extends Thread {
             	System.out.println("Cerrando cliente");
                 clientSocket.close();
                 servidor.eliminarCliente();
-                System.out.println("Un cliente se ha desconectado.");
+                System.out.println(nombre+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
                 e1.printStackTrace();

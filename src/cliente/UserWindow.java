@@ -23,7 +23,6 @@ public class UserWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private GameWindow gameWindow;
-	//private MainWindow mainWindow;
 	private MainWindowSinDB mainWindow;
 	private ConfigWindow configWindow;
 	private JPanel contentPane;
@@ -31,6 +30,7 @@ public class UserWindow extends JFrame {
 	private JButton btnConfig;
 	private JButton btnJugar;
 	private JLabel lblBienvenida;
+	private Cliente cliente;
 	//CONFIGURACION
 	private String userName;
 	private int arriba;
@@ -40,7 +40,7 @@ public class UserWindow extends JFrame {
 	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
-	public UserWindow(MainWindowSinDB window,String nombre) {
+	public UserWindow(MainWindowSinDB window,String nombre, Cliente cliente) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -50,6 +50,7 @@ public class UserWindow extends JFrame {
 				}
 			}
 		});
+		this.cliente=cliente;
 		mainWindow = window;
 		userName=nombre;
 		setTitle("Menu principal");
@@ -124,13 +125,14 @@ public class UserWindow extends JFrame {
 	/* Metodos */
 	private void confirmarCerrarSesion(){
 		int res= JOptionPane.showConfirmDialog(this,
-			    "Â¿Esta seguro?",
+			    "¿Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
 			//mainWindow.cerrarCliente();
 			mainWindow.resetUserAndPassword();
 			mainWindow.setVisible(true);
+			cliente.cerrarCliente();
 			this.dispose();
 		}
 	}
