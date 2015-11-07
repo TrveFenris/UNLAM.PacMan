@@ -114,9 +114,9 @@ public class MainWindowSinDB extends JFrame {
 			//¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
 				verificarTextFieldsUser();
-				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){
-					lanzarVentanaUsuario(textFieldNombre.getText());
-				}
+//				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){ //LOGIN CON LA TECLA ENTER
+//					lanzarVentanaUsuario(textFieldNombre.getText());
+//				}
 			}
 		});
 		pwdFieldPassword.setBounds(110, 187, 170, 20);
