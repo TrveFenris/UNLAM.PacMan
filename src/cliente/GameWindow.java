@@ -190,7 +190,6 @@ public class GameWindow extends JFrame {
 					leftBound = rightBound = jug.getRectaActual(0).getPuntoInicialX();
 					break;
 				case AMBAS:
-					System.out.println("INTERSECCION");
 					for(int i=0;i<2;i++){
 						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
 							leftBound = jug.getRectaActual(i).getPuntoInicialX();
