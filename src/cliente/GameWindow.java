@@ -159,54 +159,35 @@ public class GameWindow extends JFrame {
 		}
 	}
 	
-	/**
-	 * Cuenta las rectas sobre las que se encuentra el personaje controlado por un jugador
-	 * @param jugador
-	 * @return cantidad de rectas
-	 */
-	private int contarRectas(Jugador jugador){
-		int contadorRectas=0;
-		for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
-			Recta rec = k.next();
-			if(jugador.estaEn(rec)) {
-				contadorRectas++;
-			}
-		}
-		return contadorRectas;
-	}
-	
 	private void update(){
 		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
 			Jugador jug=j.next();
-			int contadorRectas=contarRectas(jug);
-			for(Iterator<Recta>k=mapa.getArrayRectas().iterator();k.hasNext();) {
-				Recta rec = k.next();
-				if(contadorRectas==1) {
-					if(jug.estaEn(rec)) {
-						if(rec.getTipo() == Rectas.HORIZONTAL) {
-							leftBound = rec.getPuntoInicialX();
-							rightBound = rec.getPuntoFinalX();
-							upperBound = lowerBound = rec.getPuntoInicialY();
+			jug.actualizarUbicacion(mapa.getArrayRectas());
+			System.out.println(jug.getTipoUbicacion());
+			switch(jug.getTipoUbicacion()){
+				case HORIZONTAL:
+					leftBound = jug.getRectaActual(0).getPuntoInicialX();
+					rightBound = jug.getRectaActual(0).getPuntoFinalX();
+					upperBound = lowerBound = jug.getRectaActual(0).getPuntoInicialY();
+					break;
+				case VERTICAL:
+					upperBound = jug.getRectaActual(0).getPuntoInicialY();
+					lowerBound = jug.getRectaActual(0).getPuntoFinalY();
+					leftBound = rightBound = jug.getRectaActual(0).getPuntoInicialX();
+					break;
+				case AMBAS:
+					for(int i=0;i<2;i++){
+						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
+							leftBound = jug.getRectaActual(i).getPuntoInicialX();
+							rightBound = jug.getRectaActual(i).getPuntoFinalX();
 						}
-						else if(rec.getTipo() == Rectas.VERTICAL) {
-							upperBound = rec.getPuntoInicialY();
-							lowerBound = rec.getPuntoFinalY();
-							leftBound = rightBound = rec.getPuntoInicialX();
-						}
+						else
+							if(jug.getRectaActual(i).getTipo()==Rectas.VERTICAL){
+								upperBound = jug.getRectaActual(i).getPuntoInicialY();
+								lowerBound = jug.getRectaActual(i).getPuntoFinalY();
+							}
 					}
-				}
-				else if(contadorRectas>1) {
-					if(jug.estaEn(rec)) {
-						if(rec.getTipo() == Rectas.HORIZONTAL) {
-							leftBound = rec.getPuntoInicialX();
-							rightBound = rec.getPuntoFinalX();
-						}
-						else if(rec.getTipo() == Rectas.VERTICAL) {
-							upperBound = rec.getPuntoInicialY();
-							lowerBound = rec.getPuntoFinalY();
-						}
-					}
-				}
+					break;
 			}
 			jug.mover();
 			restrictBoundaries(jug);
