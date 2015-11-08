@@ -24,7 +24,7 @@ public class Punto {
 	}
 	
 	public double distanciaCon(Punto p){
-		return Math.sqrt( Math.pow( (this.x - p.x), 2) + Math.pow( (this.y - p.y), 2) );
+		return Math.sqrt( Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2) );
 	}
 	
 	public double modulo(){
