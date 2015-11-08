@@ -47,6 +47,9 @@ public class Punto {
 		this.x = x;
 		this.y = y;
 	}
+	public boolean isOrigen(){
+		return(x==0&&y==0);
+	}
 	
 	@Override
 	public String toString() {
