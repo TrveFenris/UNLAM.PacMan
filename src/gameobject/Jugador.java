@@ -75,7 +75,7 @@ public class Jugador extends GameObject{
 	*/
 	public boolean colisionaCon(Bolita obj) {
 		if( this.getCentroCoordenadas().equals(obj.getCentroCoordenadas()) ) {
-			System.out.println("Colisiono con una bolita");
+			//System.out.println("Colisiono con una bolita");
 			return true;
 		}
 		return false;

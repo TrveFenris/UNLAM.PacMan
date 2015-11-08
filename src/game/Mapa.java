@@ -5,7 +5,9 @@ import gameobject.Bolita;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import punto.Punto;
 import rectas.Recta;
@@ -73,6 +75,8 @@ public class Mapa {
 	}
 	
 	public void removerBolita(Bolita b) {
+		b.setAliveState(false);
+		b.borrarImagen();
 		bolitas.remove(b);
 	}
 }

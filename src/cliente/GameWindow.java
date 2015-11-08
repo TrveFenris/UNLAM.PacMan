@@ -216,11 +216,20 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
+		for(Iterator<Bolita>it=mapa.getArrayBolitas().iterator();it.hasNext();) {
+			Bolita b = it.next();
+			if(b.isAlive() && j.colisionaCon(b)) {
+				mapa.removerBolita(b);
+				it = mapa.getArrayBolitas().iterator();
+			}
+			System.out.println(mapa.getArrayBolitas().size());
+		}
+		/*
 		for(Bolita b : mapa.getArrayBolitas()) {
 			if(b.isAlive() && j.colisionaCon(b)) {
 				mapa.removerBolita(b);
 			}
-		}
+		}*/
 	}
 	
 	public void setControles(int[] controles){
