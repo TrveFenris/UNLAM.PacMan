@@ -48,8 +48,8 @@ public class Mapa {
 		for(Iterator<Recta>r=rectas.iterator();r.hasNext();){
 			Recta rec=r.next();
 			rec.dibujar(area);
-			generarBolitas(area);
 		}
+		generarBolitas(area);
 	}
 	
 	public void generarBolitas(JPanel area){
