@@ -71,4 +71,8 @@ public class Mapa {
 			}
 		}
 	}
+	
+	public void removerBolita(Bolita b) {
+		bolitas.remove(b);
+	}
 }

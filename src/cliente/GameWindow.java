@@ -218,7 +218,7 @@ public class GameWindow extends JFrame {
 	private void calcularColisiones(Jugador j) {
 		for(Bolita b : mapa.getArrayBolitas()) {
 			if(b.isAlive() && j.colisionaCon(b)) {
-				b.borrarImagen();
+				mapa.removerBolita(b);
 			}
 		}
 	}
