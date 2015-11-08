@@ -25,11 +25,13 @@ public class Mapa {
 		agregarRecta(new Punto(30,50), new Punto(30,530));
 		agregarRecta(new Punto(30,530), new Punto(730,530));
 		agregarRecta(new Punto(730,50), new Punto(730,530));
-		agregarRecta(new Punto(380,50), new Punto(380,530));
+		agregarRecta(new Punto(370,50), new Punto(370,530));
 		agregarRecta(new Punto(30,290), new Punto(730,290));
 		agregarRecta(new Punto(30,50), new Punto(730,50));
 		agregarRecta(new Punto(250,30), new Punto(250,500));
 		agregarRecta(new Punto(100,150), new Punto(600,150));
+		agregarRecta(new Punto(550,34), new Punto(550,550));
+		agregarRecta(new Punto(200,470), new Punto(500,470));
 	}
 	
 	public ArrayList<Bolita> getArrayBolitas() {
