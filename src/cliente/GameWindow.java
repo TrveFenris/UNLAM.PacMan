@@ -222,14 +222,7 @@ public class GameWindow extends JFrame {
 				mapa.removerBolita(b);
 				it = mapa.getArrayBolitas().iterator();
 			}
-			System.out.println(mapa.getArrayBolitas().size());
 		}
-		/*
-		for(Bolita b : mapa.getArrayBolitas()) {
-			if(b.isAlive() && j.colisionaCon(b)) {
-				mapa.removerBolita(b);
-			}
-		}*/
 	}
 	
 	public void setControles(int[] controles){
