@@ -90,7 +90,7 @@ public class MainWindowServer extends JFrame {
 		setTitle("Server PacMan");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 433, 300);
+		setBounds(100, 100, 433, 333);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -105,8 +105,9 @@ public class MainWindowServer extends JFrame {
 		lblServer.setForeground(SystemColor.textHighlight);
 		lblServer.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		GridBagConstraints gbc_lblServer = new GridBagConstraints();
+		gbc_lblServer.gridwidth = 3;
 		gbc_lblServer.insets = new Insets(0, 0, 5, 5);
-		gbc_lblServer.gridx = 3;
+		gbc_lblServer.gridx = 1;
 		gbc_lblServer.gridy = 0;
 		contentPane.add(lblServer, gbc_lblServer);
 		
