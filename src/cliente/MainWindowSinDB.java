@@ -189,6 +189,7 @@ public class MainWindowSinDB extends JFrame {
 		
 		txtServidor = new JTextField();
 		txtServidor.setToolTipText("Introduzca el nombre o la ip del servidor");
+		txtServidor.setText("localhost");
 		txtServidor.setBounds(110, 56, 86, 20);
 		contentPane.add(txtServidor);
 		txtServidor.setColumns(10);
