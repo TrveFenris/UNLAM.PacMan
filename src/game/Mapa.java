@@ -58,13 +58,15 @@ public class Mapa {
 				ImageIcon icon = new ImageIcon("img/bolitaNormal.gif");
 				JLabel l= new JLabel(icon);
 				if(rec.getTipo()==Rectas.HORIZONTAL){
-					l.setBounds(rec.getPuntoInicialX() + i*20+10, rec.getPuntoInicialY()-9, 20, 20);
+					l.setBounds(rec.getPuntoInicialX() + i*20+10, rec.getPuntoInicialY()-10, 21, 21);
 				}
 				else if(rec.getTipo()==Rectas.VERTICAL){
-					l.setBounds(rec.getPuntoInicialX() - 9,rec.getPuntoInicialY() + i*20+10, 20, 20);
+					l.setBounds(rec.getPuntoInicialX() - 10,rec.getPuntoInicialY() + i*20+10, 21, 21);
 				}
 				l.setIcon(icon);
-				bolitas.add(new Bolita(l,false));
+				Bolita b = new Bolita(l,false);
+				//System.out.println(b.getCentroCoordenadas().toString());
+				bolitas.add(b);
 				area.add(l);
 			}
 		}

@@ -10,6 +10,7 @@ public class GameObject {
 
 	protected GameObject(JLabel img) {
 		imagen = img;
+		alive = true;
 	}
 	
 	public Punto getCentroCoordenadas() {

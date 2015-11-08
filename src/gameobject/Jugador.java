@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import javax.swing.JLabel;
 
-import cliente.GameWindow;
 import punto.Punto;
 import rectas.Recta;
 import rectas.Rectas;
@@ -74,15 +73,12 @@ public class Jugador extends GameObject{
 		return (this.coordenadas.distanciaCon(obj.coordenadas) <= this.radio + obj.radio);
 	}
 	*/
-	public boolean colisionaCon(GameObject obj) {
-		if( obj.getClass().equals(Bolita.class) ) {
-			if( this.getCentroCoordenadas().distanciaCon(obj.getCentroCoordenadas()) < this.getWidth()+obj.getWidth()) {
-				System.out.println("Colisiono con una bolita");
-				return true;
-			}
+	public boolean colisionaCon(Bolita obj) {
+		if( this.getCentroCoordenadas().equals(obj.getCentroCoordenadas()) ) {
+			System.out.println("Colisiono con una bolita");
+			return true;
 		}
 		return false;
-		//return (this.coordenadas.distanciaCon(obj.coordenadas) <= this.radio + obj.radio);
 	}
 	/**
 	 * Devuelve la recta sobre la que se encuentra el jugador. 
