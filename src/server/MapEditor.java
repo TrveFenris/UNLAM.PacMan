@@ -28,6 +28,7 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import java.awt.Cursor;
 
 public class MapEditor extends JFrame {
 
@@ -72,6 +73,8 @@ public class MapEditor extends JFrame {
 		contentPane.setLayout(null);
 		
 		areaDibujo = new JPanel();
+		areaDibujo.setFocusTraversalKeysEnabled(false);
+		areaDibujo.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		areaDibujo.setBackground(Color.DARK_GRAY);
 		areaDibujo.setBounds(0, 20, 800, 600);
 		areaDibujo.setLayout(null);
@@ -92,7 +95,7 @@ public class MapEditor extends JFrame {
 						//Se crean nuevos puntos porque si no NO FUNCIONA
 						Recta r=new Recta(new Punto(pInicial.getX(),pInicial.getY()), new Punto(pFinal.getX(),pFinal.getY()));
 						rectas.add(r);
-						dibujarRecta(r);
+						r.dibujar(areaDibujo);
 						actualizarListaRectas();
 						pInicial.setXY(0, 0);
 						pFinal.setXY(0,0);
@@ -180,19 +183,5 @@ public class MapEditor extends JFrame {
 			Recta rec=recta.next();
 			textAreaLisaRectas.setText(textAreaLisaRectas.getText()+" "+rec.getPuntoInicial()+" "+rec.getPuntoFinal()+"\n");
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void dibujarRecta(Recta r){
-		JLabel camino = new JLabel();
-		if(r.getTipo()==Rectas.HORIZONTAL)
-			camino.setBounds(r.getPuntoInicial().getX(), r.getPuntoInicial().getY(), r.getPuntoFinal().getX()-r.getPuntoInicial().getX(), 1);
-		else if(r.getTipo()==Rectas.VERTICAL)
-			camino.setBounds(r.getPuntoInicial().getX(), r.getPuntoInicial().getY(), 1, r.getPuntoFinal().getY()-r.getPuntoInicial().getY());
-		camino.setBackground(Color.GREEN);
-		camino.setOpaque(true);
-		areaDibujo.add(camino);
 	}
 }
