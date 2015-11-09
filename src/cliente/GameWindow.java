@@ -217,10 +217,9 @@ public class GameWindow extends JFrame {
 		 * forma anterior una vez tengamos el mapa real
 		 * Pacman no deberia comer dos bolitas a la vez... */
 		/*
-		ArrayList<Bolita> a = mapa.getArrayBolitas();
-		for(int i = 0; i < a.size(); i++) {
-			if(a.get(i).isAlive() && j.colisionaCon(a.get(i))) {
-				mapa.removerBolita(a.get(i));
+		for(Bolita b : mapa.getArrayBolitas()) {
+			if(b.isAlive() && j.colisionaCon(b)) {
+				mapa.removerBolita(b);
 				break;
 			}
 		}
