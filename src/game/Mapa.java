@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import punto.Punto;
 import rectas.Recta;
 import rectas.Rectas;
+import rectas.Recta.RectaInvalidaException;
 
 
 public class Mapa {
@@ -32,6 +33,7 @@ public class Mapa {
 		agregarRecta(new Punto(100,150), new Punto(600,150));
 		agregarRecta(new Punto(550,34), new Punto(550,550));
 		agregarRecta(new Punto(200,470), new Punto(500,470));
+		agregarRecta(new Punto(200,450), new Punto(500,470)); //Recta de prueba, no se agrega porque es oblicua
 	}
 	
 	public ArrayList<Bolita> getArrayBolitas() {
@@ -43,7 +45,13 @@ public class Mapa {
 	}
 	
 	private void agregarRecta(Punto p1, Punto p2) {
-		rectas.add(new Recta(p1,p2));
+		try {
+			rectas.add(new Recta(p1,p2));
+		}
+		catch(RectaInvalidaException ex) {
+			System.out.println("No se pudo crear la recta: Parametros invalidos.");
+		}
+		
 	}
 	
 	public void dibujar(JPanel area){

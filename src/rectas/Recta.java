@@ -8,11 +8,12 @@ import javax.swing.JPanel;
 import punto.Punto;
 
 public class Recta {
+	
 	private Punto puntoInicial;
 	private Punto puntoFinal;
 	private Rectas tipo;
 
-	public Recta(Punto p1, Punto p2) {
+	public Recta(Punto p1, Punto p2) throws RectaInvalidaException{
 		if(p1.getX() == p2.getX()) {
 			tipo = Rectas.VERTICAL;
 			if(p1.getX() <= p2.getX()) {
@@ -36,6 +37,7 @@ public class Recta {
 				puntoFinal = p1;
 			}
 		}
+		else throw new RectaInvalidaException();
 	}
 	
 	public Rectas getTipo(){
@@ -79,9 +81,8 @@ public class Recta {
 		JLabel camino = new JLabel();
 		if(tipo==Rectas.HORIZONTAL)
 			camino.setBounds(puntoInicial.getX(), puntoInicial.getY(), puntoFinal.getX()-puntoInicial.getX(), 1);
-		else
-			if(tipo==Rectas.VERTICAL)
-				camino.setBounds(puntoInicial.getX(), puntoInicial.getY(), 1, puntoFinal.getY()-puntoInicial.getY());
+		else if(tipo==Rectas.VERTICAL)
+			camino.setBounds(puntoInicial.getX(), puntoInicial.getY(), 1, puntoFinal.getY()-puntoInicial.getY());
 		camino.setBackground(Color.GREEN);
 		camino.setOpaque(true);
 		area.add(camino);
@@ -89,8 +90,14 @@ public class Recta {
 	
 	@Override
 	public String toString() {
-		
-		return "PI: " + puntoInicial.toString() +
-				" | PF: " + puntoFinal.toString();
+		return "PI: " + puntoInicial.toString() + " | PF: " + puntoFinal.toString();
+	}
+	
+	public class RectaInvalidaException extends Exception {
+		private static final long serialVersionUID = 5780617970323444774L;
+		public RectaInvalidaException() { super(); }
+		public RectaInvalidaException(String message) { super(message); }
+		public RectaInvalidaException(String message, Throwable cause) { super(message, cause); }
+		public RectaInvalidaException(Throwable cause) { super(cause); }
 	}
 }
