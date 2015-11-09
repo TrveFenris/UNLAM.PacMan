@@ -16,7 +16,7 @@ public class Recta {
 	public Recta(Punto p1, Punto p2) throws RectaInvalidaException{
 		if(p1.getX() == p2.getX()) {
 			tipo = Rectas.VERTICAL;
-			if(p1.getX() <= p2.getX()) {
+			if(p1.getY() <= p2.getY()) {
 				puntoInicial = p1;
 				puntoFinal = p2;
 			}
@@ -28,7 +28,7 @@ public class Recta {
 		}
 		else if(p1.getY() == p2.getY()) {
 			tipo = Rectas.HORIZONTAL;
-			if(p1.getY() <= p2.getY()) {
+			if(p1.getX() <= p2.getX()) {
 				puntoInicial = p1;
 				puntoFinal = p2;
 			}
