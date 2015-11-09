@@ -202,7 +202,7 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
-		
+		/*
 		for(Iterator<Bolita>it=mapa.getArrayBolitas().iterator();it.hasNext();) {
 			Bolita b = it.next();
 			if(b.isAlive() && j.colisionaCon(b)) {
@@ -210,20 +210,21 @@ public class GameWindow extends JFrame {
 				it = mapa.getArrayBolitas().iterator();
 			}
 		}
+		*/
 		/* Metodo mas eficiente para calcular las colisiones con bolitas.
 		 * Tiene un problema: Si el pacman tiene la posibilidad de comer dos
 		 * bolitas casi cercanas, solo comera una.
 		 * Lo dejo comentado porque es muy probable que sirva mas que la
 		 * forma anterior una vez tengamos el mapa real
 		 * Pacman no deberia comer dos bolitas a la vez... */
-		/*
+		
 		for(Bolita b : mapa.getArrayBolitas()) {
 			if(b.isAlive() && j.colisionaCon(b)) {
 				mapa.removerBolita(b);
 				break;
 			}
 		}
-		*/
+		
 	}
 	
 	public void setControles(int[] controles){

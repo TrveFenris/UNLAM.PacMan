@@ -1,5 +1,7 @@
 package gameobject;
 
+import game.Configuracion;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -66,9 +68,17 @@ public class Jugador extends GameObject{
 	public void actualizarPuntaje(int cant){
 		puntaje=cant;
 	}
-
+	/*
 	public boolean colisionaCon(Bolita obj) {
 		if( this.getCentroCoordenadas().equals(obj.getCentroCoordenadas()) ) {
+			//System.out.println("Colisiono con una bolita");
+			return true;
+		}
+		else return false;
+	}
+	*/
+	public boolean colisionaCon(Bolita obj) {
+		if( this.getCentroCoordenadas().distanciaCon(obj.getCentroCoordenadas()) <= Configuracion.PACMAN_DISTANCIA_PARA_COMER_BOLITA.getValor() ) {
 			//System.out.println("Colisiono con una bolita");
 			return true;
 		}
