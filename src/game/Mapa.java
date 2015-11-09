@@ -44,6 +44,10 @@ public class Mapa {
 		return rectas;
 	}
 	
+	public int getCantidadBolitasRestantes() {
+		return bolitas.size();
+	}
+	
 	private void agregarRecta(Punto p1, Punto p2) {
 		try {
 			rectas.add(new Recta(p1,p2));
