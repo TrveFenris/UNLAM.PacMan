@@ -27,21 +27,7 @@ import punto.Punto;
 import rectas.Rectas;
 
 public class GameWindow extends JFrame {
-	/*Thread que maneja el Game Loop */
-	private class GameThread extends Thread {
-		private Timer timer;
-		public void run() {
-			System.out.println("Comienza el juego");
-			timer = new Timer();
-			timer.schedule( new TimerTask() {
-			    public void run() {
-			       if(gameRunning){
-			    	   update();
-			       }
-			    }
-			 }, 0, 16);
-		}
-	}
+	
 	/* Variables Miembro */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -216,6 +202,7 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
+		
 		for(Iterator<Bolita>it=mapa.getArrayBolitas().iterator();it.hasNext();) {
 			Bolita b = it.next();
 			if(b.isAlive() && j.colisionaCon(b)) {
@@ -223,6 +210,21 @@ public class GameWindow extends JFrame {
 				it = mapa.getArrayBolitas().iterator();
 			}
 		}
+		/* Metodo mas eficiente para calcular las colisiones con bolitas.
+		 * Tiene un problema: Si el pacman tiene la posibilidad de comer dos
+		 * bolitas casi cercanas, solo comera una.
+		 * Lo dejo comentado porque es muy probable que sirva mas que la
+		 * forma anterior una vez tengamos el mapa real
+		 * Pacman no deberia comer dos bolitas a la vez... */
+		/*
+		ArrayList<Bolita> a = mapa.getArrayBolitas();
+		for(int i = 0; i < a.size(); i++) {
+			if(a.get(i).isAlive() && j.colisionaCon(a.get(i))) {
+				mapa.removerBolita(a.get(i));
+				break;
+			}
+		}
+		*/
 	}
 	
 	public void setControles(int[] controles){
@@ -234,5 +236,21 @@ public class GameWindow extends JFrame {
 
 	public void setNameLabel(String s){
 		lblName.setText(s);
+	}
+	
+	/*Thread que maneja el Game Loop */
+	private class GameThread extends Thread {
+		private Timer timer;
+		public void run() {
+			System.out.println("Comienza el juego");
+			timer = new Timer();
+			timer.schedule( new TimerTask() {
+			    public void run() {
+			       if(gameRunning){
+			    	   update();
+			       }
+			    }
+			 }, 0, 16);
+		}
 	}
 }

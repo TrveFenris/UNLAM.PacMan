@@ -66,19 +66,13 @@ public class Jugador extends GameObject{
 	public void actualizarPuntaje(int cant){
 		puntaje=cant;
 	}
-	
-	//Reescribir los siguientes metodos:
-	/*
-	public boolean colisionaCon(GameObject obj) {
-		return (this.coordenadas.distanciaCon(obj.coordenadas) <= this.radio + obj.radio);
-	}
-	*/
+
 	public boolean colisionaCon(Bolita obj) {
 		if( this.getCentroCoordenadas().equals(obj.getCentroCoordenadas()) ) {
 			//System.out.println("Colisiono con una bolita");
 			return true;
 		}
-		return false;
+		else return false;
 	}
 	/**
 	 * Devuelve la recta sobre la que se encuentra el jugador. 
