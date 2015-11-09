@@ -9,22 +9,28 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.AWTException;
 import java.awt.Color;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.event.MouseEvent;
 
 import rectas.Recta;
+import rectas.Recta.RectaInvalidaException;
 import punto.Punto;
+
 import java.awt.event.MouseAdapter;
+
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 public class MapEditor extends JFrame {
 
+	private static final long serialVersionUID = -3653077430168537493L;
 	private JPanel contentPane;
 	private JTextField textFieldNombre;
 	private JTextField txtCoordenadas;
@@ -89,12 +95,19 @@ public class MapEditor extends JFrame {
 				{
 					pFinal.setXY(e.getX(), e.getY());
 					System.out.println("pFinal: "+pFinal);
-					Recta r=new Recta(pInicial,pFinal);
-					rectas.add(r);
-					r.dibujar(areaDibujo);
-					actualizarListaRectas();
-					pInicial.setXY(0, 0);
-					pFinal.setXY(0,0);
+					//Revisar esto contemplando la nueva excepción lanzada por Recta()
+					try {
+						Recta r=new Recta(pInicial,pFinal);
+						rectas.add(r);
+						r.dibujar(areaDibujo);
+						actualizarListaRectas();
+						pInicial.setXY(0, 0);
+						pFinal.setXY(0,0);
+					}
+					catch(RectaInvalidaException ex) {
+						ex.printStackTrace();
+					}
+					
 				}
 			}
 		});
