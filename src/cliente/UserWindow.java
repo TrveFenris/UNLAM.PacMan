@@ -54,7 +54,7 @@ public class UserWindow extends JFrame {
 		mainWindow = window;
 		userName=nombre;
 		setTitle("Menu principal");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
