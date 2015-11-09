@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.awt.event.MouseEvent;
 
 import rectas.Recta;
+import rectas.Rectas;
 import rectas.Recta.RectaInvalidaException;
 import punto.Punto;
 
@@ -59,8 +60,7 @@ public class MapEditor extends JFrame {
 		pInicial=new Punto(0,0);
 		pFinal=new Punto(0,0);
 		pReal=new Punto(0,0);
-		rectas=new ArrayList<Recta>();
-		
+		rectas=new ArrayList<Recta>();	
 		setResizable(false);
 		setTitle("Editor de mapas de Pacman");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,13 +70,6 @@ public class MapEditor extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		//contentPane.setOpaque(false);
-		
-		textFieldNombre = new JTextField();
-		textFieldNombre.setToolTipText("Ingrese aqui el nombre del mapa");
-		textFieldNombre.setBounds(231, 0, 103, 20);
-		contentPane.add(textFieldNombre);
-		textFieldNombre.setColumns(10);
 		
 		areaDibujo = new JPanel();
 		areaDibujo.setBackground(Color.DARK_GRAY);
@@ -95,11 +88,11 @@ public class MapEditor extends JFrame {
 				{
 					pFinal.setXY(e.getX(), e.getY());
 					System.out.println("pFinal: "+pFinal);
-					//Revisar esto contemplando la nueva excepción lanzada por Recta()
 					try {
-						Recta r=new Recta(pInicial,pFinal);
+						//Se crean nuevos puntos porque si no NO FUNCIONA
+						Recta r=new Recta(new Punto(pInicial.getX(),pInicial.getY()), new Punto(pFinal.getX(),pFinal.getY()));
 						rectas.add(r);
-						r.dibujar(areaDibujo);
+						dibujarRecta(r);
 						actualizarListaRectas();
 						pInicial.setXY(0, 0);
 						pFinal.setXY(0,0);
@@ -136,6 +129,13 @@ public class MapEditor extends JFrame {
 			}
 		});
 		contentPane.add(areaDibujo);
+		//contentPane.setOpaque(false);
+		
+		textFieldNombre = new JTextField();
+		textFieldNombre.setToolTipText("Ingrese aqui el nombre del mapa");
+		textFieldNombre.setBounds(231, 0, 103, 20);
+		contentPane.add(textFieldNombre);
+		textFieldNombre.setColumns(10);
 		
 		JLabel lblNombre = new JLabel("Nombre del mapa");
 		lblNombre.setBounds(127, 0, 103, 20);
@@ -178,9 +178,21 @@ public class MapEditor extends JFrame {
 		textAreaLisaRectas.setText("");
 		for(Iterator<Recta>recta=rectas.iterator();recta.hasNext();){
 			Recta rec=recta.next();
-			//rec.dibujar(areaDibujo);
-			System.out.println(rec);
 			textAreaLisaRectas.setText(textAreaLisaRectas.getText()+" "+rec.getPuntoInicial()+" "+rec.getPuntoFinal()+"\n");
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void dibujarRecta(Recta r){
+		JLabel camino = new JLabel();
+		if(r.getTipo()==Rectas.HORIZONTAL)
+			camino.setBounds(r.getPuntoInicial().getX(), r.getPuntoInicial().getY(), r.getPuntoFinal().getX()-r.getPuntoInicial().getX(), 1);
+		else if(r.getTipo()==Rectas.VERTICAL)
+			camino.setBounds(r.getPuntoInicial().getX(), r.getPuntoInicial().getY(), 1, r.getPuntoFinal().getY()-r.getPuntoInicial().getY());
+		camino.setBackground(Color.GREEN);
+		camino.setOpaque(true);
+		areaDibujo.add(camino);
 	}
 }
