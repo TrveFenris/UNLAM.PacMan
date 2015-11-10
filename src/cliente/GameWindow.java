@@ -80,7 +80,7 @@ public class GameWindow extends JFrame {
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
 		//MAPA
-		mapa = new Mapa();
+		mapa = new Mapa("mapa1");
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman
