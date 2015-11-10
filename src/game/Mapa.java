@@ -2,6 +2,7 @@ package game;
 
 import gameobject.Bolita;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,6 +21,9 @@ public class Mapa {
 	private ArrayList<Recta> rectas;
 	private ArrayList<Bolita> bolitas;
 	
+	/**
+	 * Genera un mapa por defecto.
+	 */
 	public Mapa() {
 		rectas = new ArrayList<Recta>();
 		bolitas = new ArrayList<Bolita>();
@@ -34,6 +38,45 @@ public class Mapa {
 		agregarRecta(new Punto(550,34), new Punto(550,550));
 		agregarRecta(new Punto(200,470), new Punto(500,470));
 		agregarRecta(new Punto(200,450), new Punto(500,470)); //Recta de prueba, no se agrega porque es oblicua
+	}
+	
+	/**
+	 * Carga un mapa creado previamente.
+	 * Los mapas deben estar guardados en la carpeta "maps/", el nombre debe ser ingresado sin extension.
+	 * @param nombre -El nombre del mapa
+	 */
+	public Mapa(String nombre){
+		rectas = new ArrayList<Recta>();
+		bolitas = new ArrayList<Bolita>();
+		File archivo = null;
+	    FileReader fr = null;
+	    BufferedReader br = null;
+	    try {
+	    	archivo = new File ("maps/"+nombre+".pacmap");
+	    	fr = new FileReader (archivo);
+	    	br = new BufferedReader(fr);
+	    	String linea = br.readLine();
+	    	String[] datos;
+	    	int cantRectas = Integer.parseInt(linea);
+	    	for(int i=0;i<cantRectas;i++){
+	    		linea = br.readLine();
+	    		datos = linea.split(" ");
+	    		agregarRecta(new Punto(Integer.parseInt(datos[0]),Integer.parseInt(datos[1])), new Punto(Integer.parseInt(datos[2]),Integer.parseInt(datos[3])));
+	    	}
+	    }
+	    catch(Exception e){
+	    	e.printStackTrace();
+	    }
+	    finally{
+	    	try{                    
+	    		if( null != fr ){   
+	    			fr.close();     
+	    		}                  
+	    	}
+	    	catch (Exception e2){ 
+	    		e2.printStackTrace();
+	    	}
+	    }
 	}
 	
 	public ArrayList<Bolita> getArrayBolitas() {
