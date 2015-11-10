@@ -12,15 +12,18 @@ import java.awt.Color;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.event.MouseEvent;
 
 import rectas.Recta;
-import rectas.Rectas;
 import rectas.Recta.RectaInvalidaException;
 import punto.Punto;
 
@@ -29,6 +32,8 @@ import java.awt.event.MouseAdapter;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import java.awt.Cursor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MapEditor extends JFrame {
 
@@ -42,7 +47,7 @@ public class MapEditor extends JFrame {
 	private Punto pInicial;
 	private Punto pFinal;
 	private Punto pReal;
-	
+	private MapEditor thisFrame;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -58,13 +63,20 @@ public class MapEditor extends JFrame {
 	}
 
 	public MapEditor() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				mensajeSalida();
+			}
+		});
+		thisFrame=this;
 		pInicial=new Punto(0,0);
 		pFinal=new Punto(0,0);
 		pReal=new Punto(0,0);
 		rectas=new ArrayList<Recta>();	
 		setResizable(false);
 		setTitle("Editor de mapas de Pacman");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 932, 650);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
@@ -155,6 +167,31 @@ public class MapEditor extends JFrame {
 		txtCoordenadas.setColumns(10);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int option = JOptionPane.showConfirmDialog(thisFrame,
+					    "¿Desea guardar el mapa?\nSi existe un mapa con el mismo nombre, se sobreescribirá.",
+					    "¿Guardar mapa?",
+					    JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION) {
+					if(textFieldNombre.getText().equals(null) || textFieldNombre.getText().equals("")) {
+						JOptionPane.showMessageDialog(thisFrame,
+								"Ingrese un nombre para el mapa.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else if(rectas.size()==0) {
+						JOptionPane.showMessageDialog(thisFrame,
+								"No se puede guardar un mapa en blanco.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					guardar();
+				}
+			}
+		});
 		btnGuardar.setBounds(711, 0, 89, 20);
 		contentPane.add(btnGuardar);
 		
@@ -183,5 +220,44 @@ public class MapEditor extends JFrame {
 			Recta rec=recta.next();
 			textAreaLisaRectas.setText(textAreaLisaRectas.getText()+" "+rec.getPuntoInicial()+" "+rec.getPuntoFinal()+"\n");
 		}
+	}
+	
+	private void mensajeSalida() {
+		int option = JOptionPane.showConfirmDialog(thisFrame,
+			    "¿Esta seguro que quiere salir?",
+			    "Saliendo del juego",
+			    JOptionPane.YES_NO_OPTION);
+		if(option == JOptionPane.YES_OPTION) {
+			thisFrame.dispose();
+		}
+	}
+	
+	private void guardar(){
+		FileWriter fichero = null;
+        PrintWriter pw = null;
+        try{
+            fichero = new FileWriter("maps/"+textFieldNombre.getText()+".pacmap");
+            pw = new PrintWriter(fichero);
+            pw.println(rectas.size());
+            for(Recta r : rectas){
+            	pw.println(r.getPuntoInicialX()+" "+r.getPuntoInicialY()+" "+r.getPuntoFinalX()+" "+r.getPuntoFinalY());
+            }
+			JOptionPane.showMessageDialog(thisFrame,
+						"Mapa guardado correctamente.",
+						 "Guardado exitoso",
+						 JOptionPane.INFORMATION_MESSAGE);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+        } 
+        finally {
+           try {
+	           if (null != fichero)
+	              fichero.close();
+           } 
+           catch (Exception e2){
+              e2.printStackTrace();
+           }
+        }
 	}
 }
