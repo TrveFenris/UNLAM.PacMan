@@ -26,18 +26,20 @@ public class Recta {
 			}
 			
 		}
-		else if(p1.getY() == p2.getY()) {
-			tipo = Rectas.HORIZONTAL;
-			if(p1.getX() <= p2.getX()) {
-				puntoInicial = p1;
-				puntoFinal = p2;
+		else 
+			if(p1.getY() == p2.getY()) {
+				tipo = Rectas.HORIZONTAL;
+				if(p1.getX() <= p2.getX()) {
+					puntoInicial = p1;
+					puntoFinal = p2;
+				}
+				else {
+					puntoInicial = p2;
+					puntoFinal = p1;
+				}
 			}
-			else {
-				puntoInicial = p2;
-				puntoFinal = p1;
-			}
-		}
-		else throw new RectaInvalidaException();
+			else throw new RectaInvalidaException();
+		validarPuntos();
 	}
 	
 	public Rectas getTipo(){
@@ -77,6 +79,28 @@ public class Recta {
 		return l;
 	}
 	
+	/**
+	 * Convierte las coordenadas impares, en coordinadas pares.
+	 */
+	public void validarPuntos(){	
+		if(puntoInicial.getX()%2!=0){
+			puntoInicial.setX(puntoInicial.getX()+1);
+		}
+		if(puntoInicial.getY()%2!=0){
+			puntoInicial.setY(puntoInicial.getY()+1);	
+		}
+		if(puntoFinal.getX()%2!=0){
+			puntoFinal.setX(puntoFinal.getX()+1);
+		}
+		if(puntoFinal.getY()%2!=0){
+			puntoFinal.setY(puntoFinal.getY()+1);
+		}
+	}
+	
+	/**
+	 * Dibuja una recta en el Jpanel seleccionado
+	 * @param area
+	 */
 	public void dibujar(JPanel area){
 		JLabel camino = new JLabel();
 		if(tipo==Rectas.HORIZONTAL)
