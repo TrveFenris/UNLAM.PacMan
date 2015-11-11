@@ -280,7 +280,7 @@ public class Cliente {
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             paquete=(PaqueteCoordenadas)is.readObject();
-            System.out.println("Soy "+nombre +"recibi: " + paquete.getCoordenadas().toString());
+            System.out.println("Soy "+nombre +" recibi: " + paquete.getCoordenadas().toString());
             return paquete.getCoordenadas();
         }
         catch(EOFException e){
