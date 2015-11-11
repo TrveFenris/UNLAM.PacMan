@@ -2,9 +2,10 @@ package game;
 
 import gameobject.Bolita;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -12,8 +13,8 @@ import javax.swing.JPanel;
 
 import punto.Punto;
 import rectas.Recta;
-import rectas.Rectas;
 import rectas.Recta.RectaInvalidaException;
+import rectas.Rectas;
 
 
 public class Mapa {
