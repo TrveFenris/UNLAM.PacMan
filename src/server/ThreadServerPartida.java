@@ -33,11 +33,12 @@ public class ThreadServerPartida extends Thread{
 		public void run() {
 			try {
 	        	boolean running=true;
+	        	System.out.println("Iniciado UserThread");
 	        	while(running){
 	        		DataInputStream data= new DataInputStream(jugador.getInputStream());
 	            	ObjectInputStream is = new ObjectInputStream(data);
 	        		PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
-	        		System.out.println(paquete.getCoordenadas().toString());
+	        		//System.out.println(paquete.getCoordenadas().toString());
 	        		for(Socket s : jugadores){
 	        			if(s!=jugador && !jugador.isClosed()){
 	        				DataOutputStream d = new DataOutputStream(jugador.getOutputStream());
@@ -47,20 +48,28 @@ public class ThreadServerPartida extends Thread{
 	        		}
 	        	}
 	        	System.out.println("Un usuario se ha desconectado del servidor");
+	        	notifyAll();
 			}
 	        catch(EOFException e){
 	                System.out.println("Un usuario se ha desconectado del servidor");
+	                notifyAll();
 	        }
 	        catch(IOException e) {
 	                System.out.println("Un usuario se ha desconectado del servidor");
+	                notifyAll();
 	        } catch (ClassNotFoundException e1) {
 				e1.printStackTrace();
+				notifyAll();
 			}
 			System.out.println("FIN DEL UserThread");
 		}
 		
 		public void pararThread(){
 			running=false;
+		}
+		
+		public void actualizarListaJugadores(ArrayList<Socket> jugadores){
+			this.jugadores=jugadores;
 		}
 	}
 	
@@ -69,6 +78,7 @@ public class ThreadServerPartida extends Thread{
     private String nombrePartida;
     private boolean running;
     private ThreadServerPartida thisThread;
+    private ArrayList<UserThread> threads;
     
     /**
      * Crea un thread que actua como servidor para la comunicacion realizada durante una partida.
@@ -80,6 +90,7 @@ public class ThreadServerPartida extends Thread{
         nombrePartida = nombre;
         running = true;
         jugadores = new ArrayList<Socket>();
+        threads = new ArrayList<UserThread>();
         thisThread = this;
         System.out.println("Partida "+ nombrePartida +" creada.");
     }
@@ -94,6 +105,21 @@ public class ThreadServerPartida extends Thread{
     		return false;
     	}
     	jugadores.add(jugador);
+    	if(jugadores.size()==2){
+    		System.out.println("INICIO DEL JUEGO");
+    		for(Socket j : jugadores){
+    			UserThread t = new UserThread(j, servidor, jugadores, thisThread);
+    	    	threads.add(t);
+    	    	t.start();
+    		}
+    	}
+    	//UserThread t = new UserThread(jugador, servidor, jugadores, thisThread);
+    	//threads.add(t);
+    	//t.start();
+//    	for(UserThread h : threads){
+//    		h.actualizarListaJugadores(jugadores);
+//    	}
+    	System.out.println("Jugador agregado a la partida "+nombrePartida);
     	return true;
     }
     
@@ -137,10 +163,9 @@ public class ThreadServerPartida extends Thread{
     /**
      * Inicia el thread.
      */
-    
     public void run() {
-    	for(Socket j : jugadores){
-    		new UserThread(j, servidor, jugadores, thisThread).start();
-    	}
+//    	for(Socket j : jugadores){
+//    		new UserThread(j, servidor, jugadores, thisThread).start();
+//    	}
     }
 }

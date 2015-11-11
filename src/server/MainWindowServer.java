@@ -37,6 +37,7 @@ public class MainWindowServer extends JFrame {
 	            	clientes.add(cliente);
 	            	System.out.println(clientes.size()+"\t"+servidor.getListaSockets().size());
 	            }
+	            actualizarListaDePartidas();
 	        }
 			System.out.println("FIN DEL THREAD");
 			detenerPartidas();
@@ -322,7 +323,7 @@ public class MainWindowServer extends JFrame {
 		if(auxNombrePartida!=null&&auxNombrePartida!=""){
 			ThreadServerPartida t = new ThreadServerPartida(servidor, auxNombrePartida);
 			servidor.agregarPartida(t);
-			t.start();
+			//t.start();
 			actualizarListaDePartidas();
 		}
 	}

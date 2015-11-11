@@ -24,10 +24,20 @@ public class ThreadServerSesion extends Thread {
         nombre="user";
     }
 
-    public void run() {
+    public synchronized  void run() {
         try {
         	boolean run = true;
+        	boolean locked = false;
         	while(run){
+        		while(locked){
+            		try {
+            			System.out.println("BLOQUEADO");
+    					wait();
+    					System.out.println("DESBLOQUEADO");
+    				} catch (InterruptedException e) {
+    					//
+    				}
+            	}
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
         		paquete=(PaqueteSesion)is.readObject();
@@ -56,11 +66,15 @@ public class ThreadServerSesion extends Thread {
     	            		enviarListaDePartidas();
     	            		break;
     	            	case ENTRAR_EN_PARTIDA:
-    	            		servidor.agregarAPartida(clientSocket, paquete.getMensaje());
-    	            		paquete.setResultado(true);
+    	            		System.out.println(paquete.getMensaje());
+    	            		boolean res=servidor.agregarAPartida(clientSocket, paquete.getMensaje());
+    	            		paquete.setResultado(res);
+    	            		if(res==true)
+    	            			locked = true;
     	            		break;
     	            }
     	            o.writeObject(paquete);
+    	            System.out.println("DATOS ENVIADOS");
                 }
         	}
         	 System.out.println(nombre+" se ha desconectado del servidor");
