@@ -1,6 +1,9 @@
 package punto;
 
-public class Punto {
+import java.io.Serializable;
+
+public class Punto implements Serializable{
+	private static final long serialVersionUID = 18L;
 	private int x;
 	private int y;
 	
