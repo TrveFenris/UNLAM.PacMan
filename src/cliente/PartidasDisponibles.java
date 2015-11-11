@@ -23,8 +23,12 @@ public class PartidasDisponibles extends JFrame {
 	private JPanel contentPane;
 	private UserWindow mainWindow;
 	private PartidasDisponibles thisWindow;
+	private Cliente cliente;
+	private JComboBox<String> comboBoxPartidas;
 
-	public PartidasDisponibles(ArrayList<String> datosPartidas, UserWindow main) {
+	public PartidasDisponibles(ArrayList<String> datosPartidas, UserWindow main, Cliente cliente) {
+		
+		this.cliente = cliente;
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -62,7 +66,7 @@ public class PartidasDisponibles extends JFrame {
 		gbc_lblSeleccioneUnaPartida.gridy = 1;
 		contentPane.add(lblSeleccioneUnaPartida, gbc_lblSeleccioneUnaPartida);
 		
-		JComboBox<String> comboBoxPartidas = new JComboBox<String>();
+		comboBoxPartidas = new JComboBox<String>();
 		GridBagConstraints gbc_comboBoxPartidas = new GridBagConstraints();
 		gbc_comboBoxPartidas.gridwidth = 2;
 		gbc_comboBoxPartidas.insets = new Insets(0, 0, 5, 5);
@@ -106,7 +110,8 @@ public class PartidasDisponibles extends JFrame {
 		JButton btnUnirse = new JButton("Unirse");
 		btnUnirse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				lanzarJuego();
+				unirseAPartida();
+				//lanzarJuego();
 			}
 		});
 		GridBagConstraints gbc_btnUnirse = new GridBagConstraints();
@@ -139,6 +144,10 @@ public class PartidasDisponibles extends JFrame {
 			comboBoxPartidas.addItem(aux[0]);
 		}
 		
+	}
+	
+	private void unirseAPartida(){
+		cliente.unirseAPartida(comboBoxPartidas.getSelectedItem().toString());
 	}
 
 	private void lanzarJuego(){
