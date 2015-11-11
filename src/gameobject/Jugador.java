@@ -165,12 +165,12 @@ public class Jugador extends GameObject{
 		boolean result = false;
 		Punto p = getCentroCoordenadas();
 		if(r.getTipo() == Rectas.VERTICAL){
-			if(p.getX() == r.getPuntoInicial().getX() && ( p.getY() >= r.getPuntoInicial().getY() && p.getY() <= r.getPuntoFinal().getY() ) ) {
+			if(p.getX() == r.getPuntoInicialX() && ( p.getY() >= r.getPuntoInicialY() && p.getY() <= r.getPuntoFinalY() ) ) {
 				result = true;
 			}
 		}
 		else if(r.getTipo() == Rectas.HORIZONTAL) {
-			if(p.getY() == r.getPuntoInicial().getY() && ( p.getX() >= r.getPuntoInicial().getX() && p.getX() <= r.getPuntoFinal().getX() ) ) {
+			if(p.getY() == r.getPuntoInicialY() && ( p.getX() >= r.getPuntoInicialX() && p.getX() <= r.getPuntoFinalX() ) ) {
 				result = true;
 			}
 		}
