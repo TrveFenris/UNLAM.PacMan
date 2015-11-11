@@ -1,4 +1,4 @@
-package server;
+package editor;
 
 import java.awt.EventQueue;
 import java.awt.Robot;
