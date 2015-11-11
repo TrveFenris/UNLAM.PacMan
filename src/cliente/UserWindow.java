@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,14 +22,13 @@ import javax.swing.border.EmptyBorder;
 public class UserWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private UserWindow thisWindow;
 	private GameWindow gameWindow;
-	private MainWindow mainWindow;
+	private MainWindowSinDB mainWindow;
 	private ConfigWindow configWindow;
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
 	private JButton btnConfig;
-	private JButton btnBuscarPartida;
+	private JButton btnJugar;
 	private JLabel lblBienvenida;
 	private Cliente cliente;
 	//CONFIGURACION
@@ -40,9 +38,11 @@ public class UserWindow extends JFrame {
 	private int izquierda;
 	private int derecha;
 	
+	private String skinPac;
+	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
-	public UserWindow(MainWindow window,String nombre, Cliente cliente) {
+	public UserWindow(MainWindowSinDB window,String nombre, Cliente cliente) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -54,8 +54,7 @@ public class UserWindow extends JFrame {
 		});
 		this.cliente=cliente;
 		mainWindow = window;
-		thisWindow = this;
-		userName = nombre;
+		userName=nombre;
 		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
@@ -69,11 +68,14 @@ public class UserWindow extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
+		/** --- SKINS --- **/
+		skinPac = "normal";
+		
 		lblBienvenida = new JLabel("");
 		lblBienvenida.setForeground(new Color(51, 153, 204));
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setText("¡Bienvenid@ "+userName+"! ");
+		lblBienvenida.setText("Ã‚Â¡Bienvenid@ "+userName+"! ");
 		GridBagConstraints gbc_lblBienvenida = new GridBagConstraints();
 		gbc_lblBienvenida.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBienvenida.gridheight = 2;
@@ -82,19 +84,18 @@ public class UserWindow extends JFrame {
 		gbc_lblBienvenida.gridy = 1;
 		contentPane.add(lblBienvenida, gbc_lblBienvenida);
 		
-		btnBuscarPartida = new JButton("Buscar partida");
-		btnBuscarPartida.addActionListener(new ActionListener() {
+		btnJugar = new JButton("Jugar");
+		btnJugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//lanzarJuego();
-				buscarPartida();
+				lanzarJuego();
 			}
 		});
-		GridBagConstraints gbc_btnBuscarPartida = new GridBagConstraints();
-		gbc_btnBuscarPartida.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnBuscarPartida.insets = new Insets(0, 0, 5, 5);
-		gbc_btnBuscarPartida.gridx = 1;
-		gbc_btnBuscarPartida.gridy = 4;
-		contentPane.add(btnBuscarPartida, gbc_btnBuscarPartida);
+		GridBagConstraints gbc_btnJugar = new GridBagConstraints();
+		gbc_btnJugar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnJugar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnJugar.gridx = 1;
+		gbc_btnJugar.gridy = 4;
+		contentPane.add(btnJugar, gbc_btnJugar);
 		
 		btnConfig = new JButton("Configuracion");
 		btnConfig.addActionListener(new ActionListener() {
@@ -129,7 +130,7 @@ public class UserWindow extends JFrame {
 	/* Metodos */
 	private void confirmarCerrarSesion(){
 		int res= JOptionPane.showConfirmDialog(this,
-			    "¿Esta seguro?",
+			    "Â¿Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
@@ -140,30 +141,16 @@ public class UserWindow extends JFrame {
 		}
 	}
 
-	public void lanzarJuego(){
+	private void lanzarJuego(){
 		this.setVisible(false);
-		gameWindow = new GameWindow(this);
+		gameWindow = new GameWindow(this, skinPac);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
 		gameWindow.setControles(this.getControles());
 	}
-	
-	private void buscarPartida(){
-		ArrayList<String> datos = cliente.buscarPartidas();
-		if(datos==null){
-			System.out.println("Error al recibir la lista de partidas.");
-			return;
-		}
-		PartidasDisponibles winPartidas = new PartidasDisponibles(datos, thisWindow);
-		winPartidas.setVisible(true);
-		this.setVisible(false);
-	}
-	
-	/**
-	 * Crga los controles por defecto.
-	 */
+
 	private void cargarControles() {
 			this.arriba=KeyEvent.VK_W;
 			this.abajo=KeyEvent.VK_S;
@@ -178,10 +165,6 @@ public class UserWindow extends JFrame {
 		this.izquierda=izquierda;
 	}
 	
-	/**
-	 * Devuelve un vector de enteros con los keyCode de los controles asignados. El orden es: arriba (0), abajo(1), izquierda(2), derecha(3).
-	 * @return
-	 */
 	public int[] getControles() {
 		int[] controles=new int[4];
 		controles[0]=arriba;
@@ -197,8 +180,13 @@ public class UserWindow extends JFrame {
 		configWindow.setLocationRelativeTo(null);
 		configWindow.setVisible(true);
 	}
-	
-	public Cliente getCliente(){
-		return this.cliente;
+
+	public void setSkinPac(String s) {
+		skinPac = s;
 	}
+
+	public String getSkinPac() {
+		return skinPac;
+	}
+
 }
