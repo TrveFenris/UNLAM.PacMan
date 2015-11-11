@@ -178,6 +178,7 @@ public class GameWindow extends JFrame {
 					break;
 			}
 			jug.mover();
+			userWindow.getCliente().actualizarPosiciones(jug.getLocation());
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}
