@@ -156,7 +156,7 @@ public class UserWindow extends JFrame {
 			System.out.println("Error al recibir la lista de partidas.");
 			return;
 		}
-		PartidasDisponibles winPartidas = new PartidasDisponibles(datos, thisWindow);
+		PartidasDisponibles winPartidas = new PartidasDisponibles(datos, thisWindow, cliente);
 		winPartidas.setVisible(true);
 		this.setVisible(false);
 	}
