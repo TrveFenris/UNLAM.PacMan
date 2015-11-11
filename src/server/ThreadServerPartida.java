@@ -37,6 +37,7 @@ public class ThreadServerPartida {
 	        		DataInputStream data= new DataInputStream(jugador.getInputStream());
 	            	ObjectInputStream is = new ObjectInputStream(data);
 	        		PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
+	        		System.out.println(paquete.getCoordenadas().toString());
 	        		for(Socket s : jugadores){
 	        			if(s!=jugador && !jugador.isClosed()){
 	        				DataOutputStream d = new DataOutputStream(jugador.getOutputStream());
