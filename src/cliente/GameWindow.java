@@ -45,12 +45,14 @@ public class GameWindow extends JFrame {
 	private Mapa mapa;
 	private ArrayList<Jugador> jugadores;
 	private Pacman pacman;
-	//Variables de acción segun presión de tecla
+	//Variables de acciÃ³n segun presiÃ³n de tecla
 	private Rectas ultimaDireccion;
 	private Actions ultimaAccion;
+	/// Variables de imagen
+	private String skinPacMan;
 	
 	/* GameWindow constructor */
-	public GameWindow(UserWindow window) {
+	public GameWindow(UserWindow window, String sP) {
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -83,8 +85,10 @@ public class GameWindow extends JFrame {
 		mapa = new Mapa("mapa1");
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
+		////
+		skinPacMan = sP;
 		//Creacion de pacman
-		pacman = new Pacman(Pacman.crearLabel(new Punto(5,25)), lblName.getText());
+		pacman = new Pacman(Pacman.crearLabel(new Punto(15, 35), skinPacMan), lblName.getName()); //Cambiar Title
 		ultimaAccion=Actions.QUIETO;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
@@ -96,7 +100,7 @@ public class GameWindow extends JFrame {
 	
 	private void mensajeSalida(){
 		int option = JOptionPane.showConfirmDialog(this,
-			    "¿Esta seguro que quiere salir?",
+			    "Â¿Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
@@ -178,7 +182,6 @@ public class GameWindow extends JFrame {
 					break;
 			}
 			jug.mover();
-			userWindow.getCliente().actualizarPosiciones(jug.getLocation());
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}
@@ -237,6 +240,10 @@ public class GameWindow extends JFrame {
 
 	public void setNameLabel(String s){
 		lblName.setText(s);
+	}
+	
+	public void setSkinPacMan(String s){
+		skinPacMan = s;
 	}
 	
 	/*Thread que maneja el Game Loop */
