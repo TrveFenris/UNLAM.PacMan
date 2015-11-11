@@ -32,8 +32,8 @@ public class Fantasma extends Jugador{
 								-Configuracion.FANTASMA_PERDIDA_DE_PUNTAJE_POR_MUERTE.getValor()*muertes);
 	}
 	
-	public static JLabel crearLabel(Punto posInicial){
-		ImageIcon icon = new ImageIcon("img/pacman.gif");
+	public static JLabel crearLabel(Punto posInicial, String skin){
+		ImageIcon icon = new ImageIcon("img/fantasma/fantasma-" + skin + ".gif");
 		JLabel l = new JLabel(icon);
 		l.setBounds(posInicial.getX(),posInicial.getY(), 50, 50);
 		return l;
