@@ -13,6 +13,7 @@ public class PaqueteSesion implements java.io.Serializable{
 	private TipoPaquete tipo;
 	private boolean resultado;
 	private ArrayList<String> listaPartidas;
+	private String mensaje;
 	
 	/**
 	 * Crea un paquete de datos para la comunicacion durante el inicio y cierre de sesion.
@@ -25,6 +26,7 @@ public class PaqueteSesion implements java.io.Serializable{
 		this.resultado=false;
 		this.tipo=TipoPaquete.LOGIN;
 		listaPartidas= new ArrayList<String>();
+		mensaje = null;
 	}
 	/**
 	 * 
@@ -86,6 +88,13 @@ public class PaqueteSesion implements java.io.Serializable{
 	}
 	
 	/**
+	 * Indica que el paquete se utilizará para solicitar el ingreso a una partida.
+	 */
+	public void setUnirseAPartida(){
+		this.tipo=TipoPaquete.ENTRAR_EN_PARTIDA;
+	}
+	
+	/**
 	 * Utilizado por el servidor para consultar la accion que desea realizar el cliente
 	 */
 	public TipoPaquete getTipoPaquete(){
@@ -106,5 +115,19 @@ public class PaqueteSesion implements java.io.Serializable{
 	 */
 	public ArrayList<String> getInfoPartidas(){
 		return listaPartidas;
+	}
+	
+	/**
+	 * Guarda un mensaje para enviar al servidor.
+	 */
+	public void setMensaje(String mensaje){
+		this.mensaje=mensaje;
+	}
+	
+	/**
+	 * Obtiene el mensaje grabado en el paquete.
+	 */
+	public String getMensaje(){
+		return this.mensaje;
 	}
 }
