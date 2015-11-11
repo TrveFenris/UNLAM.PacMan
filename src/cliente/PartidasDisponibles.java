@@ -1,8 +1,5 @@
 package cliente;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -106,6 +103,11 @@ public class PartidasDisponibles extends JFrame {
 		contentPane.add(textAreaCantJugadores, gbc_textAreaCantJugadores);
 		
 		JButton btnUnirse = new JButton("Unirse");
+		btnUnirse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				lanzarJuego();
+			}
+		});
 		GridBagConstraints gbc_btnUnirse = new GridBagConstraints();
 		gbc_btnUnirse.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnUnirse.insets = new Insets(0, 0, 5, 5);
@@ -130,11 +132,21 @@ public class PartidasDisponibles extends JFrame {
 		textAreaNombres.setText("");
 		for(String s : datosPartidas){
 			String[] aux = s.split(" ");
-			textAreaNombres.setText(textAreaNombres.getText()+aux[0]);
-			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+aux[1]);
+			textAreaNombres.setText(textAreaNombres.getText()+aux[0]+"\n");
+			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+aux[1]+"\n");
 			comboBoxPartidas.addItem(aux[0]);
 		}
 		
 	}
 
+	private void lanzarJuego(){
+		this.setVisible(false);
+		mainWindow.lanzarJuego();
+//		gameWindow = new GameWindow(this);
+//		gameWindow.setLocationRelativeTo(null);
+//		gameWindow.setNameLabel(userName);
+//		gameWindow.setVisible(true);
+//		gameWindow.runGameLoop();
+//		gameWindow.setControles(this.getControles());
+	}
 }

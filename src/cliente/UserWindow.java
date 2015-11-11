@@ -140,7 +140,7 @@ public class UserWindow extends JFrame {
 		}
 	}
 
-	private void lanzarJuego(){
+	public void lanzarJuego(){
 		this.setVisible(false);
 		gameWindow = new GameWindow(this);
 		gameWindow.setLocationRelativeTo(null);
