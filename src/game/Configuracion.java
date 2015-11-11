@@ -6,6 +6,7 @@ package game;
 public enum Configuracion {
 	//PARTIDA
 	TIEMPO_PARTIDA(60), //En segundos
+	MAX_JUGADORES (4),
 	//PACMAN
 	PACMAN_VELOCIDAD (2),
 	PACMAN_DISTANCIA_PARA_COMER_BOLITA (3),
