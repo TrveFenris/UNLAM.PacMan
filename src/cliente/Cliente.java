@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import paquetes.PaqueteCoordenadas;
+import punto.Punto;
 import server.PaqueteSesion;
 
 public class Cliente {
@@ -262,6 +264,34 @@ public class Cliente {
         	return resultado;
         } catch (ClassNotFoundException e1) {
         	return resultado;
+		}
+    }
+    
+    /**
+     * Envia la posicion actual al servidor, y recibe la pocision de los otros jugadores.
+     */
+    public Punto actualizarPosiciones(Punto p){
+    	boolean resultado = false;
+    	try {
+    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+            ObjectOutputStream o = new ObjectOutputStream(d);
+        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(p, 0);
+        	o.writeObject(paquete);
+            DataInputStream data= new DataInputStream(cliente.getInputStream());
+            ObjectInputStream is = new ObjectInputStream(data);
+            paquete=(PaqueteCoordenadas)is.readObject();
+            System.out.println("Recibi: " + paquete.getCoordenadas().toString());
+            return paquete.getCoordenadas();
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
+        	return null;
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (buscarPartidas)");
+        	return null;
+        } catch (ClassNotFoundException e1) {
+        	return null;
 		}
     }
 }
