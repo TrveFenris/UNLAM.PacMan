@@ -156,7 +156,6 @@ public class UserWindow extends JFrame {
 			System.out.println("Error al recibir la lista de partidas.");
 			return;
 		}
-		System.out.println("Lanzado ventana de seleccion de partida");
 		PartidasDisponibles winPartidas = new PartidasDisponibles(datos, thisWindow);
 		winPartidas.setVisible(true);
 		this.setVisible(false);

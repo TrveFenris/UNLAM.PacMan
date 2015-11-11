@@ -27,6 +27,7 @@ public class ThreadServerPartida {
         nombrePartida = nombre;
         run = true;
         jugadores = new ArrayList<Socket>();
+        System.out.println("Partida "+ nombrePartida +" creada.");
     }
     
     /**
