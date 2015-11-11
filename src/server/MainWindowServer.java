@@ -320,7 +320,9 @@ public class MainWindowServer extends JFrame {
 	public void crearPartida(String nombre){
 		auxNombrePartida = nombre;
 		if(auxNombrePartida!=null&&auxNombrePartida!=""){
-			servidor.agregarPartida(new ThreadServerPartida(servidor, auxNombrePartida));
+			ThreadServerPartida t = new ThreadServerPartida(servidor, auxNombrePartida);
+			servidor.agregarPartida(t);
+			t.start();
 			actualizarListaDePartidas();
 		}
 	}
