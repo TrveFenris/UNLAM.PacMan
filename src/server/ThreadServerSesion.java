@@ -55,6 +55,10 @@ public class ThreadServerSesion extends Thread {
     	            	case BUSCAR_PARTIDA:
     	            		enviarListaDePartidas();
     	            		break;
+    	            	case ENTRAR_EN_PARTIDA:
+    	            		servidor.agregarAPartida(clientSocket, paquete.getMensaje());
+    	            		paquete.setResultado(true);
+    	            		break;
     	            }
     	            o.writeObject(paquete);
                 }
