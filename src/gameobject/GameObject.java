@@ -42,7 +42,7 @@ public class GameObject {
 	}
 	
 	public Punto getLocation(){
-		return new Punto(imagen.getLocation().x,imagen.getLocation().y);
+		return new Punto(imagen.getX(), imagen.getY());
 	}
 	
 	public void setLocation(int x, int y){
