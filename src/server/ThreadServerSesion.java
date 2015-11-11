@@ -58,6 +58,7 @@ public class ThreadServerSesion extends Thread {
         	}
         	 System.out.println(nombre+" se ha desconectado del servidor");
         	 clientSocket.close();
+        	 servidor.eliminarCliente();
         	 servidor.removerNombre(nombre);
              servidor.eliminarCliente();
         }
@@ -66,7 +67,7 @@ public class ThreadServerSesion extends Thread {
                 clientSocket.close();
                 servidor.removerNombre(nombre);
                 servidor.eliminarCliente();
-                System.out.println(nombre+" se ha desconectado del servidor (EOF)");
+                System.out.println(nombre+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
                 e1.printStackTrace();
@@ -78,7 +79,7 @@ public class ThreadServerSesion extends Thread {
                 clientSocket.close();
                 servidor.removerNombre(nombre);
                 servidor.eliminarCliente();
-                System.out.println(nombre+" se ha desconectado del servidor (IO");
+                System.out.println(nombre+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
                 e1.printStackTrace();
