@@ -35,7 +35,7 @@ public class MainWindowServer extends JFrame {
 	            if (cliente != null){
 	            	new ThreadServerSesion(cliente,servidor,servidor.getDatabase()).start();
 	            	clientes.add(cliente);
-	            	System.out.println(clientes.size()+"\t"+servidor.getLista().size());
+	            	System.out.println(clientes.size()+"\t"+servidor.getListaSockets().size());
 	            }
 	        }
 			System.out.println("FIN DEL THREAD");
@@ -69,7 +69,6 @@ public class MainWindowServer extends JFrame {
 	private JTextArea textAreaPartidas;
 	private JButton btnCrearPartida;
 	private JButton btnCerrarServidor;
-	private ArrayList<ThreadServerPartida> partidas;
 	private String auxNombrePartida;
 	private JLabel lblCantJugadores;
 	private JTextArea textAreaCantJugadores;
@@ -104,7 +103,6 @@ public class MainWindowServer extends JFrame {
 		//INICIALIZACION DE ARRAYLISTS
 		nombres = new ArrayList<String>();
 		clientes = new ArrayList<Socket>();
-		partidas = new ArrayList<ThreadServerPartida>();
 		
 		setTitle("Server PacMan");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -308,10 +306,10 @@ public class MainWindowServer extends JFrame {
 	public void actualizarListaDePartidas(){
 		textAreaPartidas.setText("");
 		textAreaCantJugadores.setText("");
-		for(Iterator<ThreadServerPartida>s=partidas.iterator();s.hasNext();){
+		for(Iterator<ThreadServerPartida>s=servidor.getPartidas().iterator();s.hasNext();){
 			ThreadServerPartida thread=s.next();
 			textAreaPartidas.setText(textAreaPartidas.getText()+thread.getNombre()+"\n");
-			textAreaCantJugadores.setText(thread.getCantJugadores()+"\n");
+			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+thread.getCantJugadores()+" \n");
 		}
 	}
 	
@@ -322,7 +320,7 @@ public class MainWindowServer extends JFrame {
 	public void crearPartida(String nombre){
 		auxNombrePartida = nombre;
 		if(auxNombrePartida!=null&&auxNombrePartida!=""){
-			partidas.add(new ThreadServerPartida(servidor, auxNombrePartida));
+			servidor.agregarPartida(new ThreadServerPartida(servidor, auxNombrePartida));
 			actualizarListaDePartidas();
 			System.out.println("Partida creada");
 		}
@@ -332,7 +330,7 @@ public class MainWindowServer extends JFrame {
 	 * Detiene todos los threads de partidas que esten en ejecucion.
 	 */
 	public void detenerPartidas(){
-		for(Iterator<ThreadServerPartida>s=partidas.iterator();s.hasNext();){
+		for(Iterator<ThreadServerPartida>s=servidor.getPartidas().iterator();s.hasNext();){
 			ThreadServerPartida thread=s.next();
 			thread.detener();
 		}

@@ -6,5 +6,7 @@ package server;
 public enum TipoPaquete {
 	LOGIN,
 	LOGOUT,
-	REGISTRO;
+	REGISTRO,
+	BUSCAR_PARTIDA,
+	;
 }

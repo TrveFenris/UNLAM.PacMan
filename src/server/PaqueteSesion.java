@@ -1,5 +1,7 @@
 package server;
 
+import java.util.*;
+
 /**
  *Paquete de datos para el manejo de inicio de sesion, cierre de sesion, y registro de usuario
  */
@@ -10,6 +12,7 @@ public class PaqueteSesion implements java.io.Serializable{
 	private String password;
 	private TipoPaquete tipo;
 	private boolean resultado;
+	private ArrayList<String> listaPartidas;
 	
 	/**
 	 * Crea un paquete de datos para la comunicacion durante el inicio y cierre de sesion.
@@ -21,6 +24,7 @@ public class PaqueteSesion implements java.io.Serializable{
 		this.password=password;
 		this.resultado=false;
 		this.tipo=TipoPaquete.LOGIN;
+		listaPartidas= new ArrayList<String>();
 	}
 	/**
 	 * 
@@ -75,9 +79,32 @@ public class PaqueteSesion implements java.io.Serializable{
 	}
 	
 	/**
+	 * Indica que el paquete se utilizará para solicitar la lista de partidas disponibles.
+	 */
+	public void setBuscarPartida(){
+		this.tipo=TipoPaquete.BUSCAR_PARTIDA;
+	}
+	
+	/**
 	 * Utilizado por el servidor para consultar la accion que desea realizar el cliente
 	 */
 	public TipoPaquete getTipoPaquete(){
 		return tipo;
+	}
+	
+	/**
+	 * Agrega la informacion de una partida al paquete
+	 * @param nombre
+	 * @param cantJugadores
+	 */
+	public void agregarPartida(String nombre, int cantJugadores){
+		listaPartidas.add(nombre+" "+Integer.toString(cantJugadores));
+	}
+	
+	/**
+	 * Devuelve la lista con informacion de las partidas disponibles.
+	 */
+	public ArrayList<String> getInfoPartidas(){
+		return listaPartidas;
 	}
 }

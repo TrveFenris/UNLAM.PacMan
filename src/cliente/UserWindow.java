@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,16 +20,19 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import server.PaqueteListaPartidas;
+
 public class UserWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private UserWindow thisWindow;
 	private GameWindow gameWindow;
 	private MainWindowSinDB mainWindow;
 	private ConfigWindow configWindow;
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
 	private JButton btnConfig;
-	private JButton btnJugar;
+	private JButton btnBuscarPartida;
 	private JLabel lblBienvenida;
 	private Cliente cliente;
 	//CONFIGURACION
@@ -52,7 +56,8 @@ public class UserWindow extends JFrame {
 		});
 		this.cliente=cliente;
 		mainWindow = window;
-		userName=nombre;
+		thisWindow = this;
+		userName = nombre;
 		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
@@ -70,7 +75,7 @@ public class UserWindow extends JFrame {
 		lblBienvenida.setForeground(new Color(51, 153, 204));
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setText("Â¡Bienvenid@ "+userName+"! ");
+		lblBienvenida.setText("¡Bienvenid@ "+userName+"! ");
 		GridBagConstraints gbc_lblBienvenida = new GridBagConstraints();
 		gbc_lblBienvenida.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBienvenida.gridheight = 2;
@@ -79,18 +84,19 @@ public class UserWindow extends JFrame {
 		gbc_lblBienvenida.gridy = 1;
 		contentPane.add(lblBienvenida, gbc_lblBienvenida);
 		
-		btnJugar = new JButton("Jugar");
-		btnJugar.addActionListener(new ActionListener() {
+		btnBuscarPartida = new JButton("Buscar partida");
+		btnBuscarPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lanzarJuego();
+				//lanzarJuego();
+				buscarPartida();
 			}
 		});
-		GridBagConstraints gbc_btnJugar = new GridBagConstraints();
-		gbc_btnJugar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnJugar.insets = new Insets(0, 0, 5, 5);
-		gbc_btnJugar.gridx = 1;
-		gbc_btnJugar.gridy = 4;
-		contentPane.add(btnJugar, gbc_btnJugar);
+		GridBagConstraints gbc_btnBuscarPartida = new GridBagConstraints();
+		gbc_btnBuscarPartida.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnBuscarPartida.insets = new Insets(0, 0, 5, 5);
+		gbc_btnBuscarPartida.gridx = 1;
+		gbc_btnBuscarPartida.gridy = 4;
+		contentPane.add(btnBuscarPartida, gbc_btnBuscarPartida);
 		
 		btnConfig = new JButton("Configuracion");
 		btnConfig.addActionListener(new ActionListener() {
@@ -145,7 +151,22 @@ public class UserWindow extends JFrame {
 		gameWindow.runGameLoop();
 		gameWindow.setControles(this.getControles());
 	}
-
+	
+	private void buscarPartida(){
+		ArrayList<String> datos = cliente.buscarPartidas();
+		if(datos==null){
+			System.out.println("Error al recibir la lista de partidas.");
+			return;
+		}
+		System.out.println("Lanzado ventana de seleccion de partida");
+		PartidasDisponibles winPartidas = new PartidasDisponibles(datos, thisWindow);
+		winPartidas.setVisible(true);
+		this.setVisible(false);
+	}
+	
+	/**
+	 * Crga los controles por defecto.
+	 */
 	private void cargarControles() {
 			this.arriba=KeyEvent.VK_W;
 			this.abajo=KeyEvent.VK_S;
@@ -160,6 +181,10 @@ public class UserWindow extends JFrame {
 		this.izquierda=izquierda;
 	}
 	
+	/**
+	 * Devuelve un vector de enteros con los keyCode de los controles asignados. El orden es: arriba (0), abajo(1), izquierda(2), derecha(3).
+	 * @return
+	 */
 	public int[] getControles() {
 		int[] controles=new int[4];
 		controles[0]=arriba;

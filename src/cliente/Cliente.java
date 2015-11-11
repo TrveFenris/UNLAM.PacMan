@@ -8,7 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Calendar;
+
 import server.PaqueteSesion;
 
 public class Cliente {
@@ -203,5 +205,33 @@ public class Cliente {
 			cerrarCliente();
 		}
     	return respuesta;
+    }
+    
+    /**
+     * Solicita la lista de partidas disponibles al servidor.
+     * @return PaqueteListaPartidas -Paquete con informacion de las partidas disponibles. Si hubo un error devuelve null;
+     */
+    public ArrayList<String> buscarPartidas(){;
+    	try {
+    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+            ObjectOutputStream o = new ObjectOutputStream(d);
+        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	paquete.setBuscarPartida();
+        	o.writeObject(paquete);
+            DataInputStream data= new DataInputStream(cliente.getInputStream());
+            ObjectInputStream is = new ObjectInputStream(data);
+            paquete=(PaqueteSesion)is.readObject();
+            return paquete.getInfoPartidas();
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
+        	return null;
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (buscarPartidas)");
+        	return null;
+        } catch (ClassNotFoundException e1) {
+        	return null;
+		}
     }
 }

@@ -284,7 +284,7 @@ public class MainWindowSinDB extends JFrame {
 			}
 			catch(NumberFormatException nfe) {
 				JOptionPane.showMessageDialog(frame,
-						"Los datos del puerto son inválidos.\nIngrese un número entero",
+						"Los datos del puerto son invalidos.\nIngrese un numero entero",
 						 "Error",
 						 JOptionPane.ERROR_MESSAGE);
 				return false;

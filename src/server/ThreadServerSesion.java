@@ -26,7 +26,7 @@ public class ThreadServerSesion extends Thread {
 
     public void run() {
         try {
-        	boolean run=true;
+        	boolean run = true;
         	while(run){
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
@@ -52,6 +52,9 @@ public class ThreadServerSesion extends Thread {
     	            		//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
     	            		run=false;
     	            		break;
+    	            	case BUSCAR_PARTIDA:
+    	            		enviarListaDePartidas();
+    	            		break;
     	            }
     	            o.writeObject(paquete);
                 }
@@ -60,7 +63,6 @@ public class ThreadServerSesion extends Thread {
         	 clientSocket.close();
         	 servidor.eliminarCliente();
         	 servidor.removerNombre(nombre);
-             servidor.eliminarCliente();
         }
         catch(EOFException e){
             try {
@@ -88,4 +90,12 @@ public class ThreadServerSesion extends Thread {
 			e1.printStackTrace();
 		}
     }
+    
+    private void enviarListaDePartidas(){
+    	System.out.println("PREPARANDO LISTA");
+            for(ThreadServerPartida partida : servidor.getPartidas()){
+            	paquete.agregarPartida(partida.getNombre(),partida.getCantJugadores());
+            }
+    }
+
 }

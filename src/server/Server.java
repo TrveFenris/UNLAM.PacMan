@@ -24,6 +24,7 @@ public class Server {
     private String IPHost;
     private DataBase database;
     private MainWindowServer serverWindow;
+    private ArrayList<ThreadServerPartida> partidas;
 
     /**
      * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar,
@@ -46,6 +47,7 @@ public class Server {
         sockets = new ArrayList<Socket>();
         database = new DataBase();
         servidor = new ServerSocket(puerto);
+        partidas = new ArrayList<ThreadServerPartida>();
         
     }
 
@@ -80,8 +82,31 @@ public class Server {
     /**
      * Devuelve la lista de sockets utilizados por el servidor
      */
-    public ArrayList<Socket> getLista() {
+    public ArrayList<Socket> getListaSockets() {
         return sockets;
+    }
+    
+    /**
+     * Agrega una partida a la lista de partidas del servidor.
+     * @param partida
+     */
+    public void agregarPartida(ThreadServerPartida partida){
+    	partidas.add(partida);
+    }
+    
+    /**
+     * Elimina una partida de la lista de partidas del servidor.
+     * @param partida
+     */
+    public void eliminarPartida(ThreadServerPartida partida){
+    	partidas.remove(partida);
+    }
+    
+    /**
+     * Devuelve la lista de Threads de partidas que se están ejecutando.
+     */
+    public ArrayList<ThreadServerPartida> getPartidas(){
+    	return partidas;
     }
 
     /**
