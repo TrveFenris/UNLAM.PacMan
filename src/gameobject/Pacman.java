@@ -55,8 +55,7 @@ public class Pacman extends Jugador {
 	 * @return
 	 */
 	public static JLabel crearLabel(Punto posInicial){
-		ImageIcon icon = new ImageIcon("img/pacman.gif");
-		JLabel l = new JLabel(icon);
+		JLabel l = new JLabel(new ImageIcon("img/pacman.gif"));
 		l.setBounds(posInicial.getX(),posInicial.getY(), 50, 50);
 		return l;
 	}
