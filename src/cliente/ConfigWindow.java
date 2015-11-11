@@ -3,7 +3,9 @@ package cliente;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -17,7 +19,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 public class ConfigWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -32,7 +36,12 @@ public class ConfigWindow extends JFrame {
 		private final int ABAJO=1;
 		private final int IZQUIERDA=2;
 		private final int DERECHA=3;
-	private int[] controles; 
+	private int[] controles;
+	//PARA LOS SKINS
+	private JLabel lblFantasmaSkin;
+	private JLabel lblPacmanSkin;
+	private String skinP;
+	private ConfigWindow thisWindow = this;
 
 	/* ConfigWindow Constructor */
 	public ConfigWindow(UserWindow window) {
@@ -52,10 +61,10 @@ public class ConfigWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0, 0, 91, 57, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 91, 57, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		/* Controles */
 		JLabel lblTeclas = new JLabel("TECLAS");
@@ -64,8 +73,22 @@ public class ConfigWindow extends JFrame {
 		gbc_lblTeclas.gridwidth = 2;
 		gbc_lblTeclas.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTeclas.gridx = 1;
-		gbc_lblTeclas.gridy = 1;
+		gbc_lblTeclas.gridy = 2;
 		contentPane.add(lblTeclas, gbc_lblTeclas);
+
+		/** --- SKINS TEMPORALES --- **/
+		
+		skinP = userWindow.getSkinPac();
+		
+		JLabel lblPacman = new JLabel("PACMAN");
+		lblPacman.setToolTipText("Selecciona el modelo para el personaje Pacman");
+		lblPacman.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
+		GridBagConstraints gbc_lblPacman = new GridBagConstraints();
+		gbc_lblPacman.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblPacman.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPacman.gridx = 3;
+		gbc_lblPacman.gridy = 2;
+		contentPane.add(lblPacman, gbc_lblPacman);
 		
 		Button btnArriba = new Button("Arriba");
 		btnArriba.addActionListener(new ActionListener() {
@@ -73,23 +96,12 @@ public class ConfigWindow extends JFrame {
 				leerControl(0);
 			}
 		});
-		
-		JLabel lblPacman = new JLabel("PACMAN");
-		lblPacman.setToolTipText("Selecciona el modelo para el personaje Pacman");
-		lblPacman.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
-		GridBagConstraints gbc_lblPacman = new GridBagConstraints();
-		gbc_lblPacman.gridwidth = 2;
-		gbc_lblPacman.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblPacman.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPacman.gridx = 4;
-		gbc_lblPacman.gridy = 1;
-		contentPane.add(lblPacman, gbc_lblPacman);
 		GridBagConstraints gbc_btnArriba = new GridBagConstraints();
 		gbc_btnArriba.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnArriba.anchor = GridBagConstraints.SOUTH;
 		gbc_btnArriba.insets = new Insets(0, 0, 5, 5);
 		gbc_btnArriba.gridx = 1;
-		gbc_btnArriba.gridy = 2;
+		gbc_btnArriba.gridy = 3;
 		contentPane.add(btnArriba, gbc_btnArriba);
 		
 		textFieldArriba = new TextField();
@@ -98,8 +110,17 @@ public class ConfigWindow extends JFrame {
 		gbc_textFieldArriba.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldArriba.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldArriba.gridx = 2;
-		gbc_textFieldArriba.gridy = 2;
+		gbc_textFieldArriba.gridy = 3;
 		contentPane.add(textFieldArriba, gbc_textFieldArriba);
+		
+		lblPacmanSkin = new JLabel("");
+		ImageIcon iconPac = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DEL PACMAN
+		lblPacmanSkin.setIcon(iconPac);
+		GridBagConstraints gbc_lblPacmanSkin = new GridBagConstraints();
+		gbc_lblPacmanSkin.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPacmanSkin.gridx = 3;
+		gbc_lblPacmanSkin.gridy = 3;
+		contentPane.add(lblPacmanSkin, gbc_lblPacmanSkin);
 		
 		Button btnAbajo = new Button("Abajo");
 		btnAbajo.setActionCommand("Abajo");
@@ -108,11 +129,25 @@ public class ConfigWindow extends JFrame {
 				leerControl(1);
 			}
 		});
+		
+		JButton btnCambiar = new JButton("Cambiar");
+		btnCambiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				///AGREGAR AQUI CAMBIO DE SKIN
+				new SkinWindow(thisWindow).setVisible(true);
+			}
+		});
+		GridBagConstraints gbc_btnCambiar = new GridBagConstraints();
+		gbc_btnCambiar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCambiar.gridx = 5;
+		gbc_btnCambiar.gridy = 5;
+		contentPane.add(btnCambiar, gbc_btnCambiar);
+
 		GridBagConstraints gbc_btnAbajo = new GridBagConstraints();
 		gbc_btnAbajo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnAbajo.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAbajo.gridx = 1;
-		gbc_btnAbajo.gridy = 3;
+		gbc_btnAbajo.gridy = 4;
 		contentPane.add(btnAbajo, gbc_btnAbajo);
 		
 		textFieldAbajo = new TextField();
@@ -121,7 +156,7 @@ public class ConfigWindow extends JFrame {
 		gbc_textFieldAbajo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldAbajo.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldAbajo.gridx = 2;
-		gbc_textFieldAbajo.gridy = 3;
+		gbc_textFieldAbajo.gridy = 4;
 		contentPane.add(textFieldAbajo, gbc_textFieldAbajo);
 		
 		Button btnIzquierda = new Button("Izquierda");
@@ -130,43 +165,6 @@ public class ConfigWindow extends JFrame {
 				leerControl(2);
 			}
 		});
-		GridBagConstraints gbc_btnIzquierda = new GridBagConstraints();
-		gbc_btnIzquierda.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnIzquierda.insets = new Insets(0, 0, 5, 5);
-		gbc_btnIzquierda.gridx = 1;
-		gbc_btnIzquierda.gridy = 4;
-		contentPane.add(btnIzquierda, gbc_btnIzquierda);
-		
-		textFieldIzq = new TextField();
-		textFieldIzq.setEditable(false);
-		GridBagConstraints gbc_textFieldIzq = new GridBagConstraints();
-		gbc_textFieldIzq.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldIzq.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldIzq.gridx = 2;
-		gbc_textFieldIzq.gridy = 4;
-		contentPane.add(textFieldIzq, gbc_textFieldIzq);
-		
-		Button btnDerecha = new Button("Derecha");
-		btnDerecha.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				leerControl(3);
-			}
-		});
-		GridBagConstraints gbc_btnDerecha = new GridBagConstraints();
-		gbc_btnDerecha.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnDerecha.insets = new Insets(0, 0, 5, 5);
-		gbc_btnDerecha.gridx = 1;
-		gbc_btnDerecha.gridy = 5;
-		contentPane.add(btnDerecha, gbc_btnDerecha);
-		
-		textFieldDer = new TextField();
-		textFieldDer.setEditable(false);
-		GridBagConstraints gbc_textFieldDer = new GridBagConstraints();
-		gbc_textFieldDer.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldDer.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldDer.gridx = 2;
-		gbc_textFieldDer.gridy = 5;
-		contentPane.add(textFieldDer, gbc_textFieldDer);
 		
 		JLabel lblFantasma = new JLabel("FANTASMA");
 		lblFantasma.setToolTipText("Selecciona el modelo para el personaje Fantasma");
@@ -175,9 +173,65 @@ public class ConfigWindow extends JFrame {
 		gbc_lblFantasma.gridwidth = 2;
 		gbc_lblFantasma.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblFantasma.insets = new Insets(0, 0, 5, 5);
-		gbc_lblFantasma.gridx = 4;
-		gbc_lblFantasma.gridy = 5;
+		gbc_lblFantasma.gridx = 3;
+		gbc_lblFantasma.gridy = 4;
 		contentPane.add(lblFantasma, gbc_lblFantasma);
+		GridBagConstraints gbc_btnIzquierda = new GridBagConstraints();
+		gbc_btnIzquierda.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnIzquierda.insets = new Insets(0, 0, 5, 5);
+		gbc_btnIzquierda.gridx = 1;
+		gbc_btnIzquierda.gridy = 5;
+		contentPane.add(btnIzquierda, gbc_btnIzquierda);
+		
+		Button btnDerecha = new Button("Derecha");
+		btnDerecha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				leerControl(3);
+			}
+		});
+		
+		textFieldIzq = new TextField();
+		textFieldIzq.setEditable(false);
+		GridBagConstraints gbc_textFieldIzq = new GridBagConstraints();
+		gbc_textFieldIzq.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldIzq.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldIzq.gridx = 2;
+		gbc_textFieldIzq.gridy = 5;
+		contentPane.add(textFieldIzq, gbc_textFieldIzq);
+		
+		lblFantasmaSkin = new JLabel("");
+		ImageIcon iconFan = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DE FANTASMA
+		lblFantasmaSkin.setIcon(iconFan);
+		GridBagConstraints gbc_lblFantasmaSkin = new GridBagConstraints();
+		gbc_lblFantasmaSkin.insets = new Insets(0, 0, 5, 5);
+		gbc_lblFantasmaSkin.gridx = 3;
+		gbc_lblFantasmaSkin.gridy = 5;
+		contentPane.add(lblFantasmaSkin, gbc_lblFantasmaSkin);
+		GridBagConstraints gbc_btnDerecha = new GridBagConstraints();
+		gbc_btnDerecha.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnDerecha.insets = new Insets(0, 0, 5, 5);
+		gbc_btnDerecha.gridx = 1;
+		gbc_btnDerecha.gridy = 6;
+		contentPane.add(btnDerecha, gbc_btnDerecha);
+		
+		textFieldDer = new TextField();
+		textFieldDer.setEditable(false);
+		GridBagConstraints gbc_textFieldDer = new GridBagConstraints();
+		gbc_textFieldDer.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldDer.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldDer.gridx = 2;
+		gbc_textFieldDer.gridy = 6;
+		contentPane.add(textFieldDer, gbc_textFieldDer);
+		
+		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				userWindow.setControles(controles[ARRIBA],controles[ABAJO],controles[IZQUIERDA],controles[DERECHA]);
+				userWindow.setSkinPac(skinP);
+				dispose();
+				userWindow.setVisible(true);
+			}
+		});
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -187,28 +241,20 @@ public class ConfigWindow extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-		gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCancelar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancelar.gridx = 3;
-		gbc_btnCancelar.gridy = 9;
+		gbc_btnCancelar.gridy = 10;
 		contentPane.add(btnCancelar, gbc_btnCancelar);
-		
-		JButton btnGuardar = new JButton("Guardar");
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				userWindow.setControles(controles[ARRIBA],controles[ABAJO],controles[IZQUIERDA],controles[DERECHA]);
-				dispose();
-				userWindow.setVisible(true);
-			}
-		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
-		gbc_btnGuardar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnGuardar.gridx = 4;
-		gbc_btnGuardar.gridy = 9;
+		gbc_btnGuardar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnGuardar.gridx = 5;
+		gbc_btnGuardar.gridy = 10;
 		contentPane.add(btnGuardar, gbc_btnGuardar);
 		
 		informarValoresActuales();
 	}
 	
+
 	/* MÃ©todos */
 	private void informarValoresActuales(){
 		controles=userWindow.getControles();
@@ -216,6 +262,10 @@ public class ConfigWindow extends JFrame {
 		textFieldAbajo.setText(KeyEvent.getKeyText(controles[ABAJO]));
 		textFieldIzq.setText(KeyEvent.getKeyText(controles[IZQUIERDA]));
 		textFieldDer.setText(KeyEvent.getKeyText(controles[DERECHA]));
+		ImageIcon arg0 = new ImageIcon("img/pacman/pacman-" + skinP + ".gif");
+		ImageIcon arg1 = new ImageIcon("img/pacman/pacman-" + skinP + ".gif");
+		lblPacmanSkin.setIcon(arg0);
+		lblFantasmaSkin.setIcon(arg1);
 	}
 	
 	private void leerControl(int control){
@@ -265,4 +315,9 @@ public class ConfigWindow extends JFrame {
 		}
 		return true;
 	}
+
+	public void setSkinP(String s) {
+		skinP = s;
+	}
+
 }
