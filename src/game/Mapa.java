@@ -102,7 +102,6 @@ public class Mapa {
 	}
 	
 	public void dibujar(JPanel area){
-		//for(Iterator<Recta>r=rectas.iterator();r.hasNext();){
 		for(Recta rec : rectas) {
 			rec.dibujar(area);
 		}
