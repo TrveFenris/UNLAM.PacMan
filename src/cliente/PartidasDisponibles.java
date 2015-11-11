@@ -32,6 +32,7 @@ public class PartidasDisponibles extends JFrame {
 				if(mainWindow != null) {
 					setVisible(false);
 					mainWindow.setVisible(true);
+					dispose();
 				}
 			}
 		});
@@ -120,6 +121,7 @@ public class PartidasDisponibles extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				mainWindow.setVisible(true);
+				dispose();
 			}
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
@@ -142,6 +144,7 @@ public class PartidasDisponibles extends JFrame {
 	private void lanzarJuego(){
 		this.setVisible(false);
 		mainWindow.lanzarJuego();
+		dispose();
 //		gameWindow = new GameWindow(this);
 //		gameWindow.setLocationRelativeTo(null);
 //		gameWindow.setNameLabel(userName);
