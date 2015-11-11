@@ -256,11 +256,11 @@ public class Cliente {
             return paquete.getResultado();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
+        	System.out.println("Error en la comunicación con el servidor (unirsePartida)");
         	return resultado;
         }
         catch(IOException e) {
-        	System.out.println("Error: IOException (buscarPartidas)");
+        	System.out.println("Error: IOException (unirsePartida)");
         	return resultado;
         } catch (ClassNotFoundException e1) {
         	return resultado;
@@ -284,11 +284,11 @@ public class Cliente {
             return paquete.getCoordenadas();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
+        	System.out.println("Error en la comunicación con el servidor (actualizarPosiciones)");
         	return null;
         }
         catch(IOException e) {
-        	System.out.println("Error: IOException (buscarPartidas)");
+        	System.out.println("Error: IOException (actualizarPosiciones)");
         	return null;
         } catch (ClassNotFoundException e1) {
         	return null;
