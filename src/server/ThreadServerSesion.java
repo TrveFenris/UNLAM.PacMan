@@ -31,14 +31,14 @@ public class ThreadServerSesion extends Thread {
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
         		paquete=(PaqueteSesion)is.readObject();
-        		nombre=paquete.getNombre();
-        		System.out.println(paquete.getNombre()+" se ha conectado al servidor");
                 if (!clientSocket.isClosed()) {
     	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
     	            ObjectOutputStream o = new ObjectOutputStream(d);
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
     	            switch(paquete.getTipoPaquete()){
     	            	case LOGIN:
+    	            		nombre=paquete.getNombre();
+    	            		System.out.println(paquete.getNombre()+" se ha conectado al servidor");
     	            		paquete.setResultado(true);
     	            		servidor.agregarNombre(nombre);
     	            		//paquete.setResultado(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
