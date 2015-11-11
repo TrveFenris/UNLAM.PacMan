@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import game.Configuracion;
 import paquetes.PaqueteCoordenadas;
 
-public class ThreadServerPartida {
+public class ThreadServerPartida extends Thread{
 	
 	private class UserThread extends Thread {
 		
