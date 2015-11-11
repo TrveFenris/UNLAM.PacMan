@@ -8,5 +8,6 @@ public enum TipoPaquete {
 	LOGOUT,
 	REGISTRO,
 	BUSCAR_PARTIDA,
+	ENTRAR_EN_PARTIDA,
 	;
 }
