@@ -21,16 +21,19 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.TextArea;
+import javax.swing.JTextArea;
 
 public class MainWindowServer extends JFrame {
 	//Thread de escucha del servidor
 	private class ListenThread extends Thread {
 		public void run() {
 			while (bandera) {
-	            socket = servidor.aceptarConexion();
-	            if (socket != null)
-	            	new ThreadServerSesion(socket,servidor,servidor.getDatabase()).start();
+				cliente = servidor.aceptarConexion();
+	            if (cliente != null){
+	            	new ThreadServerSesion(cliente,servidor,servidor.getDatabase()).start();
+	            	clientes.add(cliente);
+	            	System.out.println(clientes.size()+"\t"+servidor.getLista().size());
+	            }
 	        }
 			System.out.println("FIN DEL THREAD");
 	        servidor.pararServidor();
@@ -49,14 +52,17 @@ public class MainWindowServer extends JFrame {
 	public static MainWindowServer frame;
 	
 	private Server servidor = null;
-	private int puerto = 5063;
+	private int puerto = 5066;
 	private boolean bandera;
 	private int maxClientes=6;
-	private Socket socket = null;
+	private Socket cliente = null;
 	private ListenThread threadEscucha;
-	private TextArea textAreaListaDeNombres;
 	private JLabel lblClientesConectados;
 	private ArrayList<String>nombres;
+	private ArrayList<Socket>clientes;
+	private JLabel lblPartidas;
+	private JTextArea textAreaNombres;
+	private JTextArea textAreaPartidas;
 
 	/**
 	 * Launch the application.
@@ -86,26 +92,27 @@ public class MainWindowServer extends JFrame {
 			}
 		});
 		//
-		nombres=new ArrayList<String>();
+		nombres = new ArrayList<String>();
+		clientes = new ArrayList<Socket>();
 		setTitle("Server PacMan");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 433, 333);
+		setBounds(100, 100, 480, 333);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 276, 22, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[]{30, 40, 0, 140, 140, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{30, 30, 30, 30, 30, 100, 30, 30, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblServer = new JLabel("SERVER");
 		lblServer.setForeground(SystemColor.textHighlight);
 		lblServer.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		GridBagConstraints gbc_lblServer = new GridBagConstraints();
-		gbc_lblServer.gridwidth = 3;
+		gbc_lblServer.gridwidth = 4;
 		gbc_lblServer.insets = new Insets(0, 0, 5, 5);
 		gbc_lblServer.gridx = 1;
 		gbc_lblServer.gridy = 0;
@@ -121,6 +128,7 @@ public class MainWindowServer extends JFrame {
 		textFieldNombre = new JTextField();
 		textFieldNombre.setEditable(false);
 		GridBagConstraints gbc_textFieldNombre = new GridBagConstraints();
+		gbc_textFieldNombre.gridwidth = 2;
 		gbc_textFieldNombre.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldNombre.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldNombre.gridx = 3;
@@ -138,6 +146,7 @@ public class MainWindowServer extends JFrame {
 		textFieldIP = new JTextField();
 		textFieldIP.setEditable(false);
 		GridBagConstraints gbc_textFieldIP = new GridBagConstraints();
+		gbc_textFieldIP.gridwidth = 2;
 		gbc_textFieldIP.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldIP.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldIP.gridx = 3;
@@ -155,6 +164,7 @@ public class MainWindowServer extends JFrame {
 		textFieldPuerto = new JTextField();
 		textFieldPuerto.setEditable(false);
 		GridBagConstraints gbc_textFieldPuerto = new GridBagConstraints();
+		gbc_textFieldPuerto.gridwidth = 2;
 		gbc_textFieldPuerto.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldPuerto.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldPuerto.gridx = 3;
@@ -176,21 +186,37 @@ public class MainWindowServer extends JFrame {
 		
 		lblClientesConectados = new JLabel("Clientes conectados");
 		GridBagConstraints gbc_lblClientesConectados = new GridBagConstraints();
-		gbc_lblClientesConectados.gridwidth = 3;
 		gbc_lblClientesConectados.insets = new Insets(0, 0, 5, 5);
-		gbc_lblClientesConectados.gridx = 1;
+		gbc_lblClientesConectados.gridx = 3;
 		gbc_lblClientesConectados.gridy = 4;
 		contentPane.add(lblClientesConectados, gbc_lblClientesConectados);
 		
-		textAreaListaDeNombres = new TextArea();
-		textAreaListaDeNombres.setEditable(false);
-		GridBagConstraints gbc_textAreaListaDeNombres = new GridBagConstraints();
-		gbc_textAreaListaDeNombres.gridwidth = 3;
-		gbc_textAreaListaDeNombres.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textAreaListaDeNombres.insets = new Insets(0, 0, 0, 5);
-		gbc_textAreaListaDeNombres.gridx = 1;
-		gbc_textAreaListaDeNombres.gridy = 5;
-		contentPane.add(textAreaListaDeNombres, gbc_textAreaListaDeNombres);
+		lblPartidas = new JLabel("Partidas");
+		GridBagConstraints gbc_lblPartidas = new GridBagConstraints();
+		gbc_lblPartidas.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPartidas.gridx = 4;
+		gbc_lblPartidas.gridy = 4;
+		contentPane.add(lblPartidas, gbc_lblPartidas);
+		
+		textAreaNombres = new JTextArea();
+		textAreaNombres.setEditable(false);
+		textAreaNombres.setBackground(SystemColor.control);
+		GridBagConstraints gbc_textAreaNombres = new GridBagConstraints();
+		gbc_textAreaNombres.insets = new Insets(0, 0, 5, 5);
+		gbc_textAreaNombres.fill = GridBagConstraints.BOTH;
+		gbc_textAreaNombres.gridx = 3;
+		gbc_textAreaNombres.gridy = 5;
+		contentPane.add(textAreaNombres, gbc_textAreaNombres);
+		
+		textAreaPartidas = new JTextArea();
+		textAreaPartidas.setBackground(SystemColor.control);
+		textAreaPartidas.setEditable(false);
+		GridBagConstraints gbc_textAreaPartidas = new GridBagConstraints();
+		gbc_textAreaPartidas.insets = new Insets(0, 0, 5, 5);
+		gbc_textAreaPartidas.fill = GridBagConstraints.BOTH;
+		gbc_textAreaPartidas.gridx = 4;
+		gbc_textAreaPartidas.gridy = 5;
+		contentPane.add(textAreaPartidas, gbc_textAreaPartidas);
 		bandera=true;
 		threadEscucha=new ListenThread();
 		threadEscucha.start();
@@ -219,10 +245,10 @@ public class MainWindowServer extends JFrame {
 	}
 	
 	public void actualizarListaDeNombres(){
-		textAreaListaDeNombres.setText("");
+		textAreaNombres.setText("");
 		for(Iterator<String>s=nombres.iterator();s.hasNext();){
 			String cadena=s.next();
-			textAreaListaDeNombres.setText(textAreaListaDeNombres.getText()+cadena+"\n");
+			textAreaNombres.setText(textAreaNombres.getText()+cadena+"\n");
 		}
 	}
 }
