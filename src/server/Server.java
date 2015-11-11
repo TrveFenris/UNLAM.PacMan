@@ -108,6 +108,19 @@ public class Server {
     public ArrayList<ThreadServerPartida> getPartidas(){
     	return partidas;
     }
+    
+    /**
+     * Agrega el jugador a la partida seleccionada.
+     * @return true/false -Si pudo o no, agregar al jugador.
+     */
+    public boolean agregarAPartida(Socket jugador, String partida){
+    	for(ThreadServerPartida p : partidas){
+    		if(p.getNombre().equals(partida)){
+    			return p.agregarCliente(jugador);
+    		}
+    	}
+    	return false;
+    }
 
     /**
      * Acepta una conexion
