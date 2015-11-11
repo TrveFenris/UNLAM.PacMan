@@ -209,7 +209,7 @@ public class Cliente {
     
     /**
      * Solicita la lista de partidas disponibles al servidor.
-     * @return PaqueteListaPartidas -Paquete con informacion de las partidas disponibles. Si hubo un error devuelve null;
+     * @return PaqueteListaPartidas -Paquete con informacion de las partidas disponibles. Si hubo un error devuelve null.
      */
     public ArrayList<String> buscarPartidas(){;
     	try {
@@ -232,6 +232,36 @@ public class Cliente {
         	return null;
         } catch (ClassNotFoundException e1) {
         	return null;
+		}
+    }
+    
+    /**
+     * Solicita unirse a la partida seleccionada.
+     * @param nombre -Nombre de la partida a la que desea unirse.
+     * @return true/false, si pudo unirse a la partida o no.
+     */
+    public boolean unirseAPartida(String nombre){
+    	boolean resultado = false;
+    	try {
+    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+            ObjectOutputStream o = new ObjectOutputStream(d);
+        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	paquete.setUnirseAPartida();
+        	o.writeObject(paquete);
+            DataInputStream data= new DataInputStream(cliente.getInputStream());
+            ObjectInputStream is = new ObjectInputStream(data);
+            paquete=(PaqueteSesion)is.readObject();
+            return paquete.getResultado();
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
+        	return resultado;
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (buscarPartidas)");
+        	return resultado;
+        } catch (ClassNotFoundException e1) {
+        	return resultado;
 		}
     }
 }
