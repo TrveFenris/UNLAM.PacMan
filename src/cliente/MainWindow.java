@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class MainWindowSinDB extends JFrame {
+public class MainWindow extends JFrame {
 	
 	/* Members */
 	private static final long serialVersionUID = 1L;
@@ -34,7 +34,7 @@ public class MainWindowSinDB extends JFrame {
 	private JPasswordField pwdFieldPassword;
 	private JTextField txtServidor;
 	private JTextField txtPuerto;
-	public static MainWindowSinDB frame;
+	public static MainWindow frame;
 	public static GameWindow gameWindow;
 	private UserWindow userWindow;
 	private Cliente cliente;
@@ -44,7 +44,7 @@ public class MainWindowSinDB extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new MainWindowSinDB();
+					frame = new MainWindow();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -54,7 +54,7 @@ public class MainWindowSinDB extends JFrame {
 		});
 	}
 	/* MainWindow Constructor */
-	public MainWindowSinDB() {
+	public MainWindow() {
 		setResizable(false);
 		frame = this;
 		addWindowListener(new WindowAdapter() {
