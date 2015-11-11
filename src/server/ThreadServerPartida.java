@@ -10,12 +10,64 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import game.Configuracion;
+import paquetes.PaqueteCoordenadas;
 
 public class ThreadServerPartida {
-	private ArrayList<Socket>jugadores;
+	
+	private class UserThread extends Thread {
+		
+		private Socket jugador;
+		private ArrayList<Socket> jugadores;
+	    private Server servidor;
+	    private boolean running;
+	    private ThreadServerPartida partida;
+		
+		public UserThread(Socket jugador, Server servidor, ArrayList<Socket> jugadores, ThreadServerPartida partida){
+			this.jugador = jugador;
+			this.jugadores = jugadores;
+			this.servidor = servidor;
+			this.partida = partida;
+			this.running = true;
+		}
+		
+		public void run() {
+			try {
+	        	boolean running=true;
+	        	while(running){
+	        		DataInputStream data= new DataInputStream(jugador.getInputStream());
+	            	ObjectInputStream is = new ObjectInputStream(data);
+	        		PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
+	        		for(Socket s : jugadores){
+	        			if(s!=jugador && !jugador.isClosed()){
+	        				DataOutputStream d = new DataOutputStream(jugador.getOutputStream());
+		    	            ObjectOutputStream o = new ObjectOutputStream(d); 
+		    	            o.writeObject(paquete);
+	        			}
+	        		}
+	        	}
+	        	System.out.println("Un usuario se ha desconectado del servidor");
+			}
+	        catch(EOFException e){
+	                System.out.println("Un usuario se ha desconectado del servidor");
+	        }
+	        catch(IOException e) {
+	                System.out.println("Un usuario se ha desconectado del servidor");
+	        } catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			System.out.println("FIN DEL UserThread");
+		}
+		
+		public void pararThread(){
+			running=false;
+		}
+	}
+	
+	private ArrayList<Socket> jugadores;
     private Server servidor;
     private String nombrePartida;
-    private boolean run;
+    private boolean running;
+    private ThreadServerPartida thisThread;
     
     /**
      * Crea un thread que actua como servidor para la comunicacion realizada durante una partida.
@@ -25,8 +77,9 @@ public class ThreadServerPartida {
     public ThreadServerPartida(Server serv, String nombre) {
         servidor = serv;
         nombrePartida = nombre;
-        run = true;
+        running = true;
         jugadores = new ArrayList<Socket>();
+        thisThread = this;
         System.out.println("Partida "+ nombrePartida +" creada.");
     }
     
@@ -41,6 +94,14 @@ public class ThreadServerPartida {
     	}
     	jugadores.add(jugador);
     	return true;
+    }
+    
+    /**
+     * Elimina un jugador de la partida.
+     * @param jugador
+     */
+    public void removerCliente(Socket jugador){
+    	jugadores.remove(jugador);
     }
     
     /**
@@ -68,7 +129,7 @@ public class ThreadServerPartida {
      * Detiene el thread.
      */
     public void detener(){
-    	run=false;
+    	running=false;
     	System.out.println("Partida "+nombrePartida+" detenida.");
     }
     
@@ -77,67 +138,8 @@ public class ThreadServerPartida {
      */
     
     public void run() {
-//        try {
-//        	boolean run=true;
-//        	while(run){
-//        		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
-//            	ObjectInputStream is = new ObjectInputStream(data);
-//        		paquete=(PaqueteSesion)is.readObject();
-//        		nombre=paquete.getNombre();
-//        		System.out.println(paquete.getNombre()+" se ha conectado al servidor");
-//                if (!clientSocket.isClosed()) {
-//    	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
-//    	            ObjectOutputStream o = new ObjectOutputStream(d);
-//    	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
-//    	            switch(paquete.getTipoPaquete()){
-//    	            	case LOGIN:
-//    	            		paquete.setResultado(true);
-//    	            		servidor.agregarNombre(nombre);
-//    	            		//paquete.setResultado(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
-//    	            		break;
-//    	            	case LOGOUT:
-//    	            		paquete.setResultado(true);
-//    	            		run=false;
-//    	            		break;
-//    	            	case REGISTRO:
-//    	            		paquete.setResultado(false);
-//    	            		//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
-//    	            		run=false;
-//    	            		break;
-//    	            }
-//    	            o.writeObject(paquete);
-//                }
-//        	}
-//        	 System.out.println(nombre+" se ha desconectado del servidor");
-//        	 clientSocket.close();
-//        	 servidor.eliminarCliente();
-//        	 servidor.removerNombre(nombre);
-//             servidor.eliminarCliente();
-//        }
-//        catch(EOFException e){
-//            try {
-//                clientSocket.close();
-//                servidor.removerNombre(nombre);
-//                servidor.eliminarCliente();
-//                System.out.println(nombre+" se ha desconectado del servidor");
-//            }
-//            catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
-//        catch(IOException e) {
-//        	e.printStackTrace();
-//            try {
-//                clientSocket.close();
-//                servidor.removerNombre(nombre);
-//                servidor.eliminarCliente();
-//                System.out.println(nombre+" se ha desconectado del servidor");
-//            }
-//            catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//        } catch (ClassNotFoundException e1) {
-//			e1.printStackTrace();
-//		}
+    	for(Socket j : jugadores){
+    		new UserThread(j, servidor, jugadores, thisThread).start();
+    	}
     }
 }
