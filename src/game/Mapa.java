@@ -102,11 +102,12 @@ public class Mapa {
 	}
 	
 	public void dibujar(JPanel area){
-		for(Iterator<Recta>r=rectas.iterator();r.hasNext();){
-			Recta rec=r.next();
+		//for(Iterator<Recta>r=rectas.iterator();r.hasNext();){
+		for(Recta rec : rectas) {
 			rec.dibujar(area);
 		}
 		generarBolitas(area);
+		System.out.println(bolitas.size());
 	}
 	
 	public void generarBolitas(JPanel area){
@@ -124,8 +125,19 @@ public class Mapa {
 				l.setIcon(bolitaNormalIcon);
 				Bolita b = new Bolita(l,false);
 				//System.out.println(b.getCentroCoordenadas().toString());
-				bolitas.add(b);
-				area.add(l);
+				boolean colision = false;
+				if( !bolitas.isEmpty() ) {
+					for(Bolita bol : bolitas) {
+						if( b.getCentroCoordenadas().distanciaCon(bol.getCentroCoordenadas()) <= ( (b.getWidth()/2) + (bol.getWidth()/2) ) ) {
+							colision = true;
+							break;
+						}
+					}
+				}
+				if(!colision) {
+					bolitas.add(b);
+					area.add(l);
+				}
 			}
 		}
 	}
