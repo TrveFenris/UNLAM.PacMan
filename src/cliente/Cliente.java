@@ -249,6 +249,7 @@ public class Cliente {
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
         	paquete.setUnirseAPartida();
+        	paquete.setMensaje(nombre);
         	o.writeObject(paquete);
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
@@ -271,7 +272,6 @@ public class Cliente {
      * Envia la posicion actual al servidor, y recibe la pocision de los otros jugadores.
      */
     public Punto actualizarPosiciones(Punto p){
-    	boolean resultado = false;
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
@@ -280,7 +280,7 @@ public class Cliente {
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             paquete=(PaqueteCoordenadas)is.readObject();
-            System.out.println("Recibi: " + paquete.getCoordenadas().toString());
+            System.out.println("Soy "+nombre +" recibi: " + paquete.getCoordenadas().toString());
             return paquete.getCoordenadas();
         }
         catch(EOFException e){

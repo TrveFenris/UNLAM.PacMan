@@ -142,8 +142,14 @@ public class PartidasDisponibles extends JFrame {
 		
 	}
 
-	private void lanzarJuego(){
-		//mainWindow.getCliente().unirseAPartida(comboBoxPartidas.getSelectedItem().toString());
+	private void lanzarJuego() {
+		if(mainWindow.getCliente().unirseAPartida(comboBoxPartidas.getSelectedItem().toString()) ) {
+			System.out.println("Entrando a la partida");
+		}
+		else {
+			System.out.println("Error al unirse a la partida");
+			return;
+		}
 		this.setVisible(false);
 		mainWindow.lanzarJuego();
 		dispose();
