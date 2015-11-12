@@ -41,7 +41,7 @@ public class ThreadServerPartida extends Thread{
 	        		//System.out.println(paquete.getCoordenadas().toString());
 	        		for(Socket s : jugadores){
 	        			if(s!=jugador && !jugador.isClosed()){
-	        				DataOutputStream d = new DataOutputStream(jugador.getOutputStream());
+	        				DataOutputStream d = new DataOutputStream(s.getOutputStream());
 		    	            ObjectOutputStream o = new ObjectOutputStream(d); 
 		    	            o.writeObject(paquete);
 	        			}

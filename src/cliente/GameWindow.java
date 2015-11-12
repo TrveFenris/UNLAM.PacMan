@@ -46,7 +46,8 @@ public class GameWindow extends JFrame {
 	private Mapa mapa;
 	private ArrayList<Jugador> jugadores;
 	private Pacman pacman;
-	//Variables de acción segun presión de tecla
+	private Pacman pacmanBot;
+	//Variables de accion segun presion de tecla
 	private Rectas ultimaDireccion;
 	private Actions ultimaAccion;
 	
@@ -89,6 +90,10 @@ public class GameWindow extends JFrame {
 		ultimaAccion=Actions.QUIETO;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
+		//Creaci�n del 2do jugador (manejado por otra ventana)
+		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO_SPRITE);
+		pacmanBot.dibujar(contentPane);
+		//jugadores.add(pacman);
 		userWindow = window;
 		gameRunning = true;
 		gameLoopThread = new GameThread();
@@ -145,6 +150,7 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void update(){
+		Punto paux;
 		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
 			Jugador jug=j.next();
 			jug.actualizarUbicacion(mapa.getArrayRectas());
@@ -180,7 +186,8 @@ public class GameWindow extends JFrame {
 					break;
 			}
 			jug.mover();
-			//userWindow.getCliente().actualizarPosiciones(jug.getLocation());
+			paux = userWindow.getCliente().actualizarPosiciones(jug.getLocation());
+			pacmanBot.setLocation(paux.getX()+10, paux.getY()+10);
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}

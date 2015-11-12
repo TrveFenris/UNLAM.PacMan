@@ -110,7 +110,7 @@ public class Mapa {
 	
 	public void generarBolitas(JPanel area){
 		for(Recta rec : rectas) {
-			int cantBolitas = (rec.getLongitud())/18;
+			int cantBolitas = (rec.getLongitud())/20;
 			for(int i=0;i<cantBolitas;i++){
 				Punto pInicial = null;
 				if(rec.getTipo()==Rectas.HORIZONTAL){
