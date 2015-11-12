@@ -3,8 +3,8 @@ package game;
 public enum ConfiguracionSprites {
 	//PACMAN
 	PACMAN_SPRITE ("img/pacman.gif"),
-	PACMAN_MALVADO_SPRITE("img/pacman/pacman-malvado.gif"),
-	PACMAN_LOCO_SPRITE("img/pacman/pacman-loco.gif"),
+	PACMAN_MALVADO_SPRITE("img/pacman/pacman-malvado-derecha.gif"),
+	PACMAN_LOCO_SPRITE("img/pacman/pacman-loco-derecha.gif"),
 	//FANTASMA
 	FANTASMA_SPRITE ("img/pacman.gif"),
 	//BOLITAS
