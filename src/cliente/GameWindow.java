@@ -1,5 +1,6 @@
 package cliente;
 
+import game.ConfiguracionSprites;
 import game.Mapa;
 import gameobject.Actions;
 import gameobject.Bolita;
@@ -48,11 +49,9 @@ public class GameWindow extends JFrame {
 	//Variables de acción segun presión de tecla
 	private Rectas ultimaDireccion;
 	private Actions ultimaAccion;
-	/// Variables de imagen
-	private String skinPacMan;
 	
 	/* GameWindow constructor */
-	public GameWindow(UserWindow window, String sP) {
+	public GameWindow(UserWindow window) {
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -85,14 +84,8 @@ public class GameWindow extends JFrame {
 		mapa = new Mapa("mapa1");
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
-		////
-		skinPacMan = sP;
-		//Creacion de pacman
-<<<<<<< HEAD
-		pacman = new Pacman(new Punto(5,25), lblName.getText());
-=======
-		pacman = new Pacman(Pacman.crearLabel(new Punto(15, 35), skinPacMan), lblName.getName()); //Cambiar Title
->>>>>>> origin/master
+		//Creacion de pacman, por ahora se inicializa con la skin por defecto
+		pacman = new Pacman(new Punto(5,25), lblName.getText(), ConfiguracionSprites.PACMAN_SPRITE);
 		ultimaAccion=Actions.QUIETO;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
@@ -187,10 +180,7 @@ public class GameWindow extends JFrame {
 					break;
 			}
 			jug.mover();
-<<<<<<< HEAD
 			//userWindow.getCliente().actualizarPosiciones(jug.getLocation());
-=======
->>>>>>> origin/master
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}
@@ -249,10 +239,6 @@ public class GameWindow extends JFrame {
 
 	public void setNameLabel(String s){
 		lblName.setText(s);
-	}
-	
-	public void setSkinPacMan(String s){
-		skinPacMan = s;
 	}
 	
 	/*Thread que maneja el Game Loop */

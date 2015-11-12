@@ -110,19 +110,20 @@ public class Mapa {
 	
 	public void generarBolitas(JPanel area){
 		for(Recta rec : rectas) {
-			int cantBolitas = (rec.getLongitud()-10)/20;
+			int cantBolitas = (rec.getLongitud())/18;
 			for(int i=0;i<cantBolitas;i++){
 				Punto pInicial = null;
 				if(rec.getTipo()==Rectas.HORIZONTAL){
-					pInicial = new Punto(rec.getPuntoInicialX() + i*20+10, rec.getPuntoInicialY()-5);
+					pInicial = new Punto(rec.getPuntoInicialX() + i*20-5, rec.getPuntoInicialY()-5);
 				}
 				else if(rec.getTipo()==Rectas.VERTICAL){
-					pInicial = new Punto(rec.getPuntoInicialX() - 5, rec.getPuntoInicialY() + i*20+10);
+					pInicial = new Punto(rec.getPuntoInicialX() - 5, rec.getPuntoInicialY() + i*20-5);
 				}
 				boolean colision = false;
 				if( !bolitas.isEmpty() ) {
+					Punto pAux = new Punto(pInicial.getX()+5, pInicial.getY()+5);
 					for(Bolita bol : bolitas) {
-						if( pInicial.distanciaCon(bol.getCentroCoordenadas()) <= bol.getWidth() ) {
+						if( pAux.distanciaCon(bol.getCentroCoordenadas()) <= bol.getWidth() + 2) {
 							colision = true;
 							break;
 						}

@@ -75,10 +75,6 @@ public class ConfigWindow extends JFrame {
 		gbc_lblTeclas.gridx = 1;
 		gbc_lblTeclas.gridy = 2;
 		contentPane.add(lblTeclas, gbc_lblTeclas);
-
-		/** --- SKINS TEMPORALES --- **/
-		
-		skinP = userWindow.getSkinPac();
 		
 		JLabel lblPacman = new JLabel("PACMAN");
 		lblPacman.setToolTipText("Selecciona el modelo para el personaje Pacman");
@@ -114,8 +110,8 @@ public class ConfigWindow extends JFrame {
 		contentPane.add(textFieldArriba, gbc_textFieldArriba);
 		
 		lblPacmanSkin = new JLabel("");
-		ImageIcon iconPac = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DEL PACMAN
-		lblPacmanSkin.setIcon(iconPac);
+		//ImageIcon iconPac = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DEL PACMAN
+		//lblPacmanSkin.setIcon(iconPac);
 		GridBagConstraints gbc_lblPacmanSkin = new GridBagConstraints();
 		gbc_lblPacmanSkin.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPacmanSkin.gridx = 3;
@@ -200,8 +196,8 @@ public class ConfigWindow extends JFrame {
 		contentPane.add(textFieldIzq, gbc_textFieldIzq);
 		
 		lblFantasmaSkin = new JLabel("");
-		ImageIcon iconFan = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DE FANTASMA
-		lblFantasmaSkin.setIcon(iconFan);
+		//ImageIcon iconFan = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DE FANTASMA
+		//lblFantasmaSkin.setIcon(iconFan);
 		GridBagConstraints gbc_lblFantasmaSkin = new GridBagConstraints();
 		gbc_lblFantasmaSkin.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFantasmaSkin.gridx = 3;
@@ -227,7 +223,7 @@ public class ConfigWindow extends JFrame {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				userWindow.setControles(controles[ARRIBA],controles[ABAJO],controles[IZQUIERDA],controles[DERECHA]);
-				userWindow.setSkinPac(skinP);
+				//userWindow.setSkinPac(skinP);
 				dispose();
 				userWindow.setVisible(true);
 			}
