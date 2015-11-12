@@ -84,7 +84,7 @@ public class GameWindow extends JFrame {
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman
-		pacman = new Pacman(Pacman.crearLabel(new Punto(5,25)), lblName.getText());
+		pacman = new Pacman(new Punto(5,25), lblName.getText());
 		ultimaAccion=Actions.QUIETO;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
@@ -163,6 +163,7 @@ public class GameWindow extends JFrame {
 					
 					break;
 				case AMBAS:
+					System.out.println("Interseccion");
 					for(int i=0;i<2;i++){
 						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
 							jug.setLeftBound(jug.getRectaActual(i).getPuntoInicialX());
@@ -178,7 +179,7 @@ public class GameWindow extends JFrame {
 					break;
 			}
 			jug.mover();
-			userWindow.getCliente().actualizarPosiciones(jug.getLocation());
+			//userWindow.getCliente().actualizarPosiciones(jug.getLocation());
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}

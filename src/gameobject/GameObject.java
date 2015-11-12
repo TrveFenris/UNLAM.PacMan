@@ -1,15 +1,20 @@
 package gameobject;
 
+import game.ConfiguracionSprites;
+
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import punto.Punto;
 
-public class GameObject {
+public abstract class GameObject {
 	protected boolean alive;
 	protected JLabel imagen;
+	protected String nombreSprite;
 
-	protected GameObject(JLabel img) {
-		imagen = img;
+	protected GameObject() {
+		imagen = new JLabel();
 		alive = true;
 	}
 	
@@ -51,6 +56,21 @@ public class GameObject {
 	
 	public JLabel getImagen() {
 		return imagen;
+	}
+	public void setImagen(String path) {
+		ImageIcon i = new ImageIcon(path);
+		imagen.setIcon(i);
+		imagen.setSize(i.getIconWidth(), i.getIconHeight());
+	}
+	public void setImagen(ConfiguracionSprites configSprite) {
+		ImageIcon i = new ImageIcon(configSprite.getValor());
+		imagen.setIcon(i);
+		imagen.setSize(i.getIconWidth(), i.getIconHeight());
+	}
+	
+	public void dibujar(JPanel area){
+		if(nombreSprite != null || nombreSprite != "")
+			area.add(getImagen());
 	}
 	
 	public void borrarImagen() {

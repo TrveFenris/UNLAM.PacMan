@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import punto.Punto;
@@ -111,32 +109,29 @@ public class Mapa {
 	}
 	
 	public void generarBolitas(JPanel area){
-		ImageIcon bolitaNormalIcon = new ImageIcon("img/bolitaNormal.gif");
 		for(Recta rec : rectas) {
 			int cantBolitas = (rec.getLongitud()-10)/20;
 			for(int i=0;i<cantBolitas;i++){
-				JLabel l = new JLabel(bolitaNormalIcon);
+				Punto pInicial = null;
 				if(rec.getTipo()==Rectas.HORIZONTAL){
-					l.setBounds(rec.getPuntoInicialX() + i*20+10, rec.getPuntoInicialY()-10, 21, 21);
+					pInicial = new Punto(rec.getPuntoInicialX() + i*20+10, rec.getPuntoInicialY()-5);
 				}
 				else if(rec.getTipo()==Rectas.VERTICAL){
-					l.setBounds(rec.getPuntoInicialX() - 10,rec.getPuntoInicialY() + i*20+10, 21, 21);
+					pInicial = new Punto(rec.getPuntoInicialX() - 5, rec.getPuntoInicialY() + i*20+10);
 				}
-				l.setIcon(bolitaNormalIcon);
-				Bolita b = new Bolita(l,false);
-				//System.out.println(b.getCentroCoordenadas().toString());
 				boolean colision = false;
 				if( !bolitas.isEmpty() ) {
 					for(Bolita bol : bolitas) {
-						if( b.getCentroCoordenadas().distanciaCon(bol.getCentroCoordenadas()) <= ( (b.getWidth()/2) + (bol.getWidth()/2) ) ) {
+						if( pInicial.distanciaCon(bol.getCentroCoordenadas()) <= bol.getWidth() ) {
 							colision = true;
 							break;
 						}
 					}
 				}
 				if(!colision) {
+					Bolita b = new Bolita(pInicial, false);
 					bolitas.add(b);
-					area.add(l);
+					b.dibujar(area);
 				}
 			}
 		}

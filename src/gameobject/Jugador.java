@@ -5,13 +5,11 @@ import game.Configuracion;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JLabel;
-
 import punto.Punto;
 import rectas.Recta;
 import rectas.Rectas;
 
-public class Jugador extends GameObject{
+public abstract class Jugador extends GameObject{
 	protected int velocidad;
 	protected int velX;
 	protected int velY;
@@ -24,8 +22,8 @@ public class Jugador extends GameObject{
 	protected int leftBound;
 	protected int rightBound;
 	
-	public Jugador(JLabel img, String nombre, int velocidad){
-		super(img);
+	public Jugador(String nombre, int velocidad){
+		super();
 		this.velocidad=velocidad;
 		this.nombre=nombre;
 		puntaje=0;
@@ -79,7 +77,6 @@ public class Jugador extends GameObject{
 	*/
 	public boolean colisionaCon(Bolita obj) {
 		if( this.getCentroCoordenadas().distanciaCon(obj.getCentroCoordenadas()) <= Configuracion.PACMAN_DISTANCIA_PARA_COMER_BOLITA.getValor() ) {
-			//System.out.println("Colisiono con una bolita");
 			return true;
 		}
 		else return false;

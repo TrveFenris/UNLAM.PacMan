@@ -143,15 +143,9 @@ public class PartidasDisponibles extends JFrame {
 	}
 
 	private void lanzarJuego(){
-		mainWindow.getCliente().unirseAPartida(comboBoxPartidas.getSelectedItem().toString());
+		//mainWindow.getCliente().unirseAPartida(comboBoxPartidas.getSelectedItem().toString());
 		this.setVisible(false);
 		mainWindow.lanzarJuego();
 		dispose();
-//		gameWindow = new GameWindow(this);
-//		gameWindow.setLocationRelativeTo(null);
-//		gameWindow.setNameLabel(userName);
-//		gameWindow.setVisible(true);
-//		gameWindow.runGameLoop();
-//		gameWindow.setControles(this.getControles());
 	}
 }
