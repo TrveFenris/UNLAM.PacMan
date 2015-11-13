@@ -2,7 +2,7 @@ package cliente;
 
 import game.ConfiguracionSprites;
 import game.Mapa;
-import gameobject.Actions;
+import gameobject.Direcciones;
 import gameobject.Bolita;
 import gameobject.Jugador;
 import gameobject.Pacman;
@@ -49,7 +49,7 @@ public class GameWindow extends JFrame {
 	private Pacman pacmanBot;
 	//Variables de accion segun presion de tecla
 	private Rectas ultimaDireccion;
-	private Actions ultimaAccion;
+	private Direcciones ultimaAccion;
 	
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
@@ -86,12 +86,12 @@ public class GameWindow extends JFrame {
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
-		pacman = new Pacman(new Punto(5,25), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT_DERECHA);
-		ultimaAccion=Actions.QUIETO;
+		pacman = new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT);
+		ultimaAccion=Direcciones.NINGUNA;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
 		//Creación del 2do jugador (manejado por otra ventana)
-		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO_DERECHA);
+		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO);
 		pacmanBot.dibujar(contentPane);
 		//jugadores.add(pacman);
 		userWindow = window;
@@ -124,28 +124,28 @@ public class GameWindow extends JFrame {
 			}
 		}
 		else if(key.getKeyCode() == controles[ARRIBA]) {
-			ultimaAccion=Actions.ARRIBA;
+			ultimaAccion=Direcciones.ARRIBA;
 			if(ultimaDireccion==Rectas.HORIZONTAL)
 				return;
-			pacman.cambiarSentido(Actions.ARRIBA);
+			pacman.cambiarSentido(Direcciones.ARRIBA);
 		}
 		else if(key.getKeyCode() == controles[ABAJO]) {
-			ultimaAccion=Actions.ABAJO;
+			ultimaAccion=Direcciones.ABAJO;
 			if(ultimaDireccion==Rectas.HORIZONTAL)
 				return;
-			pacman.cambiarSentido(Actions.ABAJO);
+			pacman.cambiarSentido(Direcciones.ABAJO);
 		}
 		else if(key.getKeyCode() == controles[IZQUIERDA]) {
-			ultimaAccion=Actions.IZQUIERDA;
+			ultimaAccion=Direcciones.IZQUIERDA;
 			if(ultimaDireccion==Rectas.VERTICAL)
 				return;
-			pacman.cambiarSentido(Actions.IZQUIERDA);
+			pacman.cambiarSentido(Direcciones.IZQUIERDA);
 		}
 		else if(key.getKeyCode() == controles[DERECHA]) {
-			ultimaAccion=Actions.DERECHA;
+			ultimaAccion=Direcciones.DERECHA;
 			if(ultimaDireccion==Rectas.VERTICAL)
 				return;
-			pacman.cambiarSentido(Actions.DERECHA);
+			pacman.cambiarSentido(Direcciones.DERECHA);
 		}
 	}
 	
@@ -170,7 +170,7 @@ public class GameWindow extends JFrame {
 					
 					break;
 				case AMBAS:
-					System.out.println("Interseccion");
+					//System.out.println("Interseccion");
 					for(int i=0;i<2;i++){
 						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
 							jug.setLeftBound(jug.getRectaActual(i).getPuntoInicialX());
@@ -187,7 +187,7 @@ public class GameWindow extends JFrame {
 			}
 			jug.mover();
 			paux = userWindow.getCliente().actualizarPosiciones(jug.getLocation());
-			pacmanBot.setLocation(paux.getX()+10, paux.getY()+10);
+			pacmanBot.setLocation(paux.getX(), paux.getY());
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}

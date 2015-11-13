@@ -1,6 +1,7 @@
 package gameobject;
 
 import game.Configuracion;
+import game.ConfiguracionSprites;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,16 +17,18 @@ public abstract class Jugador extends GameObject{
 	protected String nombre;
 	protected int puntaje;
 	protected ArrayList<Recta> rectasActuales;
+	protected ConfiguracionSprites skin;
 	//Variables delimitadoras
 	protected int upperBound;
 	protected int lowerBound;
 	protected int leftBound;
 	protected int rightBound;
 	
-	public Jugador(String nombre, int velocidad){
+	public Jugador(String nombre, int velocidad, ConfiguracionSprites skin){
 		super();
 		this.velocidad=velocidad;
 		this.nombre=nombre;
+		this.skin=skin;
 		puntaje=0;
 		velX = 0;
 		velY = 0;
@@ -36,25 +39,29 @@ public abstract class Jugador extends GameObject{
 		
 	}
 	
-	public void cambiarSentido(Actions a){
+	public void cambiarSentido(Direcciones a){
 		switch(a){
 			case ARRIBA:
 				velX=0;
 				velY=-1*velocidad;
+				setImagen(skin.getValor(Direcciones.ARRIBA));
 				break;
 			case ABAJO:
 				velX=0;
 				velY=velocidad;
+				setImagen(skin.getValor(Direcciones.ABAJO));
 				break;
 			case IZQUIERDA:
 				velX=-1*velocidad;
+				setImagen(skin.getValor(Direcciones.IZQUIERDA));
 				velY=0;
 				break;
 			case DERECHA:
 				velX=velocidad;
 				velY=0;
+				setImagen(skin.getValor(Direcciones.DERECHA));
 				break;
-			case QUIETO:
+			case NINGUNA:
 				break;
 		}
 	}

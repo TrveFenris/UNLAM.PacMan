@@ -11,9 +11,9 @@ public class Bolita extends GameObject{
 		super();
 		superpoder = especial;
 		if(superpoder)
-			setImagen(ConfiguracionSprites.BOLITA_ESPECIAL);
+			setImagen(ConfiguracionSprites.BOLITA_ESPECIAL.getValor());
 		else
-			setImagen(ConfiguracionSprites.BOLITA);
+			setImagen(ConfiguracionSprites.BOLITA.getValor());
 		
 		imagen.setLocation(posInicial.getX(),posInicial.getY());
 		//imagen.setBounds(posInicial.getX(), posInicial.getY(), 21, 21);

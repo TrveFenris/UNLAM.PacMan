@@ -62,11 +62,6 @@ public abstract class GameObject {
 		imagen.setIcon(i);
 		imagen.setSize(i.getIconWidth(), i.getIconHeight());
 	}
-	public void setImagen(ConfiguracionSprites configSprite) {
-		ImageIcon i = new ImageIcon(configSprite.getValor());
-		imagen.setIcon(i);
-		imagen.setSize(i.getIconWidth(), i.getIconHeight());
-	}
 	
 	public void dibujar(JPanel area){
 		if(nombreSprite != null || nombreSprite != "")

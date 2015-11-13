@@ -15,10 +15,10 @@ public class Pacman extends Jugador {
 	private int fantasmasComidos;
 	
 	public Pacman(Punto posInicial, String nombre, ConfiguracionSprites configSprites) {
-		super(nombre, Configuracion.PACMAN_VELOCIDAD.getValor());
+		super(nombre, Configuracion.PACMAN_VELOCIDAD.getValor(), configSprites);
 		superpoder = false;
 		bolitasComidas=muertes=fantasmasComidos=0;
-		setImagen(configSprites);
+		setImagen(configSprites.getValor(Direcciones.DERECHA));
 		imagen.setLocation(posInicial.getX(), posInicial.getY());
 	}
 	
