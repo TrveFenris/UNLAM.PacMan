@@ -23,7 +23,7 @@ public class Server {
     private String nombreHost;
     private String IPHost;
     private DataBase database;
-    private MainWindowServer serverWindow;
+    private ServerWindow serverWindow;
     private ArrayList<ThreadServerPartida> partidas;
 
     /**
@@ -32,7 +32,7 @@ public class Server {
      * @param port
      * @param max_conexiones
      */
-    public Server(int port, int max_conexiones, MainWindowServer serverWindow) throws IOException{
+    public Server(int port, int max_conexiones, ServerWindow serverWindow) throws IOException{
         try {
             nombreHost = InetAddress.getLocalHost().getHostName().toString();
             IPHost = InetAddress.getLocalHost().getHostAddress().toString();

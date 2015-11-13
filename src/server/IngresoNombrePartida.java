@@ -16,13 +16,13 @@ public class IngresoNombrePartida extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private IngresoNombrePartida thisWindow;
-	private MainWindowServer main;
+	private ServerWindow main;
 	private JTextField textFieldNombre;
 
 	/**
 	 * Create the frame.
 	 */
-	public IngresoNombrePartida(MainWindowServer main) {
+	public IngresoNombrePartida(ServerWindow main) {
 		setTitle("Crear partida");
 		this.main=main;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

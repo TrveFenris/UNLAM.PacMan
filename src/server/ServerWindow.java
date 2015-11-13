@@ -26,7 +26,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MainWindowServer extends JFrame {
+public class ServerWindow extends JFrame {
 	//Thread de escucha del servidor
 	private class ListenThread extends Thread {
 		public void run() {
@@ -54,7 +54,7 @@ public class MainWindowServer extends JFrame {
 	private JTextField textFieldNombre;
 	private JTextField textFieldIP;
 	private JTextField textFieldPuerto;
-	public static MainWindowServer frame;
+	public static ServerWindow frame;
 	
 	private Server servidor = null;
 	private int puerto = 5070;
@@ -81,7 +81,7 @@ public class MainWindowServer extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new MainWindowServer();
+					frame = new ServerWindow();
 					frame.setVisible(true);			
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -93,7 +93,7 @@ public class MainWindowServer extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainWindowServer() {
+	public ServerWindow() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
