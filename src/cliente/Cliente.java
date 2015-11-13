@@ -271,25 +271,38 @@ public class Cliente {
     /**
      * Envia la posicion actual al servidor, y recibe la pocision de los otros jugadores.
      */
-    public Punto actualizarPosiciones(Punto p){
+    public void enviarPosicion(Punto p){
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteCoordenadas paquete = new PaqueteCoordenadas(p, 0);
         	o.writeObject(paquete);
-            DataInputStream data= new DataInputStream(cliente.getInputStream());
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (enviarPosicion)");
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (enviarPosicion)");
+        }
+    }
+    
+    public Punto recibirPosicion(){
+    	try {
+    		cliente.setSoTimeout(1000);
+    		DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            paquete=(PaqueteCoordenadas)is.readObject();
+            PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
             return paquete.getCoordenadas();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicación con el servidor (actualizarPosiciones)");
+        	System.out.println("Error en la comunicación con el servidor (recibirPosicion)");
         	return null;
         }
         catch(IOException e) {
-        	System.out.println("Error: IOException (actualizarPosiciones)");
+        	System.out.println("Error: IOException (recibirPosicion)");
         	return null;
-        } catch (ClassNotFoundException e1) {
+        } catch (ClassNotFoundException e) {
+        	System.out.println("Error: ClassNotFoundException (recibirPosicion)");
         	return null;
 		}
     }

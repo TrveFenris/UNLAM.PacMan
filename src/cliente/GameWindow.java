@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -50,6 +51,10 @@ public class GameWindow extends JFrame {
 	//Variables de accion segun presion de tecla
 	private Rectas ultimaDireccion;
 	private Direcciones ultimaAccion;
+	//Variables auxiliares
+	private Punto paux;
+	private ReentrantLock semaforo;
+	private ListenThread threadEscucha;
 	
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
@@ -68,6 +73,9 @@ public class GameWindow extends JFrame {
 				}
 			}
 		});
+		
+		semaforo = new ReentrantLock();
+			
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -93,10 +101,13 @@ public class GameWindow extends JFrame {
 		//Creación del 2do jugador (manejado por otra ventana)
 		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO);
 		pacmanBot.dibujar(contentPane);
+		paux = new Punto(15,35);
 		//jugadores.add(pacman);
 		userWindow = window;
 		gameRunning = true;
 		gameLoopThread = new GameThread();
+		threadEscucha = new ListenThread();
+		threadEscucha.start();
 		this.setTitle("PAC-MAN");
 	}
 	
@@ -108,6 +119,7 @@ public class GameWindow extends JFrame {
 		if(option == JOptionPane.YES_OPTION){
 			gameRunning = false;
 			gameLoopThread.timer.cancel();
+			threadEscucha.pararThread();
 			this.dispose();
 			userWindow.setVisible(true);
 		}
@@ -150,7 +162,6 @@ public class GameWindow extends JFrame {
 	}
 	
 	private void update(){
-		Punto paux;
 		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
 			Jugador jug=j.next();
 			jug.actualizarUbicacion(mapa.getArrayRectas());
@@ -186,8 +197,14 @@ public class GameWindow extends JFrame {
 					break;
 			}
 			jug.mover();
-			paux = userWindow.getCliente().actualizarPosiciones(jug.getLocation());
-			pacmanBot.setLocation(paux.getX(), paux.getY());
+			userWindow.getCliente().enviarPosicion(jug.getLocation());
+			semaforo.lock();	     
+			try {
+				pacmanBot.setLocation(paux.getX(), paux.getY());
+			} 
+			finally {
+				semaforo.unlock();
+			}
 			restrictBoundaries(jug);
 			calcularColisiones (jug);
 		}
@@ -248,9 +265,12 @@ public class GameWindow extends JFrame {
 		lblName.setText(s);
 	}
 	
-	/*Thread que maneja el Game Loop */
+	/**
+	 * Thread que maneja el Game Loop 
+	 * */
 	private class GameThread extends Thread {
 		private Timer timer;
+		
 		public void run() {
 			System.out.println("Comienza el juego");
 			timer = new Timer();
@@ -261,6 +281,34 @@ public class GameWindow extends JFrame {
 			       }
 			    }
 			 }, 0, 16);
+		}
+	}
+	
+	/**
+	 * Thread que recibe actualizaciones de los demas jugadores
+	 */
+	private class ListenThread extends Thread {
+		
+		private boolean running;
+		
+		public void run() {
+			running = true;
+			while(running){
+				Punto p = paux=userWindow.getCliente().recibirPosicion();
+				if(p!=null){
+					semaforo.lock();	     
+					try {
+						paux = p;
+					} 
+					finally {
+						semaforo.unlock();
+					}
+				}
+			}
+		}
+		
+		public void pararThread(){
+			running = false;
 		}
 	}
 }
