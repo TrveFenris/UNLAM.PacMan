@@ -18,14 +18,14 @@ import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PartidasDisponibles extends JFrame {
+public class LobbyWindow extends JFrame {
 
 	private JPanel contentPane;
 	private UserWindow mainWindow;
-	private PartidasDisponibles thisWindow;
+	private LobbyWindow thisWindow;
 	private JComboBox<String> comboBoxPartidas;
 
-	public PartidasDisponibles(ArrayList<String> datosPartidas, UserWindow main) {
+	public LobbyWindow(ArrayList<String> datosPartidas, UserWindow main) {
 		
 		addWindowListener(new WindowAdapter() {
 			@Override

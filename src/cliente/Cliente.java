@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteSesion;
 import punto.Punto;
-import server.PaqueteSesion;
 
 public class Cliente {
 

@@ -25,7 +25,7 @@ public class UserWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private UserWindow thisWindow;
 	private GameWindow gameWindow;
-	private MainWindow mainWindow;
+	private ClientWindow mainWindow;
 	private ConfigWindow configWindow;
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
@@ -42,7 +42,7 @@ public class UserWindow extends JFrame {
 	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
-	public UserWindow(MainWindow window,String nombre, Cliente cliente) {
+	public UserWindow(ClientWindow window,String nombre, Cliente cliente) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -156,7 +156,7 @@ public class UserWindow extends JFrame {
 			System.out.println("Error al recibir la lista de partidas.");
 			return;
 		}
-		PartidasDisponibles winPartidas = new PartidasDisponibles(datos, thisWindow);
+		LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
 		winPartidas.setVisible(true);
 		this.setVisible(false);
 	}

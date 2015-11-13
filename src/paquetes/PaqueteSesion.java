@@ -1,4 +1,4 @@
-package server;
+package paquetes;
 
 import java.util.*;
 

@@ -9,7 +9,7 @@ import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class KeyBindingsWindow extends JFrame {
+public class KeyBindWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -17,7 +17,7 @@ public class KeyBindingsWindow extends JFrame {
 	private int control;
 
 	/* KeyBindingsWindow Constructor */
-	public KeyBindingsWindow(ConfigWindow window, int c) {
+	public KeyBindWindow(ConfigWindow window, int c) {
 		configWindow=window;
 		control=c;
 		addKeyListener(new KeyAdapter() {

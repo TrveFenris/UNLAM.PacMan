@@ -8,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import paquetes.PaqueteSesion;
+
 public class ThreadServerSesion extends Thread {
 
     private Socket clientSocket;

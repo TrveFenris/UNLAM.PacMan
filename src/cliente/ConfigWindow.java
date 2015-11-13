@@ -265,7 +265,7 @@ public class ConfigWindow extends JFrame {
 	}
 	
 	private void leerControl(int control){
-		KeyBindingsWindow cw = new KeyBindingsWindow(this,control);
+		KeyBindWindow cw = new KeyBindWindow(this,control);
 		cw.setLocationRelativeTo(null);
 		this.setEnabled(false);
 		cw.setVisible(true);
