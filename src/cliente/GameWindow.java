@@ -294,9 +294,9 @@ public class GameWindow extends JFrame {
 		public void run() {
 			running = true;
 			while(running){
-				Punto p = paux=userWindow.getCliente().recibirPosicion();
+				Punto p = userWindow.getCliente().recibirPosicion();
 				if(p!=null){
-					semaforo.lock();	     
+					semaforo.lock();
 					try {
 						paux = p;
 					} 
