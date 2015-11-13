@@ -38,6 +38,8 @@ public class GameWindow extends JFrame {
 	private boolean gameRunning;
 	private GameThread gameLoopThread;
 	private int[]controles;
+	//ID que representa al jugador local
+	private int IDJugadorLocal;
 	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
 	private final int ARRIBA=0;
 	private final int ABAJO=1;

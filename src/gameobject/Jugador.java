@@ -18,6 +18,7 @@ public abstract class Jugador extends GameObject{
 	protected int puntaje;
 	protected ArrayList<Recta> rectasActuales;
 	protected ConfiguracionSprites skin;
+	protected int ID;
 	//Variables delimitadoras
 	protected int upperBound;
 	protected int lowerBound;
