@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.locks.ReentrantLock;
 
 import paquetes.PaqueteSesion;
 
@@ -16,26 +17,27 @@ public class ThreadServerSesion extends Thread {
     private Server servidor;
     private DataBase database;
     private PaqueteSesion paquete;
-    private String nombre;
+    private boolean locked;
+    private Usuario user;
     
-    public ThreadServerSesion(Socket socket,Server serv, DataBase database) {
-        clientSocket = socket;
-        servidor=serv;
-        this.database=database;
+    public ThreadServerSesion(Server servidor, Usuario usuario) {
+        clientSocket = usuario.getSocket();
+        this.servidor=servidor;
+        this.database=servidor.getDatabase();
         paquete=null;
-        nombre="user";
+        usuario.setNombre("user");
+        user = usuario;
     }
 
     public synchronized  void run() {
         try {
         	boolean run = true;
-        	boolean locked = false;
         	while(run){
         		while(locked){
             		try {
-            			System.out.println("BLOQUEADO");
+	            		System.out.println("threadSesion de "+user.getNombre()+" BLOQUEADO");
     					wait();
-    					System.out.println("DESBLOQUEADO");
+	            		System.out.println("threadSesion de "+user.getNombre()+" DESBLOQUEADO");
     				} catch (InterruptedException e) {
     					//
     				}
@@ -49,10 +51,9 @@ public class ThreadServerSesion extends Thread {
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
     	            switch(paquete.getTipoPaquete()){
     	            	case LOGIN:
-    	            		nombre=paquete.getNombre();
-    	            		System.out.println(paquete.getNombre()+" se ha conectado al servidor");
+    	            		user.setNombre(paquete.getNombre());
+    	            		System.out.println(user.getNombre()+" se ha conectado al servidor");
     	            		paquete.setResultado(true);
-    	            		servidor.agregarNombre(nombre);
     	            		//paquete.setResultado(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
     	            		break;
     	            	case LOGOUT:
@@ -69,27 +70,25 @@ public class ThreadServerSesion extends Thread {
     	            		break;
     	            	case ENTRAR_EN_PARTIDA:
     	            		System.out.println(paquete.getMensaje());
-    	            		boolean res=servidor.agregarAPartida(clientSocket, paquete.getMensaje());
+    	            		boolean res=servidor.agregarAPartida(user, paquete.getMensaje());
     	            		paquete.setResultado(res);
     	            		if(res==true)
-    	            			locked = true;
+    	            			bloquear();
     	            		break;
     	            }
     	            o.writeObject(paquete);
     	            System.out.println("DATOS ENVIADOS");
                 }
         	}
-        	 System.out.println(nombre+" se ha desconectado del servidor");
+        	 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         	 clientSocket.close();
         	 servidor.eliminarCliente();
-        	 servidor.removerNombre(nombre);
         }
         catch(EOFException e){
             try {
                 clientSocket.close();
-                servidor.removerNombre(nombre);
                 servidor.eliminarCliente();
-                System.out.println(nombre+" se ha desconectado del servidor");
+                System.out.println(user.getNombre()+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
                 e1.printStackTrace();
@@ -99,9 +98,8 @@ public class ThreadServerSesion extends Thread {
         	e.printStackTrace();
             try {
                 clientSocket.close();
-                servidor.removerNombre(nombre);
                 servidor.eliminarCliente();
-                System.out.println(nombre+" se ha desconectado del servidor");
+                System.out.println(user.getNombre()+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
                 e1.printStackTrace();
@@ -118,4 +116,11 @@ public class ThreadServerSesion extends Thread {
             }
     }
 
+    public void bloquear(){
+    	locked = true;
+    }
+    
+    public void desbloquear(){
+    	locked = false;
+    }
 }

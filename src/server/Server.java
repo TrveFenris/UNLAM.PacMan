@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Objeto que permite aceptar y manejar conexiones
@@ -24,6 +25,7 @@ public class Server {
     private String IPHost;
     private DataBase database;
     private ServerWindow serverWindow;
+    private ArrayList<Usuario> usuarios;
     private ArrayList<ThreadServerPartida> partidas;
 
     /**
@@ -48,6 +50,7 @@ public class Server {
         database = new DataBase();
         servidor = new ServerSocket(puerto);
         partidas = new ArrayList<ThreadServerPartida>();
+        usuarios = new ArrayList<Usuario>();
         
     }
 
@@ -64,7 +67,7 @@ public class Server {
     public String getIPHost() {
         return IPHost;
     }
-
+    
     /**
      * Devuelve la cantidad maxima de clientes que maneja el servidor
      */
@@ -113,10 +116,10 @@ public class Server {
      * Agrega el jugador a la partida seleccionada.
      * @return true/false -Si pudo o no, agregar al jugador.
      */
-    public boolean agregarAPartida(Socket jugador, String partida){
+    public boolean agregarAPartida(Usuario usuario, String partida){
     	for(ThreadServerPartida p : partidas){
     		if(p.getNombre().equals(partida)){
-    			return p.agregarCliente(jugador);
+    			return p.agregarUsuario(usuario);
     		}
     	}
     	return false;
@@ -183,11 +186,19 @@ public class Server {
     	return database;
     }
     
-    public void agregarNombre(String nombre){
-		serverWindow.agregarNombre(nombre);
+//    public void agregarNombre(String nombre){
+//		serverWindow.agregarNombre(nombre);
+//	}
+//	
+//	public void removerNombre(String nombre){
+//		serverWindow.removerNombre(nombre);
+//	}
+	
+	public void agregarUsuario(Usuario u){
+		usuarios.add(u);
 	}
 	
-	public void removerNombre(String nombre){
-		serverWindow.removerNombre(nombre);
+	public ArrayList<Usuario> getListaUsuarios(){
+		return usuarios;
 	}
 }

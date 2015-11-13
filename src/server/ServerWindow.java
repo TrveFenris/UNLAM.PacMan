@@ -19,7 +19,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -33,9 +32,12 @@ public class ServerWindow extends JFrame {
 			while (bandera) {
 				cliente = servidor.aceptarConexion();
 	            if (cliente != null){
-	            	new ThreadServerSesion(cliente,servidor,servidor.getDatabase()).start();
-	            	clientes.add(cliente);
-	            	System.out.println(clientes.size()+"\t"+servidor.getListaSockets().size());
+	            	Usuario u = new Usuario(cliente);
+	            	u.setSesion(new ThreadServerSesion(servidor, u));
+	            	u.getSesion().start();
+	            	servidor.agregarUsuario(u);
+	            	//clientes.add(cliente);
+	            	//System.out.println(usuarios.size()+"\t"+servidor.getListaSockets().size());
 	            }
 	            actualizarListaDePartidas();
 	        }
@@ -63,8 +65,6 @@ public class ServerWindow extends JFrame {
 	private Socket cliente = null;
 	private ListenThread threadEscucha;
 	private JLabel lblClientesConectados;
-	private ArrayList<String> nombres;
-	private ArrayList<Socket> clientes;
 	private JLabel lblPartidas;
 	private JTextArea textAreaNombres;
 	private JTextArea textAreaPartidas;
@@ -101,9 +101,6 @@ public class ServerWindow extends JFrame {
 				mensajeSalida();
 			}
 		});
-		//INICIALIZACION DE ARRAYLISTS
-		nombres = new ArrayList<String>();
-		clientes = new ArrayList<Socket>();
 		
 		setTitle("Server PacMan");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -286,21 +283,21 @@ public class ServerWindow extends JFrame {
 		}
 	}
 	
-	public void agregarNombre(String nombre){
-		nombres.add(nombre);
-		actualizarListaDeNombres();
-	}
+//	public void agregarNombre(String nombre){
+//		nombres.add(nombre);
+//		actualizarListaDeNombres();
+//	}
 	
-	public void removerNombre(String nombre){
-		nombres.remove(nombre);
-		actualizarListaDeNombres();
-	}
+//	public void removerNombre(String nombre){
+//		nombres.remove(nombre);
+//		actualizarListaDeNombres();
+//	}
 	
 	public void actualizarListaDeNombres(){
 		textAreaNombres.setText("");
-		for(Iterator<String>s=nombres.iterator();s.hasNext();){
-			String cadena=s.next();
-			textAreaNombres.setText(textAreaNombres.getText()+cadena+"\n");
+		for(Iterator<Usuario>s=servidor.getListaUsuarios().iterator();s.hasNext();){
+			Usuario u=s.next();
+			textAreaNombres.setText(textAreaNombres.getText()+u.getNombre()+"\n");
 		}
 	}
 	
