@@ -86,12 +86,12 @@ public class GameWindow extends JFrame {
 		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
-		pacman = new Pacman(new Punto(5,25), lblName.getText(), ConfiguracionSprites.PACMAN_SPRITE);
+		pacman = new Pacman(new Punto(5,25), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT_DERECHA);
 		ultimaAccion=Actions.QUIETO;
 		pacman.dibujar(contentPane);
 		jugadores.add(pacman);
 		//Creación del 2do jugador (manejado por otra ventana)
-		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO_SPRITE);
+		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO_DERECHA);
 		pacmanBot.dibujar(contentPane);
 		//jugadores.add(pacman);
 		userWindow = window;
