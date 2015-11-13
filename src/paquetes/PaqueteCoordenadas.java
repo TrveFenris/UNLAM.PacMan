@@ -1,13 +1,9 @@
 package paquetes;
 
-import java.io.Serializable;
-
 import punto.Punto;
 
-public class PaqueteCoordenadas implements Serializable {
-	/**
-	 * 
-	 */
+public class PaqueteCoordenadas extends Paquete {
+
 	private static final long serialVersionUID = 6990615650451885236L;
 	private Punto coordenadas;
 	//private int x;
