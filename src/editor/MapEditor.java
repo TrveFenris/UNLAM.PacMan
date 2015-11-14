@@ -109,6 +109,7 @@ public class MapEditor extends JFrame {
 						rectas.add(r);
 						r.dibujar(areaDibujo);
 						actualizarListaRectas();
+						contentPane.repaint();
 						pInicial.setXY(0, 0);
 						pFinal.setXY(0,0);
 					}
