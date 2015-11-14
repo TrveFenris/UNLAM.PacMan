@@ -85,7 +85,7 @@ public class DataBase {
 			estado = this.Consultar(sql);
 		}
 		catch(Exception ex){
-			JOptionPane.showMessageDialog(null,"Error usuario y contraseña","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Error usuario y contraseÃ±a","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return estado;
 	}
@@ -135,4 +135,31 @@ public class DataBase {
 			}
 			return true;
 		}
+		
+	public boolean registrarScore( String usuario ,Date fecha,String personaje,int puntuacion,Time duracion ,int muertes) {
+		PreparedStatement pstmt = null;
+		this.Conectar();
+		if(verificarUsuario(usuario)==true)
+			return false;
+		try {
+				pstmt = conexion.prepareStatement("Insert into Score values(?, ?, ?, ?, ?, ?)");
+				pstmt.setString(1, usuario);
+				pstmt.setDate(2, fecha);
+				pstmt.setString(3, personaje);
+				pstmt.setInt(4, puntuacion);
+				pstmt.setTime(5, duracion);
+				pstmt.setInt(6, muertes);
+				pstmt.execute();			
+			} catch(SQLException sqle) {
+				sqle.printStackTrace();
+				JOptionPane.showMessageDialog(null,"No se pudo lograr la coneccion con la base de datos","Error",JOptionPane.ERROR_MESSAGE);
+			} finally {
+				try {
+				pstmt.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null,"Error no de la base de datos","Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return true;
+	}
 }
