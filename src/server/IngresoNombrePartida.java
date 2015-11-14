@@ -16,7 +16,7 @@ public class IngresoNombrePartida extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private IngresoNombrePartida thisWindow;
-	private ServerWindow main;
+	private ServerWindow mainWindow;
 	private JTextField textFieldNombre;
 
 	/**
@@ -24,7 +24,7 @@ public class IngresoNombrePartida extends JFrame {
 	 */
 	public IngresoNombrePartida(ServerWindow main) {
 		setTitle("Crear partida");
-		this.main=main;
+		this.mainWindow=main;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 172);
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -73,7 +73,7 @@ public class IngresoNombrePartida extends JFrame {
 							 JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					main.crearPartida(textFieldNombre.getText());
+					mainWindow.crearPartida(textFieldNombre.getText());
 					dispose();
 				}
 			}
