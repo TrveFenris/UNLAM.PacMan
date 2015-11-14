@@ -24,4 +24,10 @@ public class Partida {
 	public String getNombre() {
 		return nombre;
 	}
+	public Mapa getMapa() {
+		return mapa;
+	}
+	public ArrayList<Jugador> getJugadores() {
+		return jugadores;
+	}
 }
