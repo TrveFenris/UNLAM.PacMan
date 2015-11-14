@@ -1,14 +1,15 @@
 package server;
 
-import java.net.Socket;
-import java.util.ArrayList;
-
 import game.Configuracion;
+import game.Partida;
+
+import java.util.ArrayList;
 
 public class ThreadServerPartida extends Thread{
 	
     private Server servidor;
     private String nombrePartida;
+    private Partida partida;
     private boolean running;
     private ThreadServerPartida thisThread;
     //private ArrayList<Socket> jugadores;
@@ -82,7 +83,9 @@ public class ThreadServerPartida extends Thread{
     public String getNombre(){
     	return nombrePartida;
     }
-    
+    public Partida getPartida() {
+    	return partida;
+    }
     /**
      * Devuelve la lista de jugadores que se encuentran en la partida.
      */

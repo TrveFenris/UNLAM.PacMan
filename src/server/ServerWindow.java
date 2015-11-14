@@ -1,29 +1,28 @@
 package server;
 
+import game.Partida;
+
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Iterator;
-import javax.swing.JTextArea;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 
 public class ServerWindow extends JFrame {
 	//Thread de escucha del servidor
@@ -67,13 +66,13 @@ public class ServerWindow extends JFrame {
 	private JLabel lblClientesConectados;
 	private JLabel lblPartidas;
 	private JTextArea textAreaNombres;
-	private JTextArea textAreaPartidas;
 	private JButton btnCrearPartida;
 	private JButton btnCerrarServidor;
 	private String auxNombrePartida;
 	private JLabel lblCantJugadores;
 	private JTextArea textAreaCantJugadores;
-
+	private JList<String> listPartidas;
+	private DefaultListModel<String> listModelPartidas;
 	/**
 	 * Launch the application.
 	 */
@@ -109,75 +108,42 @@ public class ServerWindow extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{30, 40, 0, 50, 0, 133, 83, 30, 0};
-		gbl_contentPane.rowHeights = new int[]{30, 30, 30, 30, 30, 100, 30, 30, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		contentPane.setLayout(null);
 		
 		JLabel lblServer = new JLabel("SERVER");
+		lblServer.setBounds(141, 5, 70, 26);
 		lblServer.setForeground(SystemColor.textHighlight);
 		lblServer.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
-		GridBagConstraints gbc_lblServer = new GridBagConstraints();
-		gbc_lblServer.gridwidth = 5;
-		gbc_lblServer.insets = new Insets(0, 0, 5, 5);
-		gbc_lblServer.gridx = 1;
-		gbc_lblServer.gridy = 0;
-		contentPane.add(lblServer, gbc_lblServer);
+		contentPane.add(lblServer);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
-		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNombre.gridx = 1;
-		gbc_lblNombre.gridy = 1;
-		contentPane.add(lblNombre, gbc_lblNombre);
+		lblNombre.setBounds(35, 41, 37, 14);
+		contentPane.add(lblNombre);
 		
 		textFieldNombre = new JTextField();
+		textFieldNombre.setBounds(108, 38, 294, 20);
 		textFieldNombre.setEditable(false);
-		GridBagConstraints gbc_textFieldNombre = new GridBagConstraints();
-		gbc_textFieldNombre.gridwidth = 4;
-		gbc_textFieldNombre.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldNombre.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldNombre.gridx = 3;
-		gbc_textFieldNombre.gridy = 1;
-		contentPane.add(textFieldNombre, gbc_textFieldNombre);
+		contentPane.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 		
 		JLabel lblIp = new JLabel("IP");
-		GridBagConstraints gbc_lblIp = new GridBagConstraints();
-		gbc_lblIp.insets = new Insets(0, 0, 5, 5);
-		gbc_lblIp.gridx = 1;
-		gbc_lblIp.gridy = 2;
-		contentPane.add(lblIp, gbc_lblIp);
+		lblIp.setBounds(49, 71, 10, 14);
+		contentPane.add(lblIp);
 		
 		textFieldIP = new JTextField();
+		textFieldIP.setBounds(108, 68, 294, 20);
 		textFieldIP.setEditable(false);
-		GridBagConstraints gbc_textFieldIP = new GridBagConstraints();
-		gbc_textFieldIP.gridwidth = 4;
-		gbc_textFieldIP.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldIP.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldIP.gridx = 3;
-		gbc_textFieldIP.gridy = 2;
-		contentPane.add(textFieldIP, gbc_textFieldIP);
+		contentPane.add(textFieldIP);
 		textFieldIP.setColumns(10);
 		
 		JLabel lblPuerto = new JLabel("Puerto");
-		GridBagConstraints gbc_lblPuerto = new GridBagConstraints();
-		gbc_lblPuerto.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPuerto.gridx = 1;
-		gbc_lblPuerto.gridy = 3;
-		contentPane.add(lblPuerto, gbc_lblPuerto);
+		lblPuerto.setBounds(38, 101, 32, 14);
+		contentPane.add(lblPuerto);
 		
 		textFieldPuerto = new JTextField();
+		textFieldPuerto.setBounds(108, 98, 294, 20);
 		textFieldPuerto.setEditable(false);
-		GridBagConstraints gbc_textFieldPuerto = new GridBagConstraints();
-		gbc_textFieldPuerto.gridwidth = 4;
-		gbc_textFieldPuerto.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldPuerto.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldPuerto.gridx = 3;
-		gbc_textFieldPuerto.gridy = 3;
-		contentPane.add(textFieldPuerto, gbc_textFieldPuerto);
+		contentPane.add(textFieldPuerto);
 		textFieldPuerto.setColumns(10);
 		
 		//SERVIDOR
@@ -188,49 +154,25 @@ public class ServerWindow extends JFrame {
 		textFieldIP.setText(servidor.getIPHost());
 		
 		lblClientesConectados = new JLabel("Clientes conectados");
-		GridBagConstraints gbc_lblClientesConectados = new GridBagConstraints();
-		gbc_lblClientesConectados.gridwidth = 3;
-		gbc_lblClientesConectados.insets = new Insets(0, 0, 5, 5);
-		gbc_lblClientesConectados.gridx = 1;
-		gbc_lblClientesConectados.gridy = 4;
-		contentPane.add(lblClientesConectados, gbc_lblClientesConectados);
+		lblClientesConectados.setBounds(46, 131, 96, 14);
+		contentPane.add(lblClientesConectados);
 		
 		lblPartidas = new JLabel("Partidas");
-		GridBagConstraints gbc_lblPartidas = new GridBagConstraints();
-		gbc_lblPartidas.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPartidas.gridx = 5;
-		gbc_lblPartidas.gridy = 4;
-		contentPane.add(lblPartidas, gbc_lblPartidas);
+		lblPartidas.setBounds(234, 131, 39, 14);
+		contentPane.add(lblPartidas);
 		
 		lblCantJugadores = new JLabel("Cant. jugadores");
-		GridBagConstraints gbc_lblCantJugadores = new GridBagConstraints();
-		gbc_lblCantJugadores.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCantJugadores.gridx = 6;
-		gbc_lblCantJugadores.gridy = 4;
-		contentPane.add(lblCantJugadores, gbc_lblCantJugadores);
+		lblCantJugadores.setBounds(323, 131, 78, 14);
+		contentPane.add(lblCantJugadores);
 		
 		textAreaNombres = new JTextArea();
+		textAreaNombres.setBounds(35, 150, 120, 105);
 		textAreaNombres.setEditable(false);
 		textAreaNombres.setBackground(SystemColor.control);
-		GridBagConstraints gbc_textAreaNombres = new GridBagConstraints();
-		gbc_textAreaNombres.gridwidth = 3;
-		gbc_textAreaNombres.insets = new Insets(0, 0, 5, 5);
-		gbc_textAreaNombres.fill = GridBagConstraints.BOTH;
-		gbc_textAreaNombres.gridx = 1;
-		gbc_textAreaNombres.gridy = 5;
-		contentPane.add(textAreaNombres, gbc_textAreaNombres);
-		
-		textAreaPartidas = new JTextArea();
-		textAreaPartidas.setBackground(SystemColor.control);
-		textAreaPartidas.setEditable(false);
-		GridBagConstraints gbc_textAreaPartidas = new GridBagConstraints();
-		gbc_textAreaPartidas.insets = new Insets(0, 0, 5, 5);
-		gbc_textAreaPartidas.fill = GridBagConstraints.BOTH;
-		gbc_textAreaPartidas.gridx = 5;
-		gbc_textAreaPartidas.gridy = 5;
-		contentPane.add(textAreaPartidas, gbc_textAreaPartidas);
+		contentPane.add(textAreaNombres);
 		
 		btnCerrarServidor = new JButton("Cerrar servidor");
+		btnCerrarServidor.setBounds(320, 265, 110, 18);
 		btnCerrarServidor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mensajeSalida();
@@ -238,34 +180,47 @@ public class ServerWindow extends JFrame {
 		});
 		
 		textAreaCantJugadores = new JTextArea();
+		textAreaCantJugadores.setBounds(323, 150, 105, 105);
 		textAreaCantJugadores.setEditable(false);
 		textAreaCantJugadores.setBackground(SystemColor.control);
-		GridBagConstraints gbc_textAreaCantJugadores = new GridBagConstraints();
-		gbc_textAreaCantJugadores.insets = new Insets(0, 0, 5, 5);
-		gbc_textAreaCantJugadores.fill = GridBagConstraints.BOTH;
-		gbc_textAreaCantJugadores.gridx = 6;
-		gbc_textAreaCantJugadores.gridy = 5;
-		contentPane.add(textAreaCantJugadores, gbc_textAreaCantJugadores);
-		GridBagConstraints gbc_btnCerrarServidor = new GridBagConstraints();
-		gbc_btnCerrarServidor.gridwidth = 3;
-		gbc_btnCerrarServidor.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCerrarServidor.gridx = 1;
-		gbc_btnCerrarServidor.gridy = 6;
-		contentPane.add(btnCerrarServidor, gbc_btnCerrarServidor);
+		contentPane.add(textAreaCantJugadores);
+		contentPane.add(btnCerrarServidor);
 		
 		btnCrearPartida = new JButton("Crear partida");
+		btnCrearPartida.setBounds(35, 265, 120, 18);
 		btnCrearPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ingresarNombrePartida();
 			}
 		});
-		GridBagConstraints gbc_btnCrearPartida = new GridBagConstraints();
-		gbc_btnCrearPartida.gridwidth = 2;
-		gbc_btnCrearPartida.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnCrearPartida.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCrearPartida.gridx = 5;
-		gbc_btnCrearPartida.gridy = 6;
-		contentPane.add(btnCrearPartida, gbc_btnCrearPartida);
+		contentPane.add(btnCrearPartida);
+		
+		JButton btnVerPartida = new JButton("Ver Partida");
+		btnVerPartida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				/*	Se supone que esto busca entre la lista de partidas y lanza la ventana
+					de espectador correspondiente. */
+				/*
+				String partidaSeleccionada = listPartidas.getSelectedValue();
+				for(ThreadServerPartida part : servidor.getPartidas()) {
+					if(partidaSeleccionada.equals(part.getNombre())) {
+						new WatchGameWindow(part.getPartida(), frame);
+						break;
+					}
+				}
+				*/
+			}
+		});
+		btnVerPartida.setBounds(165, 265, 145, 18);
+		contentPane.add(btnVerPartida);
+		
+		listModelPartidas = new DefaultListModel<String>();
+		listPartidas = new JList<String>(listModelPartidas);
+		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listPartidas.setBounds(165, 150, 145, 105);
+		contentPane.add(listPartidas);
+		
+		
 		bandera=true;
 		threadEscucha=new ListenThread();
 		threadEscucha.start();
@@ -292,7 +247,7 @@ public class ServerWindow extends JFrame {
 //		nombres.remove(nombre);
 //		actualizarListaDeNombres();
 //	}
-	
+	/*
 	public void actualizarListaDeNombres(){
 		textAreaNombres.setText("");
 		for(Iterator<Usuario>s=servidor.getListaUsuarios().iterator();s.hasNext();){
@@ -300,17 +255,13 @@ public class ServerWindow extends JFrame {
 			textAreaNombres.setText(textAreaNombres.getText()+u.getNombre()+"\n");
 		}
 	}
-	
+	*/
 	public void actualizarListaDePartidas(){
-		textAreaPartidas.setText("");
 		textAreaCantJugadores.setText("");
-		for(Iterator<ThreadServerPartida>s=servidor.getPartidas().iterator();s.hasNext();){
-			ThreadServerPartida thread=s.next();
-			textAreaPartidas.setText(textAreaPartidas.getText()+thread.getNombre()+"\n");
-			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+thread.getCantJugadores()+" \n");
+		for(ThreadServerPartida thread : servidor.getPartidas()){
+			textAreaCantJugadores.append(thread.getNombre()+" ("+thread.getCantJugadores()+")\n");
 		}
 	}
-	
 	/**
 	 * Crea una nueva partida, lanzando un nuevo ThreadServerPartida.
 	 * @param nombre -El nombre de la partida.
@@ -318,10 +269,12 @@ public class ServerWindow extends JFrame {
 	public void crearPartida(String nombre){
 		auxNombrePartida = nombre;
 		if(auxNombrePartida!=null&&auxNombrePartida!=""){
-			ThreadServerPartida t = new ThreadServerPartida(servidor, auxNombrePartida);
-			servidor.agregarPartida(t);
+			ThreadServerPartida thread = new ThreadServerPartida(servidor, auxNombrePartida);
+			servidor.agregarPartida(thread);
 			//t.start();
-			actualizarListaDePartidas();
+			listModelPartidas.addElement(auxNombrePartida);
+			textAreaCantJugadores.append(thread.getNombre()+" ("+thread.getCantJugadores()+")\n");
+			//actualizarListaDePartidas();
 		}
 	}
 	
@@ -329,8 +282,7 @@ public class ServerWindow extends JFrame {
 	 * Detiene todos los threads de partidas que esten en ejecucion.
 	 */
 	public void detenerPartidas(){
-		for(Iterator<ThreadServerPartida>s=servidor.getPartidas().iterator();s.hasNext();){
-			ThreadServerPartida thread=s.next();
+		for(ThreadServerPartida thread : servidor.getPartidas()){
 			thread.detener();
 		}
 	}

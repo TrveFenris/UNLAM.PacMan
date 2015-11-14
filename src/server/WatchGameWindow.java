@@ -21,8 +21,6 @@ public class WatchGameWindow extends JFrame {
 
 	private static final long serialVersionUID = 5081634637084287852L;
 	private JPanel contentPane;
-	//private boolean gameRunning;
-	//private WatchGameThread threadEspectador;
 	private ServerWindow ventanaServidor;
 	private Partida partidaEnCurso;
 	
@@ -46,8 +44,6 @@ public class WatchGameWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		contentPane.setBackground(Color.BLACK);
-		//gameRunning = true;
-		//threadEspectador = new WatchGameThread();
 		this.setTitle("PAC-MAN | Partida: " + partida.getNombre());
 		/* Carga todos los jugadores al JPanel de la ventana */
 		for(Jugador jug : partidaEnCurso.getJugadores()) {
