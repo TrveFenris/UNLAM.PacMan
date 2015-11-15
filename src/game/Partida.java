@@ -10,8 +10,10 @@ public class Partida {
 	private boolean activa;
 	private String nombre;
 	
-	public Partida() {
-		
+	public Partida(String name) {
+		jugadores = new ArrayList<Jugador>();
+		activa = true;
+		nombre = name;
 	}
 	
 	public void setActiva(boolean state) {
@@ -29,5 +31,14 @@ public class Partida {
 	}
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
+	}
+	public Jugador getJugador(int i) {
+		return jugadores.get(i);
+	}
+	public void agregarJugador(Jugador j) {
+		jugadores.add(j);
+	}
+	public void agregarMapa(Mapa m) {
+		mapa = m;
 	}
 }
