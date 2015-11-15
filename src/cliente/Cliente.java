@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -290,7 +291,7 @@ public class Cliente {
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(p, 0);
+        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(p,0);
         	o.writeObject(paquete);
         }
         catch(EOFException e){
@@ -311,6 +312,10 @@ public class Cliente {
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (recibirPosicion)");
+        	return null;
+        }
+    	catch(SocketTimeoutException e){
+    		System.out.println("TimeOut");
         	return null;
         }
         catch(IOException e) {
