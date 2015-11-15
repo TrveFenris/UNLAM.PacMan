@@ -240,15 +240,15 @@ public class ServerWindow extends JFrame {
 	
 	public void actualizarListaDeNombres(){
 		textAreaNombres.setText("");
-		for(Iterator<Usuario>s=servidor.getListaUsuarios().iterator();s.hasNext();){
-			Usuario u=s.next();
-			textAreaNombres.setText(textAreaNombres.getText()+u.getNombre()+"\n");
+		for(Usuario u : servidor.getListaUsuarios()) {
+			//textAreaNombres.setText(textAreaNombres.getText()+u.getNombre()+"\n");
+			textAreaNombres.append(u.getNombre()+"\n");
 		}
 	}
 	
 	public void actualizarListaDePartidas(){
 		textAreaCantJugadores.setText("");
-		for(String partida : servidor.getPartidas()){
+		for(String partida : servidor.getPartidas()) {
 			textAreaCantJugadores.append(servidor.getCantJugadores(partida)+"\n");
 		}
 	}

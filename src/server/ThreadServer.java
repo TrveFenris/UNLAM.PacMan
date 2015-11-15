@@ -25,6 +25,7 @@ public class ThreadServer extends Thread {
     private Server servidor;
     private DataBase database;
     private Usuario user;
+    private String partida; //Utilizado para cachear la partida en la que se encuentra el usuario
     
     public ThreadServer(Server servidor, Usuario usuario) {
         clientSocket = usuario.getSocket();
