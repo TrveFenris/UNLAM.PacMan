@@ -34,15 +34,12 @@ public class UserThread extends Thread {
 	
 	public void run() {
 		try {
-        	boolean running=true;
         	System.out.println("Iniciado UserThread de " +user.getNombre());
-        	//user.getSesion().getSemaforo().lock();
         	while(running){
         		DataInputStream data= new DataInputStream(userSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
             	try {
             		PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
-            		//System.out.println(paquete.getCoordenadas().toString());
             		for(Usuario u : jugadores){
             			if(u.getSocket()!=userSocket){
             				DataOutputStream d = new DataOutputStream(u.getSocket().getOutputStream());
@@ -54,29 +51,24 @@ public class UserThread extends Thread {
             	catch(ClassCastException ex) {
             		System.out.println("El UserThread numero "+id+" recibio un paquete erroneo");
             	}
-//        		for(Socket s : jugadores){
-//        			if(s!=jugador && !jugador.isClosed()){
-//        				DataOutputStream d = new DataOutputStream(s.getOutputStream());
-//	    	            ObjectOutputStream o = new ObjectOutputStream(d); 
-//	    	            o.writeObject(paquete);
-//        			}
-//        		}
         	}
-        	System.out.println("Un usuario se ha desconectado del servidor (FIN NORMAL)");
+        	System.out.println("[UserThread] Un usuario se ha desconectado del servidor (FIN NORMAL)");
+        	partida.removerCliente(user);
         	user.getSesion().desbloquear();
 		}
         catch(EOFException e){
-                System.out.println("Un usuario se ha desconectado del servidor (EOFException)");
+                System.out.println("[UserThread] Un usuario se ha desconectado del servidor (EOFException)");
                 partida.removerCliente(user);
                 user.getSesion().desbloquear();
         }
         catch(IOException e) {
-                System.out.println("Un usuario se ha desconectado del servidor (IOException)");
+                System.out.println("[UserThread] Un usuario se ha desconectado del servidor (IOException)");
                 partida.removerCliente(user);
                 user.getSesion().desbloquear();
         } catch (ClassNotFoundException e1) {
         	partida.removerCliente(user);
         	user.getSesion().desbloquear();
+        	 System.out.println("[UserThread] Un usuario se ha desconectado del servidor (IOException)");
 		}
 		System.out.println("FIN DEL UserThread");
 	}
