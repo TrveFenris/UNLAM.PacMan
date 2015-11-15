@@ -8,9 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteSesion;
 import paquetes.Solicitudes;
@@ -217,7 +219,7 @@ public class Cliente {
      * Solicita la lista de partidas disponibles al servidor.
      * @return PaqueteListaPartidas -Paquete con informacion de las partidas disponibles. Si hubo un error devuelve null.
      */
-    public ArrayList<String> buscarPartidas(){;
+    public ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> buscarPartidas(){;
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
@@ -225,14 +227,15 @@ public class Cliente {
         	//paquete.setBuscarPartida();
         	paquete.setSolicitud(Solicitudes.BUSCAR_PARTIDA);
         	o.writeObject(paquete);
+        	
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	paquete=(PaqueteSesion)is.readObject();
-            	return paquete.getInfoPartidas();
+            	PaqueteBuscarPartida paqueteBuscar=(PaqueteBuscarPartida)is.readObject();
+            	return paqueteBuscar.getPartidas();
             }
             catch(ClassCastException ex) {
-            	System.out.println("ERROR: El cliente recibio un paquete erroneo (Esperado un Paquete de Sesion).");
+            	System.out.println("ERROR: El cliente recibio un paquete erroneo (Esperado un PaqueteBuscarPartida).");
             	return null;
             }
         }

@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import java.awt.SystemColor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,7 @@ public class LobbyWindow extends JFrame {
 	private LobbyWindow thisWindow;
 	private JComboBox<String> comboBoxPartidas;
 
-	public LobbyWindow(ArrayList<String> datosPartidas, UserWindow main) {
+	public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -133,11 +135,10 @@ public class LobbyWindow extends JFrame {
 		contentPane.add(btnCancelar, gbc_btnCancelar);
 		
 		textAreaNombres.setText("");
-		for(String s : datosPartidas){
-			String[] aux = s.split(" ");
-			textAreaNombres.setText(textAreaNombres.getText()+aux[0]+"\n");
-			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+aux[1]+"\n");
-			comboBoxPartidas.addItem(aux[0]);
+		for(SimpleImmutableEntry<String, Integer> s : datosPartidas){
+			textAreaNombres.setText(textAreaNombres.getText()+s.getKey()+"\n");
+			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+s.getValue()+"\n");
+			comboBoxPartidas.addItem(s.getKey());
 		}
 		
 	}

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -151,7 +152,7 @@ public class UserWindow extends JFrame {
 	}
 	
 	private void buscarPartida(){
-		ArrayList<String> datos = cliente.buscarPartidas();
+		ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datos = cliente.buscarPartidas();
 		if(datos==null){
 			System.out.println("Error al recibir la lista de partidas.");
 			return;
