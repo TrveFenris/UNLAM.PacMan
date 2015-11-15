@@ -9,6 +9,7 @@ public class Usuario {
 	private Socket socket;
 	private ThreadServer sesion;
 	private String partida;
+	@Deprecated
 	private ArrayList<Usuario> usuariosEnPartida;
 	
 	public Usuario(Socket socket){
@@ -54,11 +55,11 @@ public class Usuario {
 	public String getPartida(){
 		return partida;
 	}
-	
+	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
 		this.usuariosEnPartida=usuarios;
 	}
-	
+	@Deprecated
 	public ArrayList<Usuario> getUsuariosEnPartida(){
 		return usuariosEnPartida;
 	}
