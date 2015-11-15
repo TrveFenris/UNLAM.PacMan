@@ -55,7 +55,7 @@ public class ThreadServerPartida extends Thread{
      * @return true/false -Si el jugador puede unirse a la partida.
      */
     public boolean agregarUsuario(Usuario usuario){
-    	if(getCantJugadores()>Configuracion.MAX_JUGADORES.getValor()){
+    	if(getCantJugadores()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
     		return false;
     	}
     	usuarios.add(usuario);
