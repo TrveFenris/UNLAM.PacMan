@@ -193,6 +193,10 @@ public class Server {
 				System.out.println("El socket del cliente "+usuario.getNombre() + " ya estaba cerrado.");
 			}
     	}
+    	if(!usuario.getPartida().equals(" ")){
+    		partidas.get(nombresDePartida.get(usuario.getPartida())).remove(usuario);
+    		System.out.println(usuario.getNombre()+" se ha desconectado de la partida "+usuario.getPartida());
+    	}
     	usuarios.remove(usuario);
     	cantActualClientes--;
     	serverWindow.actualizarListaDeNombres();
