@@ -19,4 +19,9 @@ public class PaqueteSkins extends Paquete{
 	public ConfiguracionSprites getSkinFantasma() {
 		return skinFantasma;
 	}
+
+	@Override
+	public TipoPaquete getTipoPaquete() {
+		return TipoPaquete.SKINS;
+	}
 }

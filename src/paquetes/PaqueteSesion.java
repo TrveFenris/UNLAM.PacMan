@@ -10,7 +10,7 @@ public class PaqueteSesion extends Paquete {
 	private static final long serialVersionUID = 4360740960940604321L;
 	private String nombre;
 	private String password;
-	private TipoPaquete tipo;
+	private Solicitudes solicitud;
 	private boolean resultado;
 	private ArrayList<String> listaPartidas;
 	private String mensaje;
@@ -24,7 +24,7 @@ public class PaqueteSesion extends Paquete {
 		this.nombre=nombre;
 		this.password=password;
 		this.resultado=false;
-		this.tipo=TipoPaquete.LOGIN;
+		this.solicitud = Solicitudes.LOGIN;
 		listaPartidas= new ArrayList<String>();
 		mensaje = null;
 	}
@@ -59,46 +59,59 @@ public class PaqueteSesion extends Paquete {
 		this.resultado=valor;
 	}
 	
+	public void setSolicitud(Solicitudes s) {
+		solicitud = s;
+	}
+	
 	/**
 	 * Indica que el paquete se utilizara para iniciar sesion.
 	 */
+	/*
 	public void setIniciarSesion(){
-		this.tipo=TipoPaquete.LOGIN;
+		solicitud=Solicitudes.LOGIN;
 	}
 	
 	/**
 	 * Indica que el paquete se utilizara para cerrar sesion.
 	 */
+	/*
 	public void setCerrarSesion(){
-		this.tipo=TipoPaquete.LOGOUT;
+		solicitud=Solicitudes.LOGOUT;
 	}
 	
 	/**
 	 * Indica que el paquete se utilizara para registrar un nuevo usuario en la base de datos del servidor.
 	 */
+	/*
 	public void setRegistrarUsuario(){
-		this.tipo=TipoPaquete.REGISTRO;
+		solicitud=Solicitudes.REGISTRO;
 	}
 	
 	/**
 	 * Indica que el paquete se utilizará para solicitar la lista de partidas disponibles.
 	 */
+	/*
 	public void setBuscarPartida(){
-		this.tipo=TipoPaquete.BUSCAR_PARTIDA;
+		solicitud=Solicitudes.BUSCAR_PARTIDA;
 	}
 	
 	/**
 	 * Indica que el paquete se utilizará para solicitar el ingreso a una partida.
 	 */
+	/*
 	public void setUnirseAPartida(){
-		this.tipo=TipoPaquete.ENTRAR_EN_PARTIDA;
+		solicitud=Solicitudes.ENTRAR_EN_PARTIDA;
 	}
 	
 	/**
 	 * Utilizado por el servidor para consultar la accion que desea realizar el cliente
 	 */
 	public TipoPaquete getTipoPaquete(){
-		return tipo;
+		return TipoPaquete.SESION;
+	}
+	
+	public Solicitudes getSolicitud(){
+		return solicitud;
 	}
 	
 	/**

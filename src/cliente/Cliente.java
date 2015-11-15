@@ -13,6 +13,7 @@ import java.util.Calendar;
 
 import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteSesion;
+import paquetes.Solicitudes;
 import punto.Punto;
 
 public class Cliente {
@@ -110,7 +111,8 @@ public class Cliente {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	paquete.setIniciarSesion();
+        	//paquete.setIniciarSesion();
+        	paquete.setSolicitud(Solicitudes.LOGIN);
         	o.writeObject(paquete);
         	//
             DataInputStream data= new DataInputStream(cliente.getInputStream());
@@ -145,7 +147,8 @@ public class Cliente {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	paquete.setRegistrarUsuario();
+        	//paquete.setRegistrarUsuario();
+        	paquete.setSolicitud(Solicitudes.REGISTRO);
         	o.writeObject(paquete);
         	//
             DataInputStream data= new DataInputStream(cliente.getInputStream());
@@ -180,7 +183,8 @@ public class Cliente {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	paquete.setCerrarSesion();
+        	//paquete.setCerrarSesion();
+        	paquete.setSolicitud(Solicitudes.LOGOUT);
         	o.writeObject(paquete);
         	//
             DataInputStream data= new DataInputStream(cliente.getInputStream());
@@ -218,12 +222,19 @@ public class Cliente {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	paquete.setBuscarPartida();
+        	//paquete.setBuscarPartida();
+        	paquete.setSolicitud(Solicitudes.BUSCAR_PARTIDA);
         	o.writeObject(paquete);
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            paquete=(PaqueteSesion)is.readObject();
-            return paquete.getInfoPartidas();
+            try {
+            	paquete=(PaqueteSesion)is.readObject();
+            	return paquete.getInfoPartidas();
+            }
+            catch(ClassCastException ex) {
+            	System.out.println("ERROR: El cliente recibio un paquete erroneo (Esperado un Paquete de Sesion).");
+            	return null;
+            }
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
@@ -248,7 +259,8 @@ public class Cliente {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	paquete.setUnirseAPartida();
+        	//paquete.setUnirseAPartida();
+        	paquete.setSolicitud(Solicitudes.UNIRSE_PARTIDA);
         	paquete.setMensaje(nombre);
         	o.writeObject(paquete);
             DataInputStream data= new DataInputStream(cliente.getInputStream());

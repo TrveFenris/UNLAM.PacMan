@@ -49,7 +49,7 @@ public class ThreadServerSesion extends Thread {
     	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
     	            ObjectOutputStream o = new ObjectOutputStream(d);
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
-    	            switch(paquete.getTipoPaquete()){
+    	            switch(paquete.getSolicitud()){
     	            	case LOGIN:
     	            		user.setNombre(paquete.getNombre());
     	            		System.out.println(user.getNombre()+" se ha conectado al servidor");
@@ -68,7 +68,7 @@ public class ThreadServerSesion extends Thread {
     	            	case BUSCAR_PARTIDA:
     	            		enviarListaDePartidas();
     	            		break;
-    	            	case ENTRAR_EN_PARTIDA:
+    	            	case UNIRSE_PARTIDA:
     	            		System.out.println(paquete.getMensaje());
     	            		boolean res=servidor.agregarAPartida(user, paquete.getMensaje());
     	            		paquete.setResultado(res);

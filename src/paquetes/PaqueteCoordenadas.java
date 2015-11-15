@@ -6,8 +6,6 @@ public class PaqueteCoordenadas extends Paquete {
 
 	private static final long serialVersionUID = 6990615650451885236L;
 	private Punto coordenadas;
-	//private int x;
-	//private int y;
 	private int IDJugador;
 	
 	public PaqueteCoordenadas(Punto punto, int id) {
@@ -20,5 +18,10 @@ public class PaqueteCoordenadas extends Paquete {
 	}
 	public int getIDJugador() {
 		return IDJugador;
+	}
+
+	@Override
+	public TipoPaquete getTipoPaquete() {
+		return TipoPaquete.COORDENADAS;
 	}
 }
