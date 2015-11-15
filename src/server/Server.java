@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Objeto que permite aceptar y manejar conexiones
@@ -175,8 +174,17 @@ public class Server {
     /**
      *Actualiza el contador de clientes conectados, y lo elimina de la lista de nombres del MainWindow
      */
-    public void eliminarCliente(){
+    public void eliminarCliente(Usuario usuario){
+    	if(!usuario.getSocket().isClosed()){
+    		try {
+				usuario.getSocket().close();
+			} catch (IOException e) {
+				System.out.println("El socket del cliente "+usuario.getNombre() + " ya estaba cerrado.");
+			}
+    	}
+    	usuarios.remove(usuario);
     	cantActualClientes--;
+    	serverWindow.actualizarListaDeNombres();
     }
     
     /**
