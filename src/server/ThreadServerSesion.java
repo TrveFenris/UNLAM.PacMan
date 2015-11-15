@@ -28,7 +28,7 @@ public class ThreadServerSesion extends Thread {
         this.servidor=servidor;
         this.database=servidor.getDatabase();
         //paquete=null;
-        usuario.setNombre("user");
+        usuario.setNombre("");
         user = usuario;
     }
 
