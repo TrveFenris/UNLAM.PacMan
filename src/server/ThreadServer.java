@@ -36,8 +36,10 @@ public class ThreadServer extends Thread {
 
     public synchronized  void run() {
         try {
+        	boolean responder;
         	boolean run = true;
         	while(run){
+        		responder = true;
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
         		//paquete=(PaqueteSesion)is.readObject();
@@ -49,8 +51,15 @@ public class ThreadServer extends Thread {
     	            switch(paquete.getTipo()) {
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
-							
+							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+		            			if(u.getSocket()!=clientSocket){
+		            				DataOutputStream ds = new DataOutputStream(u.getSocket().getOutputStream());
+		            				ObjectOutputStream os = new ObjectOutputStream(ds); 
+		            				os.writeObject(paqBolita);
+		            			}
+							}
 							//paquete = paqBolita;
+							//responder=false;
 							break;
 						
 						case COORDENADAS:
@@ -63,6 +72,7 @@ public class ThreadServer extends Thread {
 		            			}
 		            		}
 							//paquete = paqCoord;
+							//responder=false;
 							break;
 						
 						case ID:
@@ -110,12 +120,13 @@ public class ThreadServer extends Thread {
 							System.out.println("Paquete desconocido.");
 							break;
     	            }
-    	            o.writeObject(paquete);
+    	            if(responder!=false)
+    	            	o.writeObject(paquete);
                 }
         	}
-        	 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         	 clientSocket.close();
         	 servidor.eliminarCliente(user);
+        	 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         }
         catch(EOFException e){
             try {
