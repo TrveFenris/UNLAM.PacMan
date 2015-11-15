@@ -10,6 +10,11 @@ public enum TipoPaquete {
 	COORDENADAS,
 	ID,
 	SKINS,
+	BUSCAR_PARTIDA,
+	UNIRSE_PARTIDA,
+	LOGIN,
+	LOGOUT,
+	REGISTRO,
 	;
 }
 
