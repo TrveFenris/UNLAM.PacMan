@@ -15,6 +15,7 @@ public enum TipoPaquete {
 	LOGIN,
 	LOGOUT,
 	REGISTRO,
+	PARTIDA,
 	;
 }
 

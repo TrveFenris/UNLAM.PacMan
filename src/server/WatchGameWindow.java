@@ -25,7 +25,6 @@ public class WatchGameWindow extends JFrame {
 	private Partida partidaEnCurso;
 	
 	/* GameWindow constructor */
-
 	public WatchGameWindow(Partida partida, ServerWindow ventana) {
 		setResizable(false);
 		partidaEnCurso = partida;
@@ -65,37 +64,8 @@ public class WatchGameWindow extends JFrame {
 			    "Saliendo del modo espectador",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
-			//gameRunning = false;
-			//threadEspectador.timer.cancel();
 			ventanaServidor.setEnabled(true);
 			this.dispose();
 		}
 	}
-	/*
-	public void runGameLoop() {
-		//gameLoopThread.start();
-	}
-
-	private void update(){
-	}
-	 */
-	/**
-	 * Thread que maneja el Game Loop 
-	 * */
-	/*
-	private class WatchGameThread extends Thread {
-		private Timer timer;
-		
-		public void run() {
-			timer = new Timer();
-			timer.schedule( new TimerTask() {
-			    public void run() {
-			       if(gameRunning){
-			    	   update();
-			       }
-			    }
-			 }, 0, 16);
-		}
-	}
-	*/
 }
