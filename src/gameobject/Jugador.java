@@ -117,8 +117,7 @@ public abstract class Jugador extends GameObject{
 		//Remover las rectas anteriores
 		rectasActuales.clear();
 		//Agregar las rectas actuales
-		for(Iterator<Recta>k=rectas.iterator();k.hasNext();) {
-			Recta rec = k.next();
+		for(Recta rec : rectas) {
 				if(estaEn(rec)) {
 					rectasActuales.add(rec);
 			}
