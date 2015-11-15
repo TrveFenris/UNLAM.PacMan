@@ -21,7 +21,7 @@ public class PaqueteCoordenadas extends Paquete {
 	}
 
 	@Override
-	public TipoPaquete getTipoPaquete() {
+	public TipoPaquete getTipo() {
 		return TipoPaquete.COORDENADAS;
 	}
 }

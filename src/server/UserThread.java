@@ -40,15 +40,20 @@ public class UserThread extends Thread {
         	while(running){
         		DataInputStream data= new DataInputStream(userSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
-        		PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
-        		//System.out.println(paquete.getCoordenadas().toString());
-        		for(Usuario u : jugadores){
-        			if(u.getSocket()!=userSocket){
-        				DataOutputStream d = new DataOutputStream(u.getSocket().getOutputStream());
-	    	            ObjectOutputStream o = new ObjectOutputStream(d); 
-	    	            o.writeObject(paquete);
-        			}
-        		}
+            	try {
+            		PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
+            		//System.out.println(paquete.getCoordenadas().toString());
+            		for(Usuario u : jugadores){
+            			if(u.getSocket()!=userSocket){
+            				DataOutputStream d = new DataOutputStream(u.getSocket().getOutputStream());
+            				ObjectOutputStream o = new ObjectOutputStream(d); 
+            				o.writeObject(paquete);
+            			}
+            		}
+            	}
+            	catch(ClassCastException ex) {
+            		System.out.println("El UserThread numero "+id+" recibio un paquete erroneo");
+            	}
 //        		for(Socket s : jugadores){
 //        			if(s!=jugador && !jugador.isClosed()){
 //        				DataOutputStream d = new DataOutputStream(s.getOutputStream());

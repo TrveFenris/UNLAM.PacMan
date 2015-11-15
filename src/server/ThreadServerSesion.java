@@ -9,14 +9,18 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.locks.ReentrantLock;
 
+import paquetes.Paquete;
+import paquetes.PaqueteBolitaEliminada;
+import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteID;
 import paquetes.PaqueteSesion;
+import paquetes.PaqueteSkins;
 
 public class ThreadServerSesion extends Thread {
 
     private Socket clientSocket;
     private Server servidor;
     private DataBase database;
-    private PaqueteSesion paquete;
     private boolean locked;
     private Usuario user;
     
@@ -24,7 +28,7 @@ public class ThreadServerSesion extends Thread {
         clientSocket = usuario.getSocket();
         this.servidor=servidor;
         this.database=servidor.getDatabase();
-        paquete=null;
+        //paquete=null;
         usuario.setNombre("user");
         user = usuario;
     }
@@ -44,37 +48,70 @@ public class ThreadServerSesion extends Thread {
             	}
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
-        		paquete=(PaqueteSesion)is.readObject();
+        		//paquete=(PaqueteSesion)is.readObject();
+        		Paquete paquete=(Paquete)is.readObject();
                 if (!clientSocket.isClosed()) {
     	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
     	            ObjectOutputStream o = new ObjectOutputStream(d);
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
-    	            switch(paquete.getSolicitud()){
-    	            	case LOGIN:
-    	            		user.setNombre(paquete.getNombre());
-    	            		System.out.println(user.getNombre()+" se ha conectado al servidor");
-    	            		paquete.setResultado(true);
-    	            		//paquete.setResultado(database.verificarDatos(paquete.getNombre(), paquete.getPassword()));
-    	            		break;
-    	            	case LOGOUT:
-    	            		paquete.setResultado(true);
-    	            		run=false;
-    	            		break;
-    	            	case REGISTRO:
-    	            		paquete.setResultado(false);
-    	            		//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
-    	            		run=false;
-    	            		break;
-    	            	case BUSCAR_PARTIDA:
-    	            		enviarListaDePartidas();
-    	            		break;
-    	            	case UNIRSE_PARTIDA:
-    	            		System.out.println(paquete.getMensaje());
-    	            		boolean res=servidor.agregarAPartida(user, paquete.getMensaje());
-    	            		paquete.setResultado(res);
-    	            		if(res==true)
-    	            			bloquear();
-    	            		break;
+    	            switch(paquete.getTipo()) {
+						case BOLITA_ELIMINADA:
+							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
+							//paquete = paqBolita;
+							break;
+						
+						case COORDENADAS:
+							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
+							//paquete = paqCoord;
+							break;
+						
+						case ID:
+							PaqueteID paqId = (PaqueteID)paquete;
+							//paquete = paqId;
+							break;
+						
+						case SESION:
+							PaqueteSesion paqSesion = (PaqueteSesion)paquete;
+							switch(paqSesion.getSolicitud()){
+								case LOGIN:
+									user.setNombre(paqSesion.getNombre());
+									System.out.println(user.getNombre()+" se ha conectado al servidor");
+									paqSesion.setResultado(true);
+									//paq.setResultado(database.verificarDatos(paq.getNombre(), paq.getPassword()));
+									paquete = paqSesion;
+									break;
+								case LOGOUT:
+									paqSesion.setResultado(true);
+									run=false;
+									paquete = paqSesion;
+									break;
+								case REGISTRO:
+									paqSesion.setResultado(false);
+									//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
+									run=false;
+									paquete = paqSesion;
+									break;
+								case BUSCAR_PARTIDA:
+									enviarListaDePartidas(paqSesion);
+									paquete = paqSesion;
+									break;
+								case UNIRSE_PARTIDA:
+									System.out.println(paqSesion.getMensaje());
+									boolean res=servidor.agregarAPartida(user, paqSesion.getMensaje());
+									paqSesion.setResultado(res);
+									if(res==true)
+										bloquear();
+									paquete = paqSesion;
+									break;
+							}
+							break;
+						case SKINS:
+							PaqueteSkins paqSkins = (PaqueteSkins)paquete;
+							//paquete = paqSkins;
+							break;
+						default:
+							System.out.println("Paquete desconocido.");
+							break;
     	            }
     	            o.writeObject(paquete);
     	            System.out.println("DATOS ENVIADOS");
@@ -109,7 +146,7 @@ public class ThreadServerSesion extends Thread {
 		}
     }
     
-    private void enviarListaDePartidas(){
+    private void enviarListaDePartidas(PaqueteSesion paquete){
     	System.out.println("PREPARANDO LISTA");
             for(ThreadServerPartida partida : servidor.getPartidas()){
             	paquete.agregarPartida(partida.getNombre(),partida.getCantJugadores());

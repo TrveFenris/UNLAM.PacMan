@@ -10,7 +10,7 @@ public class PaqueteID extends Paquete{
 		return ID;
 	}
 	@Override
-	public TipoPaquete getTipoPaquete() {
+	public TipoPaquete getTipo() {
 		return TipoPaquete.ID;
 	}
 }

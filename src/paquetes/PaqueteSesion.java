@@ -106,7 +106,7 @@ public class PaqueteSesion extends Paquete {
 	/**
 	 * Utilizado por el servidor para consultar la accion que desea realizar el cliente
 	 */
-	public TipoPaquete getTipoPaquete(){
+	public TipoPaquete getTipo(){
 		return TipoPaquete.SESION;
 	}
 	

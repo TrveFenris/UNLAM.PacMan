@@ -17,7 +17,7 @@ public class PaqueteBolitaEliminada extends Paquete {
 		return index;
 	}
 	@Override
-	public TipoPaquete getTipoPaquete() {
+	public TipoPaquete getTipo() {
 		return TipoPaquete.BOLITA_ELIMINADA;
 	}
 }
