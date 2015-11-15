@@ -1,7 +1,6 @@
 package server;
 
 import game.Configuracion;
-import game.Partida;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -34,7 +33,7 @@ public class ServerWindow extends JFrame {
 				cliente = servidor.aceptarConexion();
 	            if (cliente != null){
 	            	Usuario u = new Usuario(cliente);
-	            	u.setSesion(new ThreadServerSesion(servidor, u));
+	            	u.setSesion(new ThreadServer(servidor, u));
 	            	u.getSesion().start();
 	            	servidor.agregarUsuario(u);
 	            	//clientes.add(cliente);
@@ -44,7 +43,7 @@ public class ServerWindow extends JFrame {
 	            actualizarListaDeNombres();
 	        }
 			System.out.println("FIN DEL THREAD");
-			detenerPartidas();
+			//detenerPartidas();
 	        servidor.pararServidor();
 	        System.out.println("SERVER CERRADO");
 		}
@@ -69,7 +68,6 @@ public class ServerWindow extends JFrame {
 	private JTextArea textAreaNombres;
 	private JButton btnCrearPartida;
 	private JButton btnCerrarServidor;
-	private String auxNombrePartida;
 	private JLabel lblCantJugadores;
 	private JTextArea textAreaCantJugadores;
 	private JList<String> listPartidas;
@@ -250,8 +248,8 @@ public class ServerWindow extends JFrame {
 	
 	public void actualizarListaDePartidas(){
 		textAreaCantJugadores.setText("");
-		for(ThreadServerPartida thread : servidor.getPartidas()){
-			textAreaCantJugadores.append(thread.getNombre()+" ("+thread.getCantJugadores()+")\n");
+		for(String partida : servidor.getPartidas()){
+			textAreaCantJugadores.append(servidor.getCantJugadores(partida)+"\n");
 		}
 	}
 	/**
@@ -259,32 +257,54 @@ public class ServerWindow extends JFrame {
 	 * @param nombre -El nombre de la partida.
 	 */
 	public void crearPartida(String nombre){
-		auxNombrePartida = nombre;
-		if(auxNombrePartida!=null&&auxNombrePartida!=""){
-			ThreadServerPartida thread = new ThreadServerPartida(servidor, auxNombrePartida);
-			servidor.agregarPartida(thread);
-			//t.start();
-			listModelPartidas.addElement(auxNombrePartida);
-			textAreaCantJugadores.append(thread.getNombre()+" ("+thread.getCantJugadores()+")\n");
-			//actualizarListaDePartidas();
+		if(nombre!=null&&nombre!=""){
+			//SI CREAR DEVUELVE FALSO, TIRAR UN CARTEL QUE LO INFORME
+			servidor.crearPartida(nombre);
+			actualizarListaDePartidas();
+			listModelPartidas.addElement(nombre);
 		}
 	}
 	
-	/**
-	 * Detiene todos los threads de partidas que esten en ejecucion.
-	 */
-	public void detenerPartidas(){
-		for(ThreadServerPartida thread : servidor.getPartidas()){
-			thread.detener();
-		}
-	}
+//	/**
+//	 * Detiene todos los threads de partidas que esten en ejecucion.
+//	 */
+//	public void detenerPartidas(){
+//		for(ThreadServerPartida thread : servidor.getPartidas()){
+//			thread.detener();
+//		}
+//	}
 	
 	/**
 	 * Lanza una ventana para el ingreso del nombre de la partida.
 	 */
 	public void ingresarNombrePartida(){
-		IngresoNombrePartida ventana = new IngresoNombrePartida(frame);
-		ventana.setVisible(true);
+		String s = (String)JOptionPane.showInputDialog(
+                frame,
+                "Ingrese el nombre de la partida:",
+                "Nueva Partida",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                null);
+
+		if ((s != null) && (s.length() > 0)) {
+			if(s.length() > 10) {
+				JOptionPane.showMessageDialog(this,
+						"El nombre de la partida no puede contener mas de 10 caracteres.",
+						 "Error",
+						 JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			this.crearPartida(s);
+			return;
+		}
+		else {
+			JOptionPane.showMessageDialog(this,
+					"Ingrese un nombre para la partida.",
+					 "Error",
+					 JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 	}
 	
 	private void crearServidor(){
