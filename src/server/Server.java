@@ -8,6 +8,10 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import game.Configuracion;
+import game.Partida;
 
 /**
  * Objeto que permite aceptar y manejar conexiones
@@ -25,8 +29,8 @@ public class Server {
     private DataBase database;
     private ServerWindow serverWindow;
     private ArrayList<Usuario> usuarios;
-    private ArrayList<ThreadServerPartida> partidas;
-
+    private HashMap<Partida, ArrayList<Usuario>> partidas;
+    private HashMap<String, Partida> nombresDePartida;
     /**
      * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar,
      * y la ventana principal, donde escribirá su lista de nombres.
@@ -48,9 +52,9 @@ public class Server {
         sockets = new ArrayList<Socket>();
         database = new DataBase();
         servidor = new ServerSocket(puerto);
-        partidas = new ArrayList<ThreadServerPartida>();
         usuarios = new ArrayList<Usuario>();
-        
+        this.partidas=new HashMap<Partida, ArrayList<Usuario>>();
+        this.nombresDePartida=new HashMap<String, Partida>(); 
     }
 
     /**
@@ -89,26 +93,22 @@ public class Server {
     }
     
     /**
-     * Agrega una partida a la lista de partidas del servidor.
-     * @param partida
-     */
-    public void agregarPartida(ThreadServerPartida partida){
-    	partidas.add(partida);
-    }
-    
-    /**
      * Elimina una partida de la lista de partidas del servidor.
-     * @param partida
+     * @param nombre
      */
-    public void eliminarPartida(ThreadServerPartida partida){
-    	partidas.remove(partida);
+    public void eliminarPartida(String nombre){
+    	
     }
     
     /**
-     * Devuelve la lista de Threads de partidas que se están ejecutando.
+     * Devuelve la lista de partidas que se están ejecutando.
      */
-    public ArrayList<ThreadServerPartida> getPartidas(){
-    	return partidas;
+    public ArrayList<String> getPartidas(){
+    	ArrayList<String> nombres = new ArrayList<String>();
+    	for(Partida p : nombresDePartida.values()){
+    		nombres.add(p.getNombre());
+    	}
+    	return nombres;
     }
     
     /**
@@ -116,9 +116,22 @@ public class Server {
      * @return true/false -Si pudo o no, agregar al jugador.
      */
     public boolean agregarAPartida(Usuario usuario, String partida){
-    	for(ThreadServerPartida p : partidas){
-    		if(p.getNombre().equals(partida)){
-    			return p.agregarUsuario(usuario);
+    	for(String nombrePartida : nombresDePartida.keySet()){
+    		if(nombrePartida.equals(partida)){
+    			Partida p = nombresDePartida.get(nombrePartida);
+    			if(p.getCantJugadores()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
+    				return false;
+    			}
+    			partidas.get(p).add(usuario);
+    			usuario.setPartida(partida);
+    			System.out.println(usuario.getNombre()+" agregado a la partida "+nombrePartida);
+//    	    	if(usuarios.size()==2){
+//    	    		for(Usuario s : usuarios){
+//    	        		s.setUserThread(new UserThread(s, 1, servidor, thisThread, usuarios));
+//    	            	s.getUserThread().start();	
+//    	        	}
+//    	    	}
+    			return true;
     		}
     	}
     	return false;
@@ -143,8 +156,6 @@ public class Server {
             }
             else{
             	sockets.add(cliente);
-               // System.out.println("La Conexion numero " + cantActualClientes 
-               // 					+ " fue aceptada correctamente.");
             }
         } 
         catch(SocketTimeoutException e){
@@ -193,14 +204,6 @@ public class Server {
     public DataBase getDatabase(){
     	return database;
     }
-    
-//    public void agregarNombre(String nombre){
-//		serverWindow.agregarNombre(nombre);
-//	}
-//	
-//	public void removerNombre(String nombre){
-//		serverWindow.removerNombre(nombre);
-//	}
 	
 	public void agregarUsuario(Usuario u){
 		usuarios.add(u);
@@ -208,5 +211,28 @@ public class Server {
 	
 	public ArrayList<Usuario> getListaUsuarios(){
 		return usuarios;
+	}
+	
+	public ArrayList<Usuario> getUsuariosEnPartida(String nombrePartida){
+		return partidas.get(nombresDePartida.get(nombrePartida));
+	}
+	
+	public int getCantJugadores(String nombrePartida){
+		return nombresDePartida.get(nombrePartida).getCantJugadores();
+	}
+	
+	/**
+	 * Crea una partida en el servidor
+	 * @param nombre
+	 * @return true/false -Si se pudo crear la partida.
+	 */
+	public boolean crearPartida(String nombre){
+		if(nombresDePartida.containsKey(nombre)){
+			return false;
+		}
+		Partida p = new Partida(nombre);
+		partidas.put(p,new ArrayList<Usuario>());
+		nombresDePartida.put(nombre, p);
+		return true;
 	}
 }
