@@ -1,13 +1,15 @@
 package server;
 
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Usuario {
 	private int inGameId;
 	private String nombre;
 	private Socket socket;
-	private ThreadServerSesion sesion;
-	private UserThread userThread;
+	private ThreadServer sesion;
+	private String partida;
+	private ArrayList<Usuario> usuariosEnPartida;
 	
 	public Usuario(Socket socket){
 		this.socket = socket;
@@ -25,12 +27,8 @@ public class Usuario {
 		this.socket = socket;
 	}
 	
-	public void setSesion(ThreadServerSesion thread){
+	public void setSesion(ThreadServer thread){
 		this.sesion = thread;
-	}
-	
-	public void setUserThread(UserThread thread){
-		this.userThread = thread;
 	}
 	
 	public int getId(){
@@ -45,11 +43,23 @@ public class Usuario {
 		return socket;
 	}
 	
-	public ThreadServerSesion getSesion(){
+	public ThreadServer getSesion(){
 		return sesion;
 	}
 	
-	public UserThread getUserThread(){
-		return userThread;
+	public void setPartida(String nombrePartida){
+		this.partida=nombrePartida;
+	}
+	
+	public String getPartida(){
+		return partida;
+	}
+	
+	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
+		this.usuariosEnPartida=usuarios;
+	}
+	
+	public ArrayList<Usuario> getUsuariosEnPartida(){
+		return usuariosEnPartida;
 	}
 }
