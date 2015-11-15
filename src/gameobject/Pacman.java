@@ -14,12 +14,13 @@ public class Pacman extends Jugador {
 	private int muertes;
 	private int fantasmasComidos;
 	
-	public Pacman(Punto posInicial, String nombre, ConfiguracionSprites configSprites) {
+	public Pacman(Punto posInicial, String nombre, ConfiguracionSprites configSprites, int id) {
 		super(nombre, Configuracion.PACMAN_VELOCIDAD.getValor(), configSprites);
 		superpoder = false;
 		bolitasComidas=muertes=fantasmasComidos=0;
 		setImagen(configSprites.getValor(Direcciones.DERECHA));
 		imagen.setLocation(posInicial.getX(), posInicial.getY());
+		this.ID = id;
 	}
 	
 	public void reaparecer(){

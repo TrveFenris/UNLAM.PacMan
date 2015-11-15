@@ -10,11 +10,12 @@ public class Fantasma extends Jugador{
 	protected int vecesAturdido;
 	protected int muertes;
 
-	public Fantasma(Punto posInicial, String nombre, ConfiguracionSprites configSprites) {
+	public Fantasma(Punto posInicial, String nombre, ConfiguracionSprites configSprites, int id) {
 		super(nombre, Configuracion.FANTASMA_VELOCIDAD.getValor(), configSprites);
 		pacmansComidos=vecesAturdido=muertes=0;
 		setImagen(configSprites.getValor(Direcciones.DERECHA));
 		imagen.setLocation(posInicial.getX(),posInicial.getY());
+		this.ID = id;
 	}
 
 	public void reaparecer(){

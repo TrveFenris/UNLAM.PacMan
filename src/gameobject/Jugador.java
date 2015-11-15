@@ -109,6 +109,10 @@ public abstract class Jugador extends GameObject{
 		return rectasActuales.size();
 	}
 	
+	public int getID() {
+		return ID;
+	}
+	
 	/**
 	 * Actualiza el campo "rectaActual", que indica sobre que recta se encuentra el jugador en cada momento.
 	 * @param rectas -Lista de rectas del mapa
