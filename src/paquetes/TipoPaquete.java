@@ -5,17 +5,18 @@ package paquetes;
  */
 
 public enum TipoPaquete {
-	SESION,
+	
 	BOLITA_ELIMINADA,
+	BUSCAR_PARTIDA,
 	COORDENADAS,
 	ID,
-	SKINS,
-	BUSCAR_PARTIDA,
-	UNIRSE_PARTIDA,
 	LOGIN,
 	LOGOUT,
-	REGISTRO,
 	PARTIDA,
+	REGISTRO,
+	SESION, //En vias de eliminacion
+	SKINS,
+	UNIRSE_PARTIDA,
 	;
 }
 

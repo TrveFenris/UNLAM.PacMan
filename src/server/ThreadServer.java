@@ -61,7 +61,8 @@ public class ThreadServer extends Thread {
 							//paquete = paqBolita;
 							//responder=false;
 							break;
-						
+						case BUSCAR_PARTIDA:
+							break;
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
@@ -75,9 +76,16 @@ public class ThreadServer extends Thread {
 							//responder=false;
 							break;
 						
-						case ID:
-							PaqueteID paqId = (PaqueteID)paquete;
-							//paquete = paqId;
+						case ID: break; //el server no deberia recibir este paquete
+						
+						case LOGIN:
+							break;
+						case LOGOUT:
+							break;
+							
+						case PARTIDA: break; //el server no deberia recibir este paquete
+						
+						case REGISTRO:
 							break;
 						
 						case SESION:
@@ -112,10 +120,15 @@ public class ThreadServer extends Thread {
 									break;
 							}
 							break;
+						
 						case SKINS:
 							PaqueteSkins paqSkins = (PaqueteSkins)paquete;
 							//paquete = paqSkins;
 							break;
+							
+						case UNIRSE_PARTIDA:
+							break;
+						
 						default:
 							System.out.println("Paquete desconocido.");
 							break;
