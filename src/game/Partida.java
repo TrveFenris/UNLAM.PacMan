@@ -41,4 +41,7 @@ public class Partida {
 	public void agregarMapa(Mapa m) {
 		mapa = m;
 	}
+	public int getCantJugadores(){
+		return jugadores.size();
+	}
 }
