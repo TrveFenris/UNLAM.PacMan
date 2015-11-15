@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.locks.ReentrantLock;
 
 import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
@@ -119,12 +118,12 @@ public class ThreadServerSesion extends Thread {
         	}
         	 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         	 clientSocket.close();
-        	 servidor.eliminarCliente();
+        	 servidor.eliminarCliente(user);
         }
         catch(EOFException e){
             try {
                 clientSocket.close();
-                servidor.eliminarCliente();
+                servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
@@ -135,7 +134,7 @@ public class ThreadServerSesion extends Thread {
         	e.printStackTrace();
             try {
                 clientSocket.close();
-                servidor.eliminarCliente();
+                servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
             }
             catch (IOException e1) {
@@ -153,11 +152,12 @@ public class ThreadServerSesion extends Thread {
             }
     }
 
-    public void bloquear(){
+    public synchronized void bloquear(){
     	locked = true;
     }
     
-    public void desbloquear(){
+    public synchronized void desbloquear(){
     	locked = false;
+    	notify();
     }
 }
