@@ -1,5 +1,6 @@
 package server;
 
+import game.Configuracion;
 import game.Partida;
 
 import java.awt.EventQueue;
@@ -11,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -39,6 +41,7 @@ public class ServerWindow extends JFrame {
 	            	//System.out.println(usuarios.size()+"\t"+servidor.getListaSockets().size());
 	            }
 	            actualizarListaDePartidas();
+	            actualizarListaDeNombres();
 	        }
 			System.out.println("FIN DEL THREAD");
 			detenerPartidas();
@@ -58,9 +61,7 @@ public class ServerWindow extends JFrame {
 	public static ServerWindow frame;
 	
 	private Server servidor = null;
-	private int puerto = 5070;
 	private boolean bandera;
-	private int maxClientes=6;
 	private Socket cliente = null;
 	private ListenThread threadEscucha;
 	private JLabel lblClientesConectados;
@@ -216,6 +217,7 @@ public class ServerWindow extends JFrame {
 		
 		listModelPartidas = new DefaultListModel<String>();
 		listPartidas = new JList<String>(listModelPartidas);
+		listPartidas.setBackground(SystemColor.control);
 		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listPartidas.setBounds(165, 150, 145, 105);
 		contentPane.add(listPartidas);
@@ -238,16 +240,6 @@ public class ServerWindow extends JFrame {
 		}
 	}
 	
-//	public void agregarNombre(String nombre){
-//		nombres.add(nombre);
-//		actualizarListaDeNombres();
-//	}
-	
-//	public void removerNombre(String nombre){
-//		nombres.remove(nombre);
-//		actualizarListaDeNombres();
-//	}
-	/*
 	public void actualizarListaDeNombres(){
 		textAreaNombres.setText("");
 		for(Iterator<Usuario>s=servidor.getListaUsuarios().iterator();s.hasNext();){
@@ -255,7 +247,7 @@ public class ServerWindow extends JFrame {
 			textAreaNombres.setText(textAreaNombres.getText()+u.getNombre()+"\n");
 		}
 	}
-	*/
+	
 	public void actualizarListaDePartidas(){
 		textAreaCantJugadores.setText("");
 		for(ThreadServerPartida thread : servidor.getPartidas()){
@@ -297,10 +289,11 @@ public class ServerWindow extends JFrame {
 	
 	private void crearServidor(){
 		boolean serverCreado=false;
-		int maxPuertosABuscar=50;;
+		int puerto=Configuracion.PUERTO_INICIAL.getValor();
+		int maxPuertosABuscar=Configuracion.RANGO_PUERTOS.getValor();
 		while(serverCreado!=true && maxPuertosABuscar>0){
 			try {
-				servidor = new Server(puerto, maxClientes,this);
+				servidor = new Server(puerto, Configuracion.MAX_CLIENTES.getValor(),this);
 				serverCreado=true;
 			} catch (IOException e) {
 				System.out.println("No se puede escuchar desde el puerto " +puerto+", buscando nuevo puerto...");
