@@ -2,8 +2,9 @@ package cliente;
 
 import game.ConfiguracionSprites;
 import game.Mapa;
-import gameobject.Direcciones;
+import game.Partida;
 import gameobject.Bolita;
+import gameobject.Direcciones;
 import gameobject.Jugador;
 import gameobject.Pacman;
 
@@ -39,17 +40,16 @@ public class GameWindow extends JFrame {
 	private GameThread gameLoopThread;
 	private int[]controles;
 	//ID que representa al jugador local
-	private int IDJugadorLocal;
+	private int IDJugadorLocal = 1;
 	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
 	private final int ARRIBA=0;
 	private final int ABAJO=1;
 	private final int IZQUIERDA=2;
 	private final int DERECHA=3;
 	//Mapa
-	private Mapa mapa;
-	private ArrayList<Jugador> jugadores;
-	private Pacman pacman;
-	private Pacman pacmanBot;
+
+	private Partida partida;
+	private Jugador jugadorLocal;
 	//Variables de accion segun presion de tecla
 	private Rectas ultimaDireccion;
 	private Direcciones ultimaAccion;
@@ -92,17 +92,28 @@ public class GameWindow extends JFrame {
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
 		//MAPA
-		mapa = new Mapa("mapa1");
-		mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
-		jugadores=new ArrayList<Jugador>();
+		//mapa = new Mapa("mapa1");
+		partida = new Partida("Local");
+		partida.agregarMapa(new Mapa("mapa1"));
+		//mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
+		partida.getMapa().dibujar(contentPane);
+		//jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
-		pacman = new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT);
+		//pacman = new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT);
+		partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
 		ultimaAccion=Direcciones.NINGUNA;
-		pacman.dibujar(contentPane);
-		jugadores.add(pacman);
+		//pacman.dibujar(contentPane);
+		//jugadores.add(pacman);
 		//Creación del 2do jugador (manejado por otra ventana)
-		pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO);
-		pacmanBot.dibujar(contentPane);
+		//pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO);
+		partida.agregarJugador(new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO, 2));
+		//pacmanBot.dibujar(contentPane);
+		for(Jugador j: partida.getJugadores()) {
+			j.dibujar(contentPane);
+			if(j.getID() == IDJugadorLocal) {
+				jugadorLocal = j;
+			}
+		}
 		paux = new Punto(15,35);
 		//jugadores.add(pacman);
 		userWindow = window;
@@ -141,32 +152,31 @@ public class GameWindow extends JFrame {
 			ultimaAccion=Direcciones.ARRIBA;
 			if(ultimaDireccion==Rectas.HORIZONTAL)
 				return;
-			pacman.cambiarSentido(Direcciones.ARRIBA);
+			jugadorLocal.cambiarSentido(Direcciones.ARRIBA);
 		}
 		else if(key.getKeyCode() == controles[ABAJO]) {
 			ultimaAccion=Direcciones.ABAJO;
 			if(ultimaDireccion==Rectas.HORIZONTAL)
 				return;
-			pacman.cambiarSentido(Direcciones.ABAJO);
+			jugadorLocal.cambiarSentido(Direcciones.ABAJO);
 		}
 		else if(key.getKeyCode() == controles[IZQUIERDA]) {
 			ultimaAccion=Direcciones.IZQUIERDA;
 			if(ultimaDireccion==Rectas.VERTICAL)
 				return;
-			pacman.cambiarSentido(Direcciones.IZQUIERDA);
+			jugadorLocal.cambiarSentido(Direcciones.IZQUIERDA);
 		}
 		else if(key.getKeyCode() == controles[DERECHA]) {
 			ultimaAccion=Direcciones.DERECHA;
 			if(ultimaDireccion==Rectas.VERTICAL)
 				return;
-			pacman.cambiarSentido(Direcciones.DERECHA);
+			jugadorLocal.cambiarSentido(Direcciones.DERECHA);
 		}
 	}
-	
+	/*
 	private void update(){
-		for(Iterator<Jugador>j=jugadores.iterator();j.hasNext();) {
-			Jugador jug=j.next();
-			jug.actualizarUbicacion(mapa.getArrayRectas());
+		for(Jugador jug : partida.getJugadores()) {
+			jug.actualizarUbicacion(partida.getMapa().getArrayRectas());
 			ultimaDireccion=jug.getTipoUbicacion();
 			switch(ultimaDireccion){
 				case HORIZONTAL:
@@ -202,7 +212,11 @@ public class GameWindow extends JFrame {
 			userWindow.getCliente().enviarPosicion(jug.getLocation());
 			semaforo.lock();	     
 			try {
-				pacmanBot.setLocation(paux.getX(), paux.getY());
+				for(Jugador j : partida.getJugadores()) {
+					//partida.getJugador(1).setLocation(paux.getX(), paux.getY());
+					if(j.getID()!=IDJugadorLocal)
+						j.setLocation(paux.getX(), paux.getY());
+				}
 			} 
 			finally {
 				semaforo.unlock();
@@ -211,7 +225,56 @@ public class GameWindow extends JFrame {
 			calcularColisiones (jug);
 		}
 	}
-
+	*/
+	private void update(){
+		jugadorLocal.actualizarUbicacion(partida.getMapa().getArrayRectas());
+		ultimaDireccion=jugadorLocal.getTipoUbicacion();
+		switch(ultimaDireccion){
+			case HORIZONTAL:
+				jugadorLocal.setLeftBound(jugadorLocal.getRectaActual(0).getPuntoInicialX());
+				jugadorLocal.setRightBound(jugadorLocal.getRectaActual(0).getPuntoFinalX());
+				jugadorLocal.setUpperBound(jugadorLocal.getRectaActual(0).getPuntoInicialY());					
+				jugadorLocal.setLowerBound(jugadorLocal.getRectaActual(0).getPuntoInicialY());
+				break;
+			case VERTICAL:
+				jugadorLocal.setUpperBound(jugadorLocal.getRectaActual(0).getPuntoInicialY());
+				jugadorLocal.setLowerBound(jugadorLocal.getRectaActual(0).getPuntoFinalY());
+				jugadorLocal.setLeftBound(jugadorLocal.getRectaActual(0).getPuntoInicialX());
+				jugadorLocal.setRightBound(jugadorLocal.getRectaActual(0).getPuntoInicialX());
+				break;
+			case AMBAS:
+				//System.out.println("Interseccion");
+				for(int i=0;i<2;i++){
+					if(jugadorLocal.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
+						jugadorLocal.setLeftBound(jugadorLocal.getRectaActual(i).getPuntoInicialX());
+						jugadorLocal.setRightBound(jugadorLocal.getRectaActual(i).getPuntoFinalX());
+					}
+					else
+						if(jugadorLocal.getRectaActual(i).getTipo()==Rectas.VERTICAL){
+							jugadorLocal.setUpperBound(jugadorLocal.getRectaActual(i).getPuntoInicialY());
+							jugadorLocal.setLowerBound(jugadorLocal.getRectaActual(i).getPuntoFinalY());
+						}
+				}
+				jugadorLocal.cambiarSentido(ultimaAccion);
+				break;
+		}
+		jugadorLocal.mover();
+		userWindow.getCliente().enviarPosicion(jugadorLocal.getLocation());
+		semaforo.lock();	     
+		try {
+			for(Jugador j : partida.getJugadores()) {
+				//partida.getJugador(1).setLocation(paux.getX(), paux.getY());
+				if(j.getID()!=IDJugadorLocal)
+					j.setLocation(paux.getX(), paux.getY());
+			}
+		} 
+		finally {
+			semaforo.unlock();
+		}
+		restrictBoundaries(jugadorLocal);
+		calcularColisiones (jugadorLocal);
+	}
+	
 	/**
 	 * Asegura que el personaje controlado por un jugador se mantenga sobre las rectas del mapa
 	 * @param Jugador
@@ -231,25 +294,10 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
-		/*
-		for(Iterator<Bolita>it=mapa.getArrayBolitas().iterator();it.hasNext();) {
-			Bolita b = it.next();
+		for(Bolita b : partida.getMapa().getArrayBolitas()) {
 			if(b.isAlive() && j.colisionaCon(b)) {
-				mapa.removerBolita(b);
-				it = mapa.getArrayBolitas().iterator();
-			}
-		}
-		*/
-		/* Metodo mas eficiente para calcular las colisiones con bolitas.
-		 * Tiene un problema: Si el pacman tiene la posibilidad de comer dos
-		 * bolitas casi cercanas, solo comera una.
-		 * Lo dejo comentado porque es muy probable que sirva mas que la
-		 * forma anterior una vez tengamos el mapa real
-		 * Pacman no deberia comer dos bolitas a la vez... */
-		
-		for(Bolita b : mapa.getArrayBolitas()) {
-			if(b.isAlive() && j.colisionaCon(b)) {
-				mapa.removerBolita(b);
+				
+				partida.getMapa().removerBolita(b);
 				break;
 			}
 		}
