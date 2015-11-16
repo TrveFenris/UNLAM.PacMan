@@ -43,53 +43,6 @@ public class Cliente {
         return cliente;
     }
 
-    /*
-     * Establece los datos del cliente
-     * @param nombre
-     * @param password
-     */
-    /*
-    public void setDatos(String nombre, String password) {
-        this.nombre = nombre;
-        this.password=password;
-    }
-    */
-/*
-    public void enviarMensaje() {
-    	/* Seccion comentada porque readLine se comporta de modo bloqueante
-    	 * y no deja cerrar el thread que lanza la MainWindow, utilizado
-    	 * para ejecutar este metodo*/
-        /*
-    	try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-          	//Se lee desde el host del usuario y dirige el flujo o informacion al server
-            DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
-            String data;
-            while(!cliente.isClosed()) {}
-            
-            while ((data=br.readLine())!= null) {
-                if (data.contains(".exit")) {
-                    cerrarCliente();
-                }
-                else if (!data.equals("")) {
-                	dos.writeUTF("["+horaDelMensaje()+"] " + nombre + ": " + data);
-                }
-            }
-            
-            cerrarCliente();
-            System.out.println("Sali del while");
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-        	cerrarCliente();
-        }
-        *//*
-        	 while(!cliente.isClosed()) {} //Ciclo mientras el socket este abierto
-        	 cerrarCliente();
-    }
-*/
     public void cerrarCliente() {
         try {
         	if(cliente != null && !cliente.isClosed()) {

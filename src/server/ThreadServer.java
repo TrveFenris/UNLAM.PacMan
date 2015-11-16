@@ -20,14 +20,12 @@ import paquetes.PaqueteUnirsePartida;
 
 public class ThreadServer extends Thread {
 
-    private Socket clientSocket;
     private Server servidor;
     private DataBase database;
     private Usuario user;
     private String partida; //Utilizado para cachear la partida en la que se encuentra el usuario
     
     public ThreadServer(Server servidor, Usuario usuario) {
-        clientSocket = usuario.getSocket();
         this.servidor=servidor;
         this.database=servidor.getDatabase(); 
         usuario.setNombre("");
@@ -38,18 +36,18 @@ public class ThreadServer extends Thread {
         try {
         	boolean run = true;
         	while(run){
-        		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
+        		DataInputStream data= new DataInputStream(user.getSocket().getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
         		Paquete paquete=(Paquete)is.readObject();
-                if (!clientSocket.isClosed()) {
-    	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
+                if (!user.getSocket().isClosed()) {
+    	            DataOutputStream d = new DataOutputStream(user.getSocket().getOutputStream());
     	            ObjectOutputStream o = new ObjectOutputStream(d);
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
     	            switch(paquete.getTipo()) {
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-		            			if(u.getSocket()!=clientSocket){
+		            			if(u.getSocket()!=user.getSocket()){
 		            				DataOutputStream ds = new DataOutputStream(u.getSocket().getOutputStream());
 		            				ObjectOutputStream os = new ObjectOutputStream(ds); 
 		            				os.writeObject(paqBolita);
@@ -64,7 +62,7 @@ public class ThreadServer extends Thread {
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-		            			if(u.getSocket()!=clientSocket){
+		            			if(u.getSocket()!=user.getSocket()){
 		            				DataOutputStream ds = new DataOutputStream(u.getSocket().getOutputStream());
 		            				ObjectOutputStream os = new ObjectOutputStream(ds); 
 		            				os.writeObject(paqCoord);
@@ -119,13 +117,13 @@ public class ThreadServer extends Thread {
     	            }
                 }
         	}
-        	 clientSocket.close();
-        	 servidor.eliminarCliente(user);
-        	 System.out.println(user.getNombre()+" se ha desconectado del servidor");
+        	user.getSocket().close();
+        	servidor.eliminarCliente(user);
+        	System.out.println(user.getNombre()+" se ha desconectado del servidor");
         }
         catch(EOFException e){
             try {
-                clientSocket.close();
+            	user.getSocket().close();
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
             }
@@ -136,7 +134,7 @@ public class ThreadServer extends Thread {
         catch(IOException e) {
         	e.printStackTrace();
             try {
-                clientSocket.close();
+            	user.getSocket().close();
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
             }
