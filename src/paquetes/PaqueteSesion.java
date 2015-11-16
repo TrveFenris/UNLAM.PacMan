@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  *Paquete de datos para el manejo de inicio de sesion, cierre de sesion, y registro de usuario
  */
+@Deprecated
 public class PaqueteSesion extends Paquete {
 
 	private static final long serialVersionUID = 4360740960940604321L;
@@ -107,7 +108,8 @@ public class PaqueteSesion extends Paquete {
 	 * Utilizado por el servidor para consultar la accion que desea realizar el cliente
 	 */
 	public TipoPaquete getTipo(){
-		return TipoPaquete.SESION;
+		//return TipoPaquete.SESION;
+		return null;
 	}
 	
 	public Solicitudes getSolicitud(){

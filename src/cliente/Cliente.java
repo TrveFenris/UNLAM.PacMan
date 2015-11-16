@@ -20,10 +20,7 @@ import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteLogin;
 import paquetes.PaqueteLogout;
 import paquetes.PaqueteRegistro;
-import paquetes.PaqueteSesion;
 import paquetes.PaqueteUnirsePartida;
-import paquetes.Solicitudes;
-import punto.Punto;
 
 public class Cliente {
 

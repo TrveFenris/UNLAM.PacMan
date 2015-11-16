@@ -1,5 +1,5 @@
 package paquetes;
-
+@Deprecated
 public enum Solicitudes { //FIXME
 	LOGIN,
 	LOGOUT,

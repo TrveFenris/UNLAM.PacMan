@@ -1,7 +1,5 @@
 package gameobject;
 
-import game.ConfiguracionSprites;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

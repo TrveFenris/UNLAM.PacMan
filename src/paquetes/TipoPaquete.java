@@ -14,7 +14,7 @@ public enum TipoPaquete {
 	LOGOUT,
 	PARTIDA,
 	REGISTRO,
-	SESION, //En vias de eliminacion
+	//SESION, //En vias de eliminacion
 	SKINS,
 	UNIRSE_PARTIDA,
 	;

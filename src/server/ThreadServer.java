@@ -15,7 +15,6 @@ import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteLogin;
 import paquetes.PaqueteLogout;
 import paquetes.PaqueteRegistro;
-import paquetes.PaqueteSesion;
 import paquetes.PaqueteSkins;
 import paquetes.PaqueteUnirsePartida;
 
@@ -37,10 +36,8 @@ public class ThreadServer extends Thread {
 
     public synchronized  void run() {
         try {
-        	boolean responder;
         	boolean run = true;
         	while(run){
-        		responder = true;
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
         		Paquete paquete=(Paquete)is.readObject();
@@ -59,11 +56,11 @@ public class ThreadServer extends Thread {
 		            			}
 							}
 							break;
+							
 						case BUSCAR_PARTIDA:
-							//PaqueteBuscarPartida paqBuscar = (PaqueteBuscarPartida) paquete;
-							//paqBuscar = enviarListaDePartidas();
 							o.writeObject(enviarListaDePartidas());
 							break;
+							
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
@@ -82,10 +79,10 @@ public class ThreadServer extends Thread {
 							user.setNombre(paqLogin.getNombreUsuario());
 							System.out.println(user.getNombre()+" se ha conectado al servidor");
 							paqLogin.setResultado(true);
-							//paq.setResultado(database.verificarDatos(paq.getNombre(), paq.getPassword()));
-							//paquete = paqSesion;
+							//paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
 							o.writeObject(paqLogin);
 							break;
+							
 						case LOGOUT:
 							PaqueteLogout paqLogout = (PaqueteLogout) paquete;
 							paqLogout.setResultado(true);
@@ -98,53 +95,15 @@ public class ThreadServer extends Thread {
 						case REGISTRO:
 							PaqueteRegistro paqReg = (PaqueteRegistro) paquete;
 							paqReg.setResultado(false);
-							//paquete.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
+							//paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
 							run=false;
-							//paquete = paqSesion;
 							o.writeObject(paqReg);
 							break;
-						//Case SESION: OBSOLETO
-						/*
-						case SESION:
-							PaqueteSesion paqSesion = (PaqueteSesion)paquete;
-							switch(paqSesion.getSolicitud()){
-								case LOGIN:
-									user.setNombre(paqSesion.getNombre());
-									System.out.println(user.getNombre()+" se ha conectado al servidor");
-									paqSesion.setResultado(true);
-									//paq.setResultado(database.verificarDatos(paq.getNombre(), paq.getPassword()));
-									paquete = paqSesion;
-									break;
-								case LOGOUT:
-									paqSesion.setResultado(true);
-									run=false;
-									paquete = paqSesion;
-									break;
-								case REGISTRO:
-									paqSesion.setResultado(false);
-									//paquete.setResultado(database.registrarUsuario(paquete.getNombre(), paquete.getPassword()));
-									run=false;
-									paquete = paqSesion;
-									break;
-								case BUSCAR_PARTIDA:
-									paquete = enviarListaDePartidas();
-									break;
-								case UNIRSE_PARTIDA:
-									System.out.println(paqSesion.getMensaje());
-									boolean res=servidor.agregarAPartida(user, paqSesion.getMensaje());
-									paqSesion.setResultado(res);
-									paquete = paqSesion;
-									break;
-							}
-							break;
-						*/
 						case SKINS:
 							PaqueteSkins paqSkins = (PaqueteSkins)paquete;
 							//int idJugador = user.getId();
 							//String partidaJugador = user.getPartida();
 							//for(Jugadores j : servidor.get)
-								
-							//paquete = paqSkins;
 							break;
 							
 						case UNIRSE_PARTIDA:
@@ -152,17 +111,12 @@ public class ThreadServer extends Thread {
 							boolean res = servidor.agregarAPartida(user, paqUnir.getNombrePartida());
 							paqUnir.setResultado(res);
 							o.writeObject(paqUnir);
-							//paquete = paqUnir;
 							break;
 
 						default:
 							System.out.println("Paquete desconocido.");
 							break;
     	            }
-    	            /*
-    	            if(responder!=false)
-    	            	o.writeObject(paquete);
-    	            */
                 }
         	}
         	 clientSocket.close();

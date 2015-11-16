@@ -4,7 +4,6 @@ import game.Configuracion;
 import game.ConfiguracionSprites;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import punto.Punto;
 import rectas.Recta;

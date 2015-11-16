@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class LobbyWindow extends JFrame {
-
+	private static final long serialVersionUID = 2633638473228159143L;
 	private JPanel contentPane;
 	private UserWindow mainWindow;
 	private LobbyWindow thisWindow;
