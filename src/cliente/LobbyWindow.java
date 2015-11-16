@@ -146,6 +146,7 @@ public class LobbyWindow extends JFrame {
 	private void lanzarJuego() {
 		if(mainWindow.getCliente().unirseAPartida(comboBoxPartidas.getSelectedItem().toString()) ) {
 			System.out.println("Entrando a la partida");
+			//Recibir paquete partida.
 		}
 		else {
 			System.out.println("Error al unirse a la partida");

@@ -1,5 +1,7 @@
 package cliente;
 
+import gameobject.Jugador;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -15,7 +17,11 @@ import java.util.Calendar;
 
 import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteLogin;
+import paquetes.PaqueteLogout;
+import paquetes.PaqueteRegistro;
 import paquetes.PaqueteSesion;
+import paquetes.PaqueteUnirsePartida;
 import paquetes.Solicitudes;
 import punto.Punto;
 
@@ -113,19 +119,30 @@ public class Cliente {
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
         	//paquete.setIniciarSesion();
-        	paquete.setSolicitud(Solicitudes.LOGIN);
+        	//paquete.setSolicitud(Solicitudes.LOGIN);
+            PaqueteLogin paquete = new PaqueteLogin(nombre, password);
         	o.writeObject(paquete);
         	//
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            paquete=(PaqueteSesion)is.readObject();
-            if(paquete.getResultado()){
-            	respuesta=true;
-	        }
-            else
-            	respuesta=false;
+            try {
+            	//paquete=(PaqueteSesion)is.readObject();
+            	paquete=(PaqueteLogin)is.readObject();
+            	if(paquete.getResultado()) {
+            		respuesta=true;
+            	}
+            }
+            catch(ClassCastException e) {
+            	System.out.println("Error: No se recibio un paquete de Logout.");
+            }
+            //paquete=(PaqueteSesion)is.readObject();
+            //if(paquete.getResultado()){
+            	//respuesta=true;
+	        //}
+            //else
+            	//respuesta=false;
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
@@ -134,7 +151,8 @@ public class Cliente {
         catch(IOException e) {
         	System.out.println("Error: IOException (iniciarSesion)");
         	cerrarCliente();
-        } catch (ClassNotFoundException e1) {
+        }
+    	catch (ClassNotFoundException e1) {
 			cerrarCliente();
 		}
     	return respuesta;
@@ -149,19 +167,26 @@ public class Cliente {
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
         	//paquete.setRegistrarUsuario();
-        	paquete.setSolicitud(Solicitudes.REGISTRO);
-        	o.writeObject(paquete);
+        	//paquete.setSolicitud(Solicitudes.REGISTRO);
+        	PaqueteRegistro paquete = new PaqueteRegistro(nombre, password);
+            o.writeObject(paquete);
         	//
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            paquete=(PaqueteSesion)is.readObject();
-            if(paquete.getResultado()){
-            	respuesta=true;
-	        }
-            else
-            	respuesta=false;
+            
+            try {
+            	//paquete=(PaqueteSesion)is.readObject();
+            	paquete=(PaqueteRegistro)is.readObject();
+            	if(paquete.getResultado()) {
+            		respuesta=true;
+            	}
+            }
+            catch(ClassCastException e) {
+            	System.out.println("Error: No se recibio un paquete de Logout.");
+            }
+            //paquete=(PaqueteSesion)is.readObject();
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
@@ -170,7 +195,8 @@ public class Cliente {
         catch(IOException e) {
         	System.out.println("Error: IOException (iniciarSesion)");
         	cerrarCliente();
-        } catch (ClassNotFoundException e1) {
+        }
+    	catch (ClassNotFoundException e1) {
 			cerrarCliente();
 		}
     	return respuesta;
@@ -185,32 +211,37 @@ public class Cliente {
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
         	//paquete.setCerrarSesion();
-        	paquete.setSolicitud(Solicitudes.LOGOUT);
-        	o.writeObject(paquete);
+        	//paquete.setSolicitud(Solicitudes.LOGOUT);
+        	PaqueteLogout paquete = new PaqueteLogout();
+            o.writeObject(paquete);
         	//
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            paquete=(PaqueteSesion)is.readObject();
+            try {
+            	//paquete=(PaqueteSesion)is.readObject();
+            	paquete=(PaqueteLogout)is.readObject();
+            	
+            }
+            catch(ClassCastException e) {
+            	System.out.println("Error: No se recibio un paquete de Logout.");
+            }
+            
             if(paquete.getResultado()){
             	respuesta=true;
+            	cerrarCliente();
 	        }
-            else
-            	respuesta=false;
-            cerrarCliente();
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
-        	respuesta=false;
             cerrarCliente();
         }
         catch(IOException e) {
         	System.out.println("Error: IOException (iniciarSesion)");
-        	respuesta=false;
         	cerrarCliente();
-        } catch (ClassNotFoundException e1) {
-        	respuesta=false;
+        }
+    	catch (ClassNotFoundException e1) {
 			cerrarCliente();
 		}
     	return respuesta;
@@ -224,11 +255,10 @@ public class Cliente {
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	//paquete.setBuscarPartida();
-        	paquete.setSolicitud(Solicitudes.BUSCAR_PARTIDA);
-        	o.writeObject(paquete);
-        	
+        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	//paquete.setSolicitud(Solicitudes.BUSCAR_PARTIDA);
+        	PaqueteBuscarPartida paquete = new PaqueteBuscarPartida();
+            o.writeObject(paquete);
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             try {
@@ -262,15 +292,21 @@ public class Cliente {
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	//paquete.setUnirseAPartida();
-        	paquete.setSolicitud(Solicitudes.UNIRSE_PARTIDA);
-        	paquete.setMensaje(nombre);
+        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
+        	PaqueteUnirsePartida paquete = new PaqueteUnirsePartida(nombre);
+        	//paquete.setSolicitud(Solicitudes.UNIRSE_PARTIDA);
+        	//paquete.setMensaje(nombre);
         	o.writeObject(paquete);
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            paquete=(PaqueteSesion)is.readObject();
-            return paquete.getResultado();
+            //paquete=(PaqueteSesion)is.readObject();
+            try {
+            	paquete=(PaqueteUnirsePartida)is.readObject();
+            	return paquete.getResultado();
+            }
+            catch(ClassCastException e) {
+            	return false;
+            }
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (unirsePartida)");
@@ -287,11 +323,11 @@ public class Cliente {
     /**
      * Envia la posicion actual al servidor, y recibe la pocision de los otros jugadores.
      */
-    public void enviarPosicion(Punto p){
+    public void enviarPosicion(Jugador j){
     	try {
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(p,0);
+        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),j.getID());
         	o.writeObject(paquete);
         }
         catch(EOFException e){
@@ -302,13 +338,19 @@ public class Cliente {
         }
     }
     
-    public Punto recibirPosicion(){
+    public PaqueteCoordenadas recibirPosicion(){
     	try {
     		cliente.setSoTimeout(1000);
     		DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
-            return paquete.getCoordenadas();
+            try {
+            	PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
+            	return paquete;
+            }
+            catch(ClassCastException e) {
+        		System.out.println("Error: No se recibio un paquete de coordenadas");
+        		return null;
+        	}            
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (recibirPosicion)");

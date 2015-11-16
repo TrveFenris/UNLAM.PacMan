@@ -234,9 +234,11 @@ public class Server {
 		if(nombresDePartida.containsKey(nombre)){
 			return false;
 		}
-		Partida p = new Partida(nombre);
-		partidas.put(p,new ArrayList<Usuario>());
-		nombresDePartida.put(nombre, p);
-		return true;
+		else {
+			Partida p = new Partida(nombre);
+			partidas.put(p,new ArrayList<Usuario>());
+			nombresDePartida.put(nombre, p);
+			return true;
+		}
 	}
 }

@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import paquetes.PaqueteCoordenadas;
 import punto.Punto;
 import rectas.Rectas;
 
@@ -54,7 +55,7 @@ public class GameWindow extends JFrame {
 	private Rectas ultimaDireccion;
 	private Direcciones ultimaAccion;
 	//Variables auxiliares
-	private Punto paux;
+	private PaqueteCoordenadas paqueteAux;
 	private ReentrantLock semaforo;
 	private ListenThread threadEscucha;
 	
@@ -114,7 +115,8 @@ public class GameWindow extends JFrame {
 				jugadorLocal = j;
 			}
 		}
-		paux = new Punto(15,35);
+		//paux = new Punto(15,35);
+		paqueteAux = new PaqueteCoordenadas(new Punto (15,35), 2);
 		//jugadores.add(pacman);
 		userWindow = window;
 		gameRunning = true;
@@ -259,18 +261,20 @@ public class GameWindow extends JFrame {
 				break;
 		}
 		jugadorLocal.mover();
-		userWindow.getCliente().enviarPosicion(jugadorLocal.getLocation());
-		semaforo.lock();	     
-		try {
+		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
 			for(Jugador j : partida.getJugadores()) {
-				//partida.getJugador(1).setLocation(paux.getX(), paux.getY());
-				if(j.getID()!=IDJugadorLocal)
-					j.setLocation(paux.getX(), paux.getY());
+				if(j.getID()!=IDJugadorLocal && paqueteAux.getIDJugador() == j.getID()) {
+					semaforo.lock();
+					try {
+						j.setLocation(paqueteAux.getCoordenadas().getX(), paqueteAux.getCoordenadas().getY());
+					}
+					finally {
+						semaforo.unlock();
+					}
+				}
+					
 			}
-		} 
-		finally {
-			semaforo.unlock();
-		}
+		
 		restrictBoundaries(jugadorLocal);
 		calcularColisiones (jugadorLocal);
 	}
@@ -344,11 +348,11 @@ public class GameWindow extends JFrame {
 		public void run() {
 			running = true;
 			while(running){
-				Punto p = userWindow.getCliente().recibirPosicion();
+				PaqueteCoordenadas p = userWindow.getCliente().recibirPosicion();
 				if(p!=null){
 					semaforo.lock();
 					try {
-						paux = p;
+						paqueteAux = p;
 					} 
 					finally {
 						semaforo.unlock();

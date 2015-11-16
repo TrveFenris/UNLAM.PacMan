@@ -3,7 +3,7 @@ package cliente;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-
+@Deprecated
 public class ThreadCliente extends Thread {
     private Socket socket;
 

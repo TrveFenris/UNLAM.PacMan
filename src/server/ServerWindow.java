@@ -241,7 +241,6 @@ public class ServerWindow extends JFrame {
 	public void actualizarListaDeNombres(){
 		textAreaNombres.setText("");
 		for(Usuario u : servidor.getListaUsuarios()) {
-			//textAreaNombres.setText(textAreaNombres.getText()+u.getNombre()+"\n");
 			textAreaNombres.append(u.getNombre()+"\n");
 		}
 	}
@@ -259,9 +258,17 @@ public class ServerWindow extends JFrame {
 	public void crearPartida(String nombre){
 		if(nombre!=null&&nombre!=""){
 			//SI CREAR DEVUELVE FALSO, TIRAR UN CARTEL QUE LO INFORME
-			servidor.crearPartida(nombre);
-			actualizarListaDePartidas();
-			listModelPartidas.addElement(nombre);
+			if(servidor.crearPartida(nombre)) {
+				actualizarListaDePartidas();
+				listModelPartidas.addElement(nombre);
+			}
+			else {
+				JOptionPane.showMessageDialog(this,
+						"No se pudo crear la partida: ya existe una partida con el mismo nombre.",
+						 "Error",
+						 JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 	}
 	

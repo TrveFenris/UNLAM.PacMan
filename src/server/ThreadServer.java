@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import game.Partida;
 import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
-import paquetes.PaqueteID;
+import paquetes.PaqueteLogin;
+import paquetes.PaqueteLogout;
+import paquetes.PaqueteRegistro;
 import paquetes.PaqueteSesion;
 import paquetes.PaqueteSkins;
+import paquetes.PaqueteUnirsePartida;
 
 public class ThreadServer extends Thread {
 
@@ -43,7 +43,6 @@ public class ThreadServer extends Thread {
         		responder = true;
         		DataInputStream data= new DataInputStream(clientSocket.getInputStream());
             	ObjectInputStream is = new ObjectInputStream(data);
-        		//paquete=(PaqueteSesion)is.readObject();
         		Paquete paquete=(Paquete)is.readObject();
                 if (!clientSocket.isClosed()) {
     	            DataOutputStream d = new DataOutputStream(clientSocket.getOutputStream());
@@ -59,10 +58,11 @@ public class ThreadServer extends Thread {
 		            				os.writeObject(paqBolita);
 		            			}
 							}
-							//paquete = paqBolita;
-							//responder=false;
 							break;
 						case BUSCAR_PARTIDA:
+							//PaqueteBuscarPartida paqBuscar = (PaqueteBuscarPartida) paquete;
+							//paqBuscar = enviarListaDePartidas();
+							o.writeObject(enviarListaDePartidas());
 							break;
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
@@ -73,22 +73,38 @@ public class ThreadServer extends Thread {
 		            				os.writeObject(paqCoord);
 		            			}
 		            		}
-							//paquete = paqCoord;
-							//responder=false;
 							break;
 						
 						case ID: break; //el server no deberia recibir este paquete
 						
 						case LOGIN:
+							PaqueteLogin paqLogin = (PaqueteLogin) paquete;
+							user.setNombre(paqLogin.getNombreUsuario());
+							System.out.println(user.getNombre()+" se ha conectado al servidor");
+							paqLogin.setResultado(true);
+							//paq.setResultado(database.verificarDatos(paq.getNombre(), paq.getPassword()));
+							//paquete = paqSesion;
+							o.writeObject(paqLogin);
 							break;
 						case LOGOUT:
+							PaqueteLogout paqLogout = (PaqueteLogout) paquete;
+							paqLogout.setResultado(true);
+							run=false;
+							o.writeObject(paqLogout);
 							break;
 							
 						case PARTIDA: break; //el server no deberia recibir este paquete
 						
 						case REGISTRO:
+							PaqueteRegistro paqReg = (PaqueteRegistro) paquete;
+							paqReg.setResultado(false);
+							//paquete.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
+							run=false;
+							//paquete = paqSesion;
+							o.writeObject(paqReg);
 							break;
-						
+						//Case SESION: OBSOLETO
+						/*
 						case SESION:
 							PaqueteSesion paqSesion = (PaqueteSesion)paquete;
 							switch(paqSesion.getSolicitud()){
@@ -121,21 +137,32 @@ public class ThreadServer extends Thread {
 									break;
 							}
 							break;
-						
+						*/
 						case SKINS:
 							PaqueteSkins paqSkins = (PaqueteSkins)paquete;
+							//int idJugador = user.getId();
+							//String partidaJugador = user.getPartida();
+							//for(Jugadores j : servidor.get)
+								
 							//paquete = paqSkins;
 							break;
 							
 						case UNIRSE_PARTIDA:
+							PaqueteUnirsePartida paqUnir = (PaqueteUnirsePartida)paquete;
+							boolean res = servidor.agregarAPartida(user, paqUnir.getNombrePartida());
+							paqUnir.setResultado(res);
+							o.writeObject(paqUnir);
+							//paquete = paqUnir;
 							break;
-						
+
 						default:
 							System.out.println("Paquete desconocido.");
 							break;
     	            }
+    	            /*
     	            if(responder!=false)
     	            	o.writeObject(paquete);
+    	            */
                 }
         	}
         	 clientSocket.close();
