@@ -128,8 +128,8 @@ public class ClientWindow extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(conectar()){
-					cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
-					if(cliente.iniciarSesion()){
+					//cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
+					if(cliente.iniciarSesion(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()))){
 						lanzarVentanaUsuario(textFieldNombre.getText());
 					}
 					else{
@@ -157,8 +157,8 @@ public class ClientWindow extends JFrame {
 		btnRegistrarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(conectar()){
-					cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
-					if(cliente.registrarUsuario()){
+					//cliente.setDatos(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()));
+					if(cliente.registrarUsuario(textFieldNombre.getText(), new String(pwdFieldPassword.getPassword()))){
 						JOptionPane.showMessageDialog(frame,
 								"Registro exitoso.",
 								"Info",

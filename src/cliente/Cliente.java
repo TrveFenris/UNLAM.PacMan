@@ -28,8 +28,8 @@ import punto.Punto;
 public class Cliente {
 
     private Socket cliente;
-    private String nombre;
-    private String password;
+    //private String nombre;
+    //private String password;
     private int puerto;
 
     public int getPuerto() {
@@ -39,23 +39,25 @@ public class Cliente {
     public Cliente(String direccion, int port) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
-        nombre = password=null;
+        //nombre = password=null;
     }
 
     public Socket getSocket() {
         return cliente;
     }
 
-    /**
+    /*
      * Establece los datos del cliente
      * @param nombre
      * @param password
      */
+    /*
     public void setDatos(String nombre, String password) {
         this.nombre = nombre;
         this.password=password;
     }
-
+    */
+/*
     public void enviarMensaje() {
     	/* Seccion comentada porque readLine se comporta de modo bloqueante
     	 * y no deja cerrar el thread que lanza la MainWindow, utilizado
@@ -86,11 +88,11 @@ public class Cliente {
         finally {
         	cerrarCliente();
         }
-        */
+        *//*
         	 while(!cliente.isClosed()) {} //Ciclo mientras el socket este abierto
         	 cerrarCliente();
     }
-
+*/
     public void cerrarCliente() {
         try {
         	if(cliente != null && !cliente.isClosed()) {
@@ -114,21 +116,18 @@ public class Cliente {
      * Inicia sesion en el servidor
      * @return si el inicio de sesion fue exitoso o no.
      */
-    public boolean iniciarSesion(){
+    public boolean iniciarSesion(String user, String pass){
     	boolean respuesta=false;
     	try {
+    		//Datos a enviar
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	//paquete.setIniciarSesion();
-        	//paquete.setSolicitud(Solicitudes.LOGIN);
-            PaqueteLogin paquete = new PaqueteLogin(nombre, password);
+            PaqueteLogin paquete = new PaqueteLogin(user, pass);
         	o.writeObject(paquete);
-        	//
+        	//Datos a recibir
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	//paquete=(PaqueteSesion)is.readObject();
             	paquete=(PaqueteLogin)is.readObject();
             	if(paquete.getResultado()) {
             		respuesta=true;
@@ -137,12 +136,6 @@ public class Cliente {
             catch(ClassCastException e) {
             	System.out.println("Error: No se recibio un paquete de Logout.");
             }
-            //paquete=(PaqueteSesion)is.readObject();
-            //if(paquete.getResultado()){
-            	//respuesta=true;
-	        //}
-            //else
-            	//respuesta=false;
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
@@ -162,22 +155,18 @@ public class Cliente {
      * Registra el usuario en el servidor
      * @return si el registro fue exitoso o no.
      */
-    public boolean registrarUsuario(){
+    public boolean registrarUsuario(String user, String pass){
     	boolean respuesta=false;
     	try {
+    		//Datos a enviar
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	//paquete.setRegistrarUsuario();
-        	//paquete.setSolicitud(Solicitudes.REGISTRO);
-        	PaqueteRegistro paquete = new PaqueteRegistro(nombre, password);
+        	PaqueteRegistro paquete = new PaqueteRegistro(user, pass);
             o.writeObject(paquete);
-        	//
+        	//Datos a recibir
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            
             try {
-            	//paquete=(PaqueteSesion)is.readObject();
             	paquete=(PaqueteRegistro)is.readObject();
             	if(paquete.getResultado()) {
             		respuesta=true;
@@ -186,7 +175,6 @@ public class Cliente {
             catch(ClassCastException e) {
             	System.out.println("Error: No se recibio un paquete de Logout.");
             }
-            //paquete=(PaqueteSesion)is.readObject();
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
@@ -209,18 +197,15 @@ public class Cliente {
     public boolean cerrarSesion(){
     	boolean respuesta=false;
     	try {
+    		//Datos a enviar
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	//paquete.setCerrarSesion();
-        	//paquete.setSolicitud(Solicitudes.LOGOUT);
         	PaqueteLogout paquete = new PaqueteLogout();
             o.writeObject(paquete);
-        	//
+        	//Datos a recibir
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	//paquete=(PaqueteSesion)is.readObject();
             	paquete=(PaqueteLogout)is.readObject();
             	
             }
@@ -253,12 +238,12 @@ public class Cliente {
      */
     public ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> buscarPartidas(){;
     	try {
+    		//Datos a enviar
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
-        	//paquete.setSolicitud(Solicitudes.BUSCAR_PARTIDA);
         	PaqueteBuscarPartida paquete = new PaqueteBuscarPartida();
             o.writeObject(paquete);
+            //Datos a recibir
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
             try {
@@ -290,16 +275,14 @@ public class Cliente {
     public boolean unirseAPartida(String nombre){
     	boolean resultado = false;
     	try {
+    		//Datos a enviar
     		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
             ObjectOutputStream o = new ObjectOutputStream(d);
-        	//PaqueteSesion paquete = new PaqueteSesion(nombre, password);
         	PaqueteUnirsePartida paquete = new PaqueteUnirsePartida(nombre);
-        	//paquete.setSolicitud(Solicitudes.UNIRSE_PARTIDA);
-        	//paquete.setMensaje(nombre);
         	o.writeObject(paquete);
+        	//Datos a recibir
             DataInputStream data= new DataInputStream(cliente.getInputStream());
             ObjectInputStream is = new ObjectInputStream(data);
-            //paquete=(PaqueteSesion)is.readObject();
             try {
             	paquete=(PaqueteUnirsePartida)is.readObject();
             	return paquete.getResultado();
