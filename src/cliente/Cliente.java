@@ -25,8 +25,6 @@ import paquetes.PaqueteUnirsePartida;
 public class Cliente {
 
     private Socket cliente;
-    //private String nombre;
-    //private String password;
     private int puerto;
 
     public int getPuerto() {
@@ -36,7 +34,6 @@ public class Cliente {
     public Cliente(String direccion, int port) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
-        //nombre = password=null;
     }
 
     public Socket getSocket() {

@@ -35,8 +35,6 @@ public class ServerWindow extends JFrame {
 	            	u.setSesion(new ThreadServer(servidor, u));
 	            	u.getSesion().start();
 	            	servidor.agregarUsuario(u);
-	            	//clientes.add(cliente);
-	            	//System.out.println(usuarios.size()+"\t"+servidor.getListaSockets().size());
 	            }
 	            actualizarListaDePartidas();
 	            actualizarListaDeNombres();
@@ -100,7 +98,6 @@ public class ServerWindow extends JFrame {
 		});
 		
 		setTitle("Server PacMan");
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 448, 333);
 		contentPane = new JPanel();
