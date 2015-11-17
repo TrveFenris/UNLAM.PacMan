@@ -42,30 +42,27 @@ public abstract class Jugador extends GameObject{
 	}
 	
 	public void cambiarSentido(Direcciones a){
+		sentido=a;
 		switch(a){
 			case ARRIBA:
 				velX=0;
 				velY=-1*velocidad;
 				setImagen(skin.getValor(Direcciones.ARRIBA));
-				sentido=Direcciones.ARRIBA;
 				break;
 			case ABAJO:
 				velX=0;
 				velY=velocidad;
 				setImagen(skin.getValor(Direcciones.ABAJO));
-				sentido=Direcciones.ABAJO;
 				break;
 			case IZQUIERDA:
 				velX=-1*velocidad;
 				setImagen(skin.getValor(Direcciones.IZQUIERDA));
 				velY=0;
-				sentido=Direcciones.IZQUIERDA;
 				break;
 			case DERECHA:
 				velX=velocidad;
 				velY=0;
 				setImagen(skin.getValor(Direcciones.DERECHA));
-				sentido=Direcciones.DERECHA;
 				break;
 			case NINGUNA:
 				break;
