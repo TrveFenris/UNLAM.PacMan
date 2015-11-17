@@ -14,9 +14,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +24,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import paquetes.Paquete;
+import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteJugadorEliminado;
+import paquetes.PaqueteScore;
 import punto.Punto;
 import rectas.Rectas;
 
@@ -86,31 +90,24 @@ public class GameWindow extends JFrame {
 		lblName.setFont(Font.getFont(Font.SANS_SERIF));
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
-		//MAPA
-		//mapa = new Mapa("mapa1");
+		//PARTIDA PROVENIENTE DEL SERVER
+		//PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirDatosPartida();
+		//partida = packet.getPartida();
+		//CREACION DE PARTIDA LOCAL
 		partida = new Partida("Local");
 		partida.agregarMapa(new Mapa("mapa1"));
-		//mapa.dibujar(contentPane); //Dibuja los caminos y genera las bolitas
 		partida.getMapa().dibujar(contentPane);
-		//jugadores=new ArrayList<Jugador>();
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
-		//pacman = new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT);
 		partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
 		ultimaAccion=Direcciones.NINGUNA;
-		//pacman.dibujar(contentPane);
-		//jugadores.add(pacman);
 		//Creación del 2do jugador (manejado por otra ventana)
-		//pacmanBot = new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO);
 		partida.agregarJugador(new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO, 2));
-		//pacmanBot.dibujar(contentPane);
 		for(Jugador j: partida.getJugadores()) {
 			j.dibujar(contentPane);
 			if(j.getID() == IDJugadorLocal) {
 				jugadorLocal = j;
 			}
 		}
-		//paux = new Punto(15,35);
-		//jugadores.add(pacman);
 		userWindow = window;
 		gameRunning = true;
 		gameLoopThread = new GameThread();
@@ -256,7 +253,7 @@ public class GameWindow extends JFrame {
 		jugadorLocal.mover();
 		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
 		restrictBoundaries(jugadorLocal);
-		calcularColisiones (jugadorLocal);
+		//calcularColisiones (jugadorLocal);
 	}
 	
 	/**
@@ -278,14 +275,16 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
-		for(Bolita b : partida.getMapa().getArrayBolitas()) {
+		Iterator<Bolita> it = partida.getMapa().getArrayBolitas().iterator();
+		while(it.hasNext()) {
+			Bolita b = it.next();
 			if(b.isAlive() && j.colisionaCon(b)) {
-				
-				partida.getMapa().removerBolita(b);
-				break;
+				userWindow.getCliente().enviarDatosPartida(new PaqueteBolitaEliminada(partida.getMapa().getArrayBolitas().indexOf(b), b));
+				b.setAliveState(false);
+				b.borrarImagen();
+				it.remove();
 			}
 		}
-		
 	}
 	
 	public void setControles(int[] controles){
@@ -318,9 +317,9 @@ public class GameWindow extends JFrame {
 		}
 	}
 	
-	/**
+	/*
 	 * Thread que recibe actualizaciones de los demas jugadores
-	 */
+	 *//*
 	private class ListenThread extends Thread {
 		
 		private boolean running;
@@ -340,6 +339,63 @@ public class GameWindow extends JFrame {
 			}
 		}
 		
+		public void pararThread(){
+			running = false;
+		}
+	}*/
+	/**
+	 * Thread que recibe actualizaciones de los demas jugadores
+	 */
+	private class ListenThread extends Thread {
+		
+		private boolean running;
+		public void run() {
+			running = true;
+			while(running){
+				Paquete p = userWindow.getCliente().recibirDatosPartida();
+				if(p!=null){
+					switch(p.getTipo()) {
+						case BOLITA_ELIMINADA:
+							PaqueteBolitaEliminada paqBolElim = (PaqueteBolitaEliminada)p;
+							//partida.getMapa().removerBolita(paqBolElim.getBolita()); //Esto se usara cuando el server envie la partida ya construida al cliente
+							partida.getMapa().removerBolita(paqBolElim.getIndice());
+							break;
+
+						case COORDENADAS:
+							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)p;
+							for(Jugador j : partida.getJugadores()){
+								if(j.getID()==paqCoord.getIDJugador()){
+									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
+									j.cambiarSentido(paqCoord.getDireccion());
+								}
+							}
+							break;
+
+						case JUGADOR_ELIMINADO:
+							PaqueteJugadorEliminado paqJugElim = (PaqueteJugadorEliminado)p;
+							break;
+
+						case SCORE:
+							PaqueteScore paqScore = (PaqueteScore)p;
+							break;
+
+						case ID: break; //No deberia recibirse
+						case BUSCAR_PARTIDA: break; //No deberia recibirse	
+						case LOGIN: break; //No deberia recibirse
+						case LOGOUT: break; //No deberia recibirse
+						case PARTIDA: break; //No deberia recibirse
+						case REGISTRO: break; //No deberia recibirse
+						case SERVIDOR_LLENO: break; //No deberia recibirse
+						case SKINS: break; //No deberia recibirse
+						case UNIRSE_PARTIDA: break; //No deberia recibirse
+						default: System.out.println("GameWindow: Paquete Desconocido."); break;
+					}
+				}
+			}
+		}
+		public boolean isRunning(){
+			return running;
+		}
 		public void pararThread(){
 			running = false;
 		}
