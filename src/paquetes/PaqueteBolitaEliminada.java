@@ -1,5 +1,7 @@
 package paquetes;
 
+import gameobject.Bolita;
+
 /**
  * 
  * Esta clase es un paquete que sirve para comunicar al servidor qué bolita del ArrayList de bolitas 
@@ -10,11 +12,16 @@ package paquetes;
 public class PaqueteBolitaEliminada extends Paquete {
 	private static final long serialVersionUID = 2632281726793268562L;
 	private int index;
-	public PaqueteBolitaEliminada(int i) {
+	private Bolita bolita;
+	public PaqueteBolitaEliminada(int i, Bolita b) {
 		index = i;
+		bolita = b;
 	}
 	public int getIndice() {
 		return index;
+	}
+	public Bolita getBolita() {
+		return bolita;
 	}
 	@Override
 	public TipoPaquete getTipo() {
