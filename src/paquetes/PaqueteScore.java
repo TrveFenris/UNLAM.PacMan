@@ -13,8 +13,7 @@ public class PaqueteScore extends Paquete {
 	}
 	@Override
 	public TipoPaquete getTipo() {
-		// TODO Auto-generated method stub
-		return null;
+		return TipoPaquete.SCORE;
 	}
 
 }
