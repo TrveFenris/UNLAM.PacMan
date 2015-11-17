@@ -302,7 +302,8 @@ public class ServerWindow extends JFrame {
 			return;
 		}
 		else {
-			JOptionPane.showMessageDialog(this,
+			if (s != null)
+				JOptionPane.showMessageDialog(this,
 					"Ingrese un nombre para la partida.",
 					 "Error",
 					 JOptionPane.ERROR_MESSAGE);
