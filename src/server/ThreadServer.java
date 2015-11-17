@@ -29,13 +29,13 @@ public class ThreadServer extends Thread {
         this.database=servidor.getDatabase(); 
         usuario.setNombre("");
         user = usuario;
+        running = true;
     }
 
     public synchronized  void run() {
         try {
-        	boolean run = true;
         	ObjectInputStream is = new ObjectInputStream(new DataInputStream(user.getSocket().getInputStream()));
-        	while(run){
+        	while(running){
         		Paquete paquete=(Paquete)is.readObject();
                 if (!user.getSocket().isClosed()) {
                 	ObjectOutputStream o = user.getOutputStream();
@@ -79,7 +79,7 @@ public class ThreadServer extends Thread {
 						case LOGOUT:
 							PaqueteLogout paqLogout = (PaqueteLogout) paquete;
 							paqLogout.setResultado(true);
-							run=false;
+							running=false;
 							o.writeObject(paqLogout);
 							break;
 							
@@ -89,7 +89,7 @@ public class ThreadServer extends Thread {
 							PaqueteRegistro paqReg = (PaqueteRegistro) paquete;
 							paqReg.setResultado(false);
 							//paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
-							run=false;
+							running=false;
 							o.writeObject(paqReg);
 							break;
 						case SKINS:
@@ -149,5 +149,9 @@ public class ThreadServer extends Thread {
     		paquete.agregarPartida(partida, servidor.getCantJugadores(partida));
     	}
         return paquete;
+    }
+    
+    public void pararThread(){
+    	running = false;
     }
 }
