@@ -26,6 +26,8 @@ public class Cliente {
 
     private Socket cliente;
     private int puerto;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
     public int getPuerto() {
         return puerto;
@@ -34,6 +36,7 @@ public class Cliente {
     public Cliente(String direccion, int port) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
+    	outputStream = new ObjectOutputStream(new DataOutputStream(cliente.getOutputStream()));
     }
 
     public Socket getSocket() {
@@ -67,15 +70,12 @@ public class Cliente {
     	boolean respuesta=false;
     	try {
     		//Datos a enviar
-    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-            ObjectOutputStream o = new ObjectOutputStream(d);
             PaqueteLogin paquete = new PaqueteLogin(user, pass);
-        	o.writeObject(paquete);
+        	outputStream.writeObject(paquete);
         	//Datos a recibir
-            DataInputStream data= new DataInputStream(cliente.getInputStream());
-            ObjectInputStream is = new ObjectInputStream(data);
+            inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
             try {
-            	paquete=(PaqueteLogin)is.readObject();
+            	paquete=(PaqueteLogin)inputStream.readObject();
             	if(paquete.getResultado()) {
             		respuesta=true;
             	}
@@ -106,15 +106,12 @@ public class Cliente {
     	boolean respuesta=false;
     	try {
     		//Datos a enviar
-    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-            ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteRegistro paquete = new PaqueteRegistro(user, pass);
-            o.writeObject(paquete);
+            outputStream.writeObject(paquete);
         	//Datos a recibir
-            DataInputStream data= new DataInputStream(cliente.getInputStream());
-            ObjectInputStream is = new ObjectInputStream(data);
+            inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
             try {
-            	paquete=(PaqueteRegistro)is.readObject();
+            	paquete=(PaqueteRegistro)inputStream.readObject();
             	if(paquete.getResultado()) {
             		respuesta=true;
             	}
@@ -145,15 +142,11 @@ public class Cliente {
     	boolean respuesta=false;
     	try {
     		//Datos a enviar
-    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-            ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteLogout paquete = new PaqueteLogout();
-            o.writeObject(paquete);
+            outputStream.writeObject(paquete);
         	//Datos a recibir
-            DataInputStream data= new DataInputStream(cliente.getInputStream());
-            ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	paquete=(PaqueteLogout)is.readObject();
+            	paquete=(PaqueteLogout)inputStream.readObject();
             	
             }
             catch(ClassCastException e) {
@@ -186,15 +179,11 @@ public class Cliente {
     public ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> buscarPartidas(){;
     	try {
     		//Datos a enviar
-    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-            ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteBuscarPartida paquete = new PaqueteBuscarPartida();
-            o.writeObject(paquete);
+            outputStream.writeObject(paquete);
             //Datos a recibir
-            DataInputStream data= new DataInputStream(cliente.getInputStream());
-            ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	PaqueteBuscarPartida paqueteBuscar=(PaqueteBuscarPartida)is.readObject();
+            	PaqueteBuscarPartida paqueteBuscar=(PaqueteBuscarPartida)inputStream.readObject();
             	return paqueteBuscar.getPartidas();
             }
             catch(ClassCastException ex) {
@@ -223,15 +212,11 @@ public class Cliente {
     	boolean resultado = false;
     	try {
     		//Datos a enviar
-    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-            ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteUnirsePartida paquete = new PaqueteUnirsePartida(nombre);
-        	o.writeObject(paquete);
+        	outputStream.writeObject(paquete);
         	//Datos a recibir
-            DataInputStream data= new DataInputStream(cliente.getInputStream());
-            ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	paquete=(PaqueteUnirsePartida)is.readObject();
+            	paquete=(PaqueteUnirsePartida)inputStream.readObject();
             	return paquete.getResultado();
             }
             catch(ClassCastException e) {
@@ -255,10 +240,8 @@ public class Cliente {
      */
     public void enviarPosicion(Jugador j){
     	try {
-    		DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-            ObjectOutputStream o = new ObjectOutputStream(d);
         	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),j.getID());
-        	o.writeObject(paquete);
+        	outputStream.writeObject(paquete);
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (enviarPosicion)");
@@ -271,10 +254,8 @@ public class Cliente {
     public PaqueteCoordenadas recibirPosicion(){
     	try {
     		cliente.setSoTimeout(1000);
-    		DataInputStream data= new DataInputStream(cliente.getInputStream());
-            ObjectInputStream is = new ObjectInputStream(data);
             try {
-            	PaqueteCoordenadas paquete=(PaqueteCoordenadas)is.readObject();
+            	PaqueteCoordenadas paquete=(PaqueteCoordenadas)inputStream.readObject();
             	return paquete;
             }
             catch(ClassCastException e) {
