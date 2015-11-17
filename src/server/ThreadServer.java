@@ -1,12 +1,10 @@
 package server;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
@@ -35,8 +33,7 @@ public class ThreadServer extends Thread {
     public synchronized  void run() {
         try {
         	boolean run = true;
-        	DataInputStream data= new DataInputStream(user.getSocket().getInputStream());
-        	ObjectInputStream is = new ObjectInputStream(data);
+        	ObjectInputStream is = new ObjectInputStream(new DataInputStream(user.getSocket().getInputStream()));
         	while(run){
         		Paquete paquete=(Paquete)is.readObject();
                 if (!user.getSocket().isClosed()) {

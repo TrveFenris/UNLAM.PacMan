@@ -114,7 +114,7 @@ public class GameWindow extends JFrame {
 			}
 		}
 		//paux = new Punto(15,35);
-		paqueteAux = new PaqueteCoordenadas(new Punto (15,35), 2);
+		paqueteAux = new PaqueteCoordenadas(new Punto (15,35), 2, Direcciones.DERECHA);
 		//jugadores.add(pacman);
 		userWindow = window;
 		gameRunning = true;
@@ -265,6 +265,7 @@ public class GameWindow extends JFrame {
 					semaforo.lock();
 					try {
 						j.setLocation(paqueteAux.getCoordenadas().getX(), paqueteAux.getCoordenadas().getY());
+						j.cambiarSentido(paqueteAux.getDireccion());
 					}
 					finally {
 						semaforo.unlock();

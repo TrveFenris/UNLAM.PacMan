@@ -18,6 +18,7 @@ public abstract class Jugador extends GameObject{
 	protected ArrayList<Recta> rectasActuales;
 	protected ConfiguracionSprites skin;
 	protected int ID;
+	protected Direcciones sentido;
 	//Variables delimitadoras
 	protected int upperBound;
 	protected int lowerBound;
@@ -33,6 +34,7 @@ public abstract class Jugador extends GameObject{
 		velX = 0;
 		velY = 0;
 		rectasActuales=new ArrayList<Recta>();
+		sentido = Direcciones.DERECHA;
 	}
 	
 	public void input(){
@@ -45,21 +47,25 @@ public abstract class Jugador extends GameObject{
 				velX=0;
 				velY=-1*velocidad;
 				setImagen(skin.getValor(Direcciones.ARRIBA));
+				sentido=Direcciones.ARRIBA;
 				break;
 			case ABAJO:
 				velX=0;
 				velY=velocidad;
 				setImagen(skin.getValor(Direcciones.ABAJO));
+				sentido=Direcciones.ABAJO;
 				break;
 			case IZQUIERDA:
 				velX=-1*velocidad;
 				setImagen(skin.getValor(Direcciones.IZQUIERDA));
 				velY=0;
+				sentido=Direcciones.IZQUIERDA;
 				break;
 			case DERECHA:
 				velX=velocidad;
 				velY=0;
 				setImagen(skin.getValor(Direcciones.DERECHA));
+				sentido=Direcciones.DERECHA;
 				break;
 			case NINGUNA:
 				break;
@@ -110,6 +116,10 @@ public abstract class Jugador extends GameObject{
 	
 	public int getID() {
 		return ID;
+	}
+	
+	public Direcciones getSentido(){
+		return sentido;
 	}
 	
 	/**

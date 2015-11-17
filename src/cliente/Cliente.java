@@ -240,7 +240,7 @@ public class Cliente {
      */
     public void enviarPosicion(Jugador j){
     	try {
-        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),j.getID());
+        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),/*j.getID()*/2, j.getSentido());
         	outputStream.writeObject(paquete);
         }
         catch(EOFException e){
@@ -268,7 +268,7 @@ public class Cliente {
         	return null;
         }
     	catch(SocketTimeoutException e){
-    		System.out.println("TimeOut");
+    		//System.out.println("TimeOut");
         	return null;
         }
         catch(IOException e) {

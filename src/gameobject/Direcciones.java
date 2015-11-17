@@ -1,6 +1,8 @@
 package gameobject;
 
-public enum Direcciones {
+import java.io.Serializable;
+
+public enum Direcciones implements Serializable {
 	ARRIBA(0),
 	ABAJO(1),
 	IZQUIERDA(2),
