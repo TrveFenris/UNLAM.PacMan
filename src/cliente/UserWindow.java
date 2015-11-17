@@ -2,9 +2,6 @@ package cliente;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JList;
 
 public class UserWindow extends JFrame {
 
@@ -40,6 +40,10 @@ public class UserWindow extends JFrame {
 	private int abajo;
 	private int izquierda;
 	private int derecha;
+	private JButton btnUnirsePartida;
+	private JButton btnActualizar;
+	private JList<String> listPartidas;
+	private DefaultListModel<String> listModelPartidas;
 	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
@@ -63,66 +67,56 @@ public class UserWindow extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 97, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 13, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		contentPane.setLayout(null);
 		
 		lblBienvenida = new JLabel("");
+		lblBienvenida.setBounds(110, 5, 210, 26);
 		lblBienvenida.setForeground(new Color(51, 153, 204));
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 18));
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setText("¡Bienvenid@ "+userName+"! ");
-		GridBagConstraints gbc_lblBienvenida = new GridBagConstraints();
-		gbc_lblBienvenida.insets = new Insets(0, 0, 5, 0);
-		gbc_lblBienvenida.gridheight = 2;
-		gbc_lblBienvenida.gridwidth = 4;
-		gbc_lblBienvenida.gridx = 0;
-		gbc_lblBienvenida.gridy = 1;
-		contentPane.add(lblBienvenida, gbc_lblBienvenida);
+		lblBienvenida.setText("Bienvenid@ "+userName+"! ");
+		contentPane.add(lblBienvenida);
 		
-		btnBuscarPartida = new JButton("Buscar partida");
+		btnBuscarPartida = new JButton("Buscar partida (Deprecated)");
+		btnBuscarPartida.setBounds(10, 40, 150, 25);
 		btnBuscarPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//lanzarJuego();
 				buscarPartida();
 			}
 		});
-		GridBagConstraints gbc_btnBuscarPartida = new GridBagConstraints();
-		gbc_btnBuscarPartida.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnBuscarPartida.insets = new Insets(0, 0, 5, 5);
-		gbc_btnBuscarPartida.gridx = 1;
-		gbc_btnBuscarPartida.gridy = 4;
-		contentPane.add(btnBuscarPartida, gbc_btnBuscarPartida);
+		contentPane.add(btnBuscarPartida);
 		
 		btnConfig = new JButton("Configuracion");
+		btnConfig.setBounds(10, 120, 150, 25);
 		btnConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lanzarVentanaConfiguracion();
 			}
 		});
-		GridBagConstraints gbc_btnConfig = new GridBagConstraints();
-		gbc_btnConfig.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnConfig.insets = new Insets(0, 0, 5, 5);
-		gbc_btnConfig.gridx = 2;
-		gbc_btnConfig.gridy = 4;
-		contentPane.add(btnConfig, gbc_btnConfig);
+		contentPane.add(btnConfig);
 		
 		btnCerrarSesion = new JButton("Cerrar sesion");
+		btnCerrarSesion.setBounds(10, 160, 150, 25);
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				confirmarCerrarSesion();
 			}
 		});
-		GridBagConstraints gbc_btnCerrarSesion = new GridBagConstraints();
-		gbc_btnCerrarSesion.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnCerrarSesion.gridwidth = 2;
-		gbc_btnCerrarSesion.insets = new Insets(0, 0, 0, 5);
-		gbc_btnCerrarSesion.gridx = 1;
-		gbc_btnCerrarSesion.gridy = 6;
-		contentPane.add(btnCerrarSesion, gbc_btnCerrarSesion);
+		contentPane.add(btnCerrarSesion);
+		
+		btnUnirsePartida = new JButton("Unirse a Partida");
+		btnUnirsePartida.setBounds(10, 80, 150, 25);
+		contentPane.add(btnUnirsePartida);
+		
+		listPartidas = new JList<String>();
+		listPartidas.setBounds(180, 40, 175, 145);
+		contentPane.add(listPartidas);
+		
+		btnActualizar = new JButton("");
+		btnActualizar.setBounds(375, 40, 48, 48);
+		btnActualizar.setIcon(new ImageIcon("img/icon-reload.gif"));
+		contentPane.add(btnActualizar);
 		
 		cargarControles();
 	}
