@@ -44,7 +44,7 @@ public class ThreadServer extends Thread {
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-		            			if(u.getSocket()!=user.getSocket()){
+		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
 		            				ObjectOutputStream os = u.getOutputStream();
 		            				os.writeObject(paqBolita);
 		            			}
@@ -67,6 +67,9 @@ public class ThreadServer extends Thread {
 						
 						case ID: break; //el server no deberia recibir este paquete
 						
+						case JUGADOR_ELIMINADO:
+							break;
+						
 						case LOGIN:
 							PaqueteLogin paqLogin = (PaqueteLogin) paquete;
 							user.setNombre(paqLogin.getNombreUsuario());
@@ -81,8 +84,8 @@ public class ThreadServer extends Thread {
 							paqLogout.setResultado(true);
 							running=false;
 							o.writeObject(paqLogout);
-							break;
-							
+							break;	
+						
 						case PARTIDA: break; //el server no deberia recibir este paquete
 						
 						case REGISTRO:
@@ -92,6 +95,12 @@ public class ThreadServer extends Thread {
 							running=false;
 							o.writeObject(paqReg);
 							break;
+						
+						case SCORE:
+							break;
+							
+						case SERVIDOR_LLENO: break; //No deberia recibirlo
+						
 						case SKINS:
 							PaqueteSkins paqSkins = (PaqueteSkins)paquete;
 							//int idJugador = user.getId();
