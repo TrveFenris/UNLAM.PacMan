@@ -143,4 +143,10 @@ public class Mapa {
 		b.borrarImagen();
 		bolitas.remove(b);
 	}
+	public void removerBolita(int index) {
+		Bolita b = bolitas.get(index);
+		b.setAliveState(false);
+		b.borrarImagen();
+		bolitas.remove(b);
+	}
 }
