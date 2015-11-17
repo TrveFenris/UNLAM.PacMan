@@ -253,7 +253,7 @@ public class GameWindow extends JFrame {
 		jugadorLocal.mover();
 		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
 		restrictBoundaries(jugadorLocal);
-		//calcularColisiones (jugadorLocal);
+		calcularColisiones (jugadorLocal);
 	}
 	
 	/**

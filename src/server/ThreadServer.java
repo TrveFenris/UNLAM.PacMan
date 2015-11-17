@@ -47,12 +47,14 @@ public class ThreadServer extends Thread {
 		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
 		            				ObjectOutputStream os = u.getOutputStream();
 		            				os.writeObject(paqBolita);
+		            				os.flush();
 		            			}
 							}
 							break;
 							
 						case BUSCAR_PARTIDA:
 							o.writeObject(enviarListaDePartidas());
+							o.flush();
 							break;
 							
 						case COORDENADAS:
@@ -61,6 +63,7 @@ public class ThreadServer extends Thread {
 		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
 		            				ObjectOutputStream os = u.getOutputStream();
 		            				os.writeObject(paqCoord);
+		            				os.flush();
 		            			}
 		            		}
 							break;
@@ -77,6 +80,7 @@ public class ThreadServer extends Thread {
 							paqLogin.setResultado(true);
 							//paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
 							o.writeObject(paqLogin);
+							o.flush();
 							break;
 							
 						case LOGOUT:
@@ -84,6 +88,7 @@ public class ThreadServer extends Thread {
 							paqLogout.setResultado(true);
 							running=false;
 							o.writeObject(paqLogout);
+							o.flush();
 							break;	
 						
 						case PARTIDA: break; //el server no deberia recibir este paquete
@@ -94,6 +99,7 @@ public class ThreadServer extends Thread {
 							//paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
 							running=false;
 							o.writeObject(paqReg);
+							o.flush();
 							break;
 						
 						case SCORE:
@@ -113,6 +119,7 @@ public class ThreadServer extends Thread {
 							boolean res = servidor.agregarAPartida(user, paqUnir.getNombrePartida());
 							paqUnir.setResultado(res);
 							o.writeObject(paqUnir);
+							o.flush();
 							break;
 
 						default:

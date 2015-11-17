@@ -73,6 +73,7 @@ public class Cliente {
     		//Datos a enviar
             PaqueteLogin paquete = new PaqueteLogin(user, pass);
         	outputStream.writeObject(paquete);
+        	outputStream.flush();
         	//Datos a recibir
             inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
             try {
@@ -109,6 +110,7 @@ public class Cliente {
     		//Datos a enviar
         	PaqueteRegistro paquete = new PaqueteRegistro(user, pass);
             outputStream.writeObject(paquete);
+            outputStream.flush();
         	//Datos a recibir
             inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
             try {
@@ -145,6 +147,7 @@ public class Cliente {
     		//Datos a enviar
         	PaqueteLogout paquete = new PaqueteLogout();
             outputStream.writeObject(paquete);
+            outputStream.flush();
         	//Datos a recibir
             try {
             	paquete=(PaqueteLogout)inputStream.readObject();
@@ -182,6 +185,7 @@ public class Cliente {
     		//Datos a enviar
         	PaqueteBuscarPartida paquete = new PaqueteBuscarPartida();
             outputStream.writeObject(paquete);
+            outputStream.flush();
             //Datos a recibir
             try {
             	PaqueteBuscarPartida paqueteBuscar=(PaqueteBuscarPartida)inputStream.readObject();
@@ -215,6 +219,7 @@ public class Cliente {
     		//Datos a enviar
         	PaqueteUnirsePartida paquete = new PaqueteUnirsePartida(nombre);
         	outputStream.writeObject(paquete);
+        	outputStream.flush();
         	//Datos a recibir
             try {
             	paquete=(PaqueteUnirsePartida)inputStream.readObject();
@@ -243,6 +248,7 @@ public class Cliente {
     	try {
         	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),/*j.getID()*/2, j.getSentido());
         	outputStream.writeObject(paquete);
+        	outputStream.flush();
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (enviarPosicion)");
@@ -284,6 +290,7 @@ public class Cliente {
     public void enviarDatosPartida(Paquete paquete) {
     	try {
         	outputStream.writeObject(paquete);
+        	outputStream.flush();
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (enviarDatosPartida)");
