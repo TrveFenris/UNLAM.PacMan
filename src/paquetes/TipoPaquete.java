@@ -14,6 +14,7 @@ public enum TipoPaquete {
 	LOGOUT,
 	PARTIDA,
 	REGISTRO,
+	SERVIDOR_LLENO,
 	//SESION, //En vias de eliminacion
 	SKINS,
 	UNIRSE_PARTIDA,
