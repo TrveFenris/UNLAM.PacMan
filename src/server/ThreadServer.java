@@ -35,21 +35,19 @@ public class ThreadServer extends Thread {
     public synchronized  void run() {
         try {
         	boolean run = true;
+        	DataInputStream data= new DataInputStream(user.getSocket().getInputStream());
+        	ObjectInputStream is = new ObjectInputStream(data);
         	while(run){
-        		DataInputStream data= new DataInputStream(user.getSocket().getInputStream());
-            	ObjectInputStream is = new ObjectInputStream(data);
         		Paquete paquete=(Paquete)is.readObject();
                 if (!user.getSocket().isClosed()) {
-    	            DataOutputStream d = new DataOutputStream(user.getSocket().getOutputStream());
-    	            ObjectOutputStream o = new ObjectOutputStream(d);
+                	ObjectOutputStream o = user.getOutputStream();
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
     	            switch(paquete.getTipo()) {
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
 		            			if(u.getSocket()!=user.getSocket()){
-		            				DataOutputStream ds = new DataOutputStream(u.getSocket().getOutputStream());
-		            				ObjectOutputStream os = new ObjectOutputStream(ds); 
+		            				ObjectOutputStream os = u.getOutputStream();
 		            				os.writeObject(paqBolita);
 		            			}
 							}
@@ -63,8 +61,7 @@ public class ThreadServer extends Thread {
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
 		            			if(u.getSocket()!=user.getSocket()){
-		            				DataOutputStream ds = new DataOutputStream(u.getSocket().getOutputStream());
-		            				ObjectOutputStream os = new ObjectOutputStream(ds); 
+		            				ObjectOutputStream os = u.getOutputStream();
 		            				os.writeObject(paqCoord);
 		            			}
 		            		}
