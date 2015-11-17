@@ -1,6 +1,5 @@
 package server;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -147,9 +146,10 @@ public class Server {
         	servidor.setSoTimeout(1000);
             cliente = servidor.accept();
             cantActualClientes++;
+            //FIXME
             if (cantActualClientes > max_clientes) {
-                DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
-                d.writeUTF("Servidor Lleno");
+                //DataOutputStream d = new DataOutputStream(cliente.getOutputStream());
+                //d.writeUTF("Servidor Lleno");
                 cliente.close();
                 cantActualClientes--;
                 return null;
