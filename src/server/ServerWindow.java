@@ -230,6 +230,10 @@ public class ServerWindow extends JFrame {
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {
 			threadEscucha.pararThread();
+			for(Usuario u : servidor.getListaUsuarios())
+			{
+				u.getSesion().pararThread();
+			}
 			frame.dispose();
 		}
 	}
