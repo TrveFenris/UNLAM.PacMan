@@ -15,6 +15,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import paquetes.Paquete;
 import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteLogin;
@@ -277,6 +278,30 @@ public class Cliente {
         } catch (ClassNotFoundException e) {
         	System.out.println("Error: ClassNotFoundException (recibirPosicion)");
         	return null;
+		}
+    }
+    
+    public void enviarDatosPartida(Paquete paquete) {
+    	try {
+        	outputStream.writeObject(paquete);
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (enviarDatosPartida)");
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (enviarDatosPartida)");
+        }
+    }
+    
+    public Paquete recibirDatosPartida() {
+    	try {
+			return (Paquete) inputStream.readObject();
+		} catch (ClassNotFoundException e) {
+			System.out.println("Error de serializacion (recibirDatosPartida)");
+			return null;
+		} catch (IOException e) {
+			System.out.println("Error: IOException (recibirDatosPartida)");
+			return null;
 		}
     }
 }
