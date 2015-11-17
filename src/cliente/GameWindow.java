@@ -53,8 +53,6 @@ public class GameWindow extends JFrame {
 	private Rectas ultimaDireccion;
 	private Direcciones ultimaAccion;
 	//Variables auxiliares
-	private PaqueteCoordenadas paqueteAux;
-	private ReentrantLock semaforo;
 	private ListenThread threadEscucha;
 	
 	/* GameWindow constructor */
@@ -74,8 +72,6 @@ public class GameWindow extends JFrame {
 				}
 			}
 		});
-		
-		semaforo = new ReentrantLock();
 			
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -114,7 +110,6 @@ public class GameWindow extends JFrame {
 			}
 		}
 		//paux = new Punto(15,35);
-		paqueteAux = new PaqueteCoordenadas(new Punto (15,35), 2, Direcciones.DERECHA);
 		//jugadores.add(pacman);
 		userWindow = window;
 		gameRunning = true;
@@ -260,20 +255,6 @@ public class GameWindow extends JFrame {
 		}
 		jugadorLocal.mover();
 		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
-			for(Jugador j : partida.getJugadores()) {
-				if(j.getID()!=IDJugadorLocal && paqueteAux.getIDJugador() == j.getID()) {
-					semaforo.lock();
-					try {
-						j.setLocation(paqueteAux.getCoordenadas().getX(), paqueteAux.getCoordenadas().getY());
-						j.cambiarSentido(paqueteAux.getDireccion());
-					}
-					finally {
-						semaforo.unlock();
-					}
-				}
-					
-			}
-		
 		restrictBoundaries(jugadorLocal);
 		calcularColisiones (jugadorLocal);
 	}
@@ -349,12 +330,11 @@ public class GameWindow extends JFrame {
 			while(running){
 				PaqueteCoordenadas p = userWindow.getCliente().recibirPosicion();
 				if(p!=null){
-					semaforo.lock();
-					try {
-						paqueteAux = p;
-					} 
-					finally {
-						semaforo.unlock();
+					for(Jugador j : partida.getJugadores()){
+						if(j.getID()==p.getIDJugador()){
+							j.setLocation(p.getCoordenadas().getX(), p.getCoordenadas().getY());
+							j.cambiarSentido(p.getDireccion());
+						}
 					}
 				}
 			}
