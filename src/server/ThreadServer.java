@@ -22,6 +22,7 @@ public class ThreadServer extends Thread {
     private DataBase database;
     private Usuario user;
     private String partida; //Utilizado para cachear la partida en la que se encuentra el usuario
+    private boolean running;
     
     public ThreadServer(Server servidor, Usuario usuario) {
         this.servidor=servidor;
@@ -57,7 +58,7 @@ public class ThreadServer extends Thread {
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-		            			if(u.getSocket()!=user.getSocket()){
+		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
 		            				ObjectOutputStream os = u.getOutputStream();
 		            				os.writeObject(paqCoord);
 		            			}
