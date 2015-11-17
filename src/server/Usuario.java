@@ -1,5 +1,8 @@
 package server;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -9,11 +12,17 @@ public class Usuario {
 	private Socket socket;
 	private ThreadServer sesion;
 	private String partida;
+	private ObjectOutputStream outputStream;
 	@Deprecated
 	private ArrayList<Usuario> usuariosEnPartida;
 	
 	public Usuario(Socket socket){
 		this.socket = socket;
+		try {
+			this.outputStream = new ObjectOutputStream(new DataOutputStream(this.socket.getOutputStream()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void setId(int inGameId){
@@ -54,6 +63,10 @@ public class Usuario {
 	
 	public String getPartida(){
 		return partida;
+	}
+	
+	public ObjectOutputStream getOutputStream(){
+		return outputStream;
 	}
 	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
