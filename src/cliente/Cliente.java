@@ -2,6 +2,8 @@ package cliente;
 
 import gameobject.Jugador;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -37,7 +39,8 @@ public class Cliente {
     public Cliente(String direccion, int port) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
-    	outputStream = new ObjectOutputStream(new DataOutputStream(cliente.getOutputStream()));
+    	//outputStream = new ObjectOutputStream(new DataOutputStream(cliente.getOutputStream()));
+    	outputStream = new ObjectOutputStream(new BufferedOutputStream(cliente.getOutputStream()));
     }
 
     public Socket getSocket() {
@@ -75,7 +78,8 @@ public class Cliente {
         	outputStream.writeObject(paquete);
         	outputStream.flush();
         	//Datos a recibir
-            inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
+            //inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
+            inputStream = new ObjectInputStream(new BufferedInputStream(cliente.getInputStream()));
             try {
             	paquete=(PaqueteLogin)inputStream.readObject();
             	if(paquete.getResultado()) {
@@ -112,7 +116,8 @@ public class Cliente {
             outputStream.writeObject(paquete);
             outputStream.flush();
         	//Datos a recibir
-            inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
+            //inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
+            inputStream = new ObjectInputStream(new BufferedInputStream(cliente.getInputStream()));
             try {
             	paquete=(PaqueteRegistro)inputStream.readObject();
             	if(paquete.getResultado()) {

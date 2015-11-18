@@ -1,6 +1,6 @@
 package server;
 
-import java.io.DataInputStream;
+import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +34,8 @@ public class ThreadServer extends Thread {
 
     public synchronized  void run() {
         try {
-        	ObjectInputStream is = new ObjectInputStream(new DataInputStream(user.getSocket().getInputStream()));
+        	//ObjectInputStream is = new ObjectInputStream(new DataInputStream(user.getSocket().getInputStream()));
+        	ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(user.getSocket().getInputStream()));
         	while(running){
         		Paquete paquete=(Paquete)is.readObject();
                 if (!user.getSocket().isClosed()) {
