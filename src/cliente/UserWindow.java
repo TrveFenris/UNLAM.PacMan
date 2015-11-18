@@ -17,9 +17,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
+
+import paquetes.PaqueteBuscarPartida;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class UserWindow extends JFrame {
 
@@ -33,6 +38,7 @@ public class UserWindow extends JFrame {
 	private JButton btnConfig;
 	private JButton btnBuscarPartida;
 	private JLabel lblBienvenida;
+	private JLabel lblCantJugadores;
 	private Cliente cliente;
 	//CONFIGURACION
 	private String userName;
@@ -44,6 +50,8 @@ public class UserWindow extends JFrame {
 	private JButton btnActualizar;
 	private JList<String> listPartidas;
 	private DefaultListModel<String> listModelPartidas;
+	
+	private ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datos; //Usado para cachear las partidas disponibles en el server
 	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
@@ -60,6 +68,7 @@ public class UserWindow extends JFrame {
 		this.cliente=cliente;
 		mainWindow = window;
 		thisWindow = this;
+		datos = new ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>>();
 		userName = nombre;
 		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -109,14 +118,49 @@ public class UserWindow extends JFrame {
 		btnUnirsePartida.setBounds(10, 80, 150, 25);
 		contentPane.add(btnUnirsePartida);
 		
-		listPartidas = new JList<String>();
+		listModelPartidas = new DefaultListModel<String>();
+		listPartidas = new JList<String>(listModelPartidas);
+		listPartidas.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				String s = listPartidas.getSelectedValue();
+				Integer cant = 0;
+				for(AbstractMap.SimpleImmutableEntry<String, Integer> partida : datos) {
+					if(partida.getKey().equals(s)) {
+						cant = partida.getValue();
+					}
+				}
+				lblCantJugadores.setText(cant.toString());
+			}
+		});
 		listPartidas.setBounds(180, 40, 175, 145);
+		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		contentPane.add(listPartidas);
 		
 		btnActualizar = new JButton("");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cliente.enviarDatosPartida(new PaqueteBuscarPartida());
+				PaqueteBuscarPartida paquete = (PaqueteBuscarPartida) cliente.recibirDatosPartida();
+				datos = paquete.getPartidas();
+				//listPartidas.removeAll();
+				listModelPartidas.clear();
+				for(AbstractMap.SimpleImmutableEntry<String, Integer> partida : datos) {
+					listModelPartidas.addElement(partida.getKey());
+				}
+			}
+		});
 		btnActualizar.setBounds(375, 40, 48, 48);
 		btnActualizar.setIcon(new ImageIcon("img/icon-reload.gif"));
 		contentPane.add(btnActualizar);
+		
+		JLabel lblJugadores = new JLabel("Jugadores:");
+		lblJugadores.setBounds(180, 195, 60, 15);
+		contentPane.add(lblJugadores);
+		
+		lblCantJugadores = new JLabel("");
+		lblCantJugadores.setBounds(250, 195, 50, 15);
+		contentPane.add(lblCantJugadores);
 		
 		cargarControles();
 	}
