@@ -1,5 +1,7 @@
 package server;
 
+import game.ConfiguracionSprites;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -13,6 +15,8 @@ public class Usuario {
 	private ThreadServer sesion;
 	private String partida;
 	private ObjectOutputStream outputStream;
+	private ConfiguracionSprites skinPacman;
+	private ConfiguracionSprites skinFantasma;
 	@Deprecated
 	private ArrayList<Usuario> usuariosEnPartida;
 	
