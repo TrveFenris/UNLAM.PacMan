@@ -1,5 +1,11 @@
 package server;
 
+import game.Configuracion;
+import game.ConfiguracionSprites;
+import game.Partida;
+import gameobject.Fantasma;
+import gameobject.Pacman;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,8 +15,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import game.Configuracion;
-import game.Partida;
+import punto.Punto;
 
 /**
  * Objeto que permite aceptar y manejar conexiones
@@ -121,6 +126,14 @@ public class Server {
     			if(p.getCantJugadores()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
     				return false;
     			}
+    			/*
+    			if(usuario.esPacman()) {
+    				nombresDePartida.get(partida).agregarJugador(new Pacman(new Punto(0,0), usuario.getNombre(), usuario.getSkinPacman(), usuario.getId()) ); //FIXME
+    			}
+    			else {
+    				nombresDePartida.get(partida).agregarJugador(new Fantasma(new Punto(0,0), usuario.getNombre(), usuario.getSkinFantasma(), usuario.getId()) ); //FIXME
+    			}
+    			*/
     			partidas.get(p).add(usuario);
     			usuario.setPartida(partida);
     			System.out.println(usuario.getNombre()+" agregado a la partida "+nombrePartida);

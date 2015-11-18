@@ -10,6 +10,7 @@ import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteLanzarPartida;
 import paquetes.PaqueteLogin;
 import paquetes.PaqueteLogout;
 import paquetes.PaqueteRegistro;
@@ -73,7 +74,19 @@ public class ThreadServer extends Thread {
 						
 						case JUGADOR_ELIMINADO:
 							break;
-						
+						/*
+						case LANZAR_PARTIDA:
+							PaqueteLanzarPartida paqLaunch = (PaqueteLanzarPartida) paquete;
+							if(servidor.getUsuariosEnPartida(partida).size()>2) {
+								//OK
+								//Buscar la partida correspondiente y mandarla en el paquete
+								//o.writeObject( new PaquetePartida(...) );
+							}
+							else {
+								//NO SE PUEDE UNIR
+							}
+							break;
+						*/
 						case LOGIN:
 							PaqueteLogin paqLogin = (PaqueteLogin) paquete;
 							user.setNombre(paqLogin.getNombreUsuario());
@@ -107,16 +120,21 @@ public class ThreadServer extends Thread {
 							break;
 							
 						case SERVIDOR_LLENO: break; //No deberia recibirlo
-						
+						/*
 						case SKINS:
 							PaqueteSkins paqSkins = (PaqueteSkins)paquete;
 							//int idJugador = user.getId();
 							//String partidaJugador = user.getPartida();
 							//for(Jugadores j : servidor.get)
 							break;
-							
+						*/
 						case UNIRSE_PARTIDA:
 							PaqueteUnirsePartida paqUnir = (PaqueteUnirsePartida)paquete;
+							//PaqueteSkins paqSkinsUser = (PaqueteSkins) is.readObject();
+							//user.setSkinPacman(paqSkinsUser.getSkinPacman());
+							//user.setSkinFantasma(paqSkinsUser.getSkinFantasma());
+							//Aca se deberia sortear el ID para que al agregar el user a la partida queden dentro todos sus datos
+							
 							boolean res = servidor.agregarAPartida(user, paqUnir.getNombrePartida());
 							paqUnir.setResultado(res);
 							o.writeObject(paqUnir);

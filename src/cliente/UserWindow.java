@@ -1,5 +1,7 @@
 package cliente;
 
+import game.ConfiguracionSprites;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 
 import paquetes.PaqueteBuscarPartida;
+import paquetes.PaqueteSkins;
 import paquetes.PaqueteUnirsePartida;
 
 import javax.swing.event.ListSelectionListener;
@@ -121,7 +124,8 @@ public class UserWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				cliente.enviarDatosPartida(new PaqueteUnirsePartida(listPartidas.getSelectedValue()));
 				PaqueteUnirsePartida paquete = (PaqueteUnirsePartida) cliente.recibirDatosPartida();
-				if( paquete.getResultado() == true) {
+				//cliente.enviarDatosPartida(new PaqueteSkins(ConfiguracionSprites.PACMAN_DEFAULT, ConfiguracionSprites.FANTASMA_DEFAULT)); //Esto deberia levantarlo de la config window
+				if(paquete!=null && paquete.getResultado() == true) {
 					System.out.println("Entrando a la partida "+listPartidas.getSelectedValue());
 					lanzarJuego();
 					//Recibir paquete partida.
