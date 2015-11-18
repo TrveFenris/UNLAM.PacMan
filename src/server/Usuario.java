@@ -73,6 +73,19 @@ public class Usuario {
 	public ObjectOutputStream getOutputStream(){
 		return outputStream;
 	}
+	
+	public ConfiguracionSprites getSkinPacman(){
+		return skinPacman;
+	}
+	public ConfiguracionSprites getSkinFantasma(){
+		return skinFantasma;
+	}
+	public void setSkinPacman(ConfiguracionSprites skin){
+		skinPacman = skin;
+	}
+	public void setSkinFantasma(ConfiguracionSprites skin){
+		skinFantasma = skin;
+	}
 	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
 		this.usuariosEnPartida=usuarios;
