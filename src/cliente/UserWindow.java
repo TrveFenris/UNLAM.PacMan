@@ -23,6 +23,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 
 import paquetes.PaqueteBuscarPartida;
+import paquetes.PaqueteUnirsePartida;
+
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
@@ -115,6 +117,21 @@ public class UserWindow extends JFrame {
 		contentPane.add(btnCerrarSesion);
 		
 		btnUnirsePartida = new JButton("Unirse a Partida");
+		btnUnirsePartida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cliente.enviarDatosPartida(new PaqueteUnirsePartida(listPartidas.getSelectedValue()));
+				PaqueteUnirsePartida paquete = (PaqueteUnirsePartida) cliente.recibirDatosPartida();
+				if( paquete.getResultado() == true) {
+					System.out.println("Entrando a la partida "+listPartidas.getSelectedValue());
+					lanzarJuego();
+					//Recibir paquete partida.
+				}
+				else {
+					System.out.println("Error al unirse a la partida");
+					return;
+				}
+			}
+		});
 		btnUnirsePartida.setBounds(10, 80, 150, 25);
 		contentPane.add(btnUnirsePartida);
 		
@@ -123,6 +140,7 @@ public class UserWindow extends JFrame {
 		listPartidas.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				String s = listPartidas.getSelectedValue();
+				System.out.println("Seleccionaste la partida "+listPartidas.getSelectedValue());
 				Integer cant = 0;
 				for(AbstractMap.SimpleImmutableEntry<String, Integer> partida : datos) {
 					if(partida.getKey().equals(s)) {
