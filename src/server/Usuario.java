@@ -17,6 +17,7 @@ public class Usuario {
 	private ObjectOutputStream outputStream;
 	private ConfiguracionSprites skinPacman;
 	private ConfiguracionSprites skinFantasma;
+	private boolean esPacman;
 	@Deprecated
 	private ArrayList<Usuario> usuariosEnPartida;
 	
@@ -85,6 +86,12 @@ public class Usuario {
 	}
 	public void setSkinFantasma(ConfiguracionSprites skin){
 		skinFantasma = skin;
+	}
+	public boolean esPacman() {
+		return esPacman;
+	}
+	public void setEsPacman(boolean set) {
+		esPacman = set;
 	}
 	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
