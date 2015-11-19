@@ -11,6 +11,7 @@ public enum TipoPaquete {
 	COORDENADAS,
 	ID,
 	JUGADOR_ELIMINADO,
+	JUGADOR_LISTO,
 	LANZAR_PARTIDA,
 	LOGIN,
 	LOGOUT,
@@ -18,7 +19,6 @@ public enum TipoPaquete {
 	REGISTRO,
 	SCORE,
 	SERVIDOR_LLENO,
-	//SESION, //En vias de eliminacion
 	SKINS,
 	UNIRSE_PARTIDA,
 	;
