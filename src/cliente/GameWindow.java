@@ -44,6 +44,8 @@ public class GameWindow extends JFrame {
 	private int[]controles;
 	//ID que representa al jugador local
 	private int IDJugadorLocal = 1;
+	private ConfiguracionSprites skinPacman;
+	private ConfiguracionSprites skinFantasma;
 	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
 	private final int ARRIBA=0;
 	private final int ABAJO=1;
@@ -95,7 +97,8 @@ public class GameWindow extends JFrame {
 		//partida = packet.getPartida();
 		//CREACION DE PARTIDA LOCAL
 		partida = new Partida("Local");
-		partida.agregarMapa(new Mapa("mapa1"));
+		//partida.agregarMapa(new Mapa("mapa1"));
+		partida.agregarMapa(new Mapa("mapaoriginal"));
 		partida.getMapa().dibujar(contentPane);
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
 		partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
@@ -280,10 +283,13 @@ public class GameWindow extends JFrame {
 			Bolita b = it.next();
 			if(b.isAlive() && j.colisionaCon(b)) {
 				userWindow.getCliente().enviarDatosPartida(new PaqueteBolitaEliminada(partida.getMapa().getArrayBolitas().indexOf(b), b));
-				b.setAliveState(false);
+				/*b.setAliveState(false);
 				b.borrarImagen();
-				it.remove();
+				it.remove();*/
+				partida.getMapa().removerBolita(b);
+				it = partida.getMapa().getArrayBolitas().iterator();
 			}
+			
 		}
 	}
 	
@@ -293,7 +299,12 @@ public class GameWindow extends JFrame {
 			this.controles[i]=controles[i];
 		}
 	}
-
+	public void setSkinPacman(ConfiguracionSprites pacman) {
+		skinPacman = pacman;
+	}
+	public void setSkinFantasma(ConfiguracionSprites fantasma) {
+		skinFantasma = fantasma;
+	}
 	public void setNameLabel(String s){
 		lblName.setText(s);
 	}

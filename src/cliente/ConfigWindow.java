@@ -1,27 +1,26 @@
 package cliente;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import game.ConfiguracionSprites;
 
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagConstraints;
+import java.awt.Button;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.TextField;
-import java.awt.Button;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class ConfigWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -40,7 +39,8 @@ public class ConfigWindow extends JFrame {
 	//PARA LOS SKINS
 	private JLabel lblFantasmaSkin;
 	private JLabel lblPacmanSkin;
-	private String skinP;
+	private ConfiguracionSprites skinPacman;
+	private ConfiguracionSprites skinFantasma;
 	private ConfigWindow thisWindow = this;
 
 	/* ConfigWindow Constructor */
@@ -223,7 +223,6 @@ public class ConfigWindow extends JFrame {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				userWindow.setControles(controles[ARRIBA],controles[ABAJO],controles[IZQUIERDA],controles[DERECHA]);
-				//userWindow.setSkinPac(skinP);
 				dispose();
 				userWindow.setVisible(true);
 			}
@@ -258,8 +257,8 @@ public class ConfigWindow extends JFrame {
 		textFieldAbajo.setText(KeyEvent.getKeyText(controles[ABAJO]));
 		textFieldIzq.setText(KeyEvent.getKeyText(controles[IZQUIERDA]));
 		textFieldDer.setText(KeyEvent.getKeyText(controles[DERECHA]));
-		ImageIcon arg0 = new ImageIcon("img/pacman/pacman-" + skinP + ".gif");
-		ImageIcon arg1 = new ImageIcon("img/pacman/pacman-" + skinP + ".gif");
+		ImageIcon arg0 = new ImageIcon(skinPacman.getValor());
+		ImageIcon arg1 = new ImageIcon(skinFantasma.getValor());
 		lblPacmanSkin.setIcon(arg0);
 		lblFantasmaSkin.setIcon(arg1);
 	}
@@ -312,8 +311,18 @@ public class ConfigWindow extends JFrame {
 		return true;
 	}
 
-	public void setSkinP(String s) {
-		skinP = s;
+	public void setSkinPacman(ConfiguracionSprites pacman) {
+		userWindow.setSkinPacman(pacman);
 	}
-
+	public void setSkinFantasma(ConfiguracionSprites fantasma) {
+		userWindow.setSkinFantasma(fantasma);
+	}
+	/*
+	public ConfiguracionSprites getSkinPacman() {
+		return skinPacman;
+	}
+	public ConfiguracionSprites getSkinFantasma() {
+		return skinFantasma;
+	}
+	*/
 }

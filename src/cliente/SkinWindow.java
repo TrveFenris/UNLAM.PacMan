@@ -1,5 +1,7 @@
 package cliente;
 
+import game.ConfiguracionSprites;
+
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -46,7 +48,7 @@ public class SkinWindow extends JFrame {
 	public SkinWindow(ConfigWindow cw) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 550, 220);
+		setBounds(100, 100, 550, 252);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,13 +59,13 @@ public class SkinWindow extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		paren = cw;
-		ImageIcon iconNormal = new ImageIcon("img/pacman/pacman-normal.gif");
-		ImageIcon iconLoco = new ImageIcon("img/pacman/pacman-loco.gif");
-		ImageIcon iconMalvado = new ImageIcon("img/pacman/pacman-malvado.gif");
-		ImageIcon iconBowWow = new ImageIcon("img/pacman/pacman-bowwow.gif");
-		ImageIcon iconMelon = new ImageIcon("img/pacman/pacman-melon.gif");
-		ImageIcon iconYin = new ImageIcon("img/pacman/pacman-yin.gif");
-		ImageIcon iconBrasil = new ImageIcon("img/pacman/pacman-brasil.gif");
+		ImageIcon iconNormal = new ImageIcon(ConfiguracionSprites.PACMAN_DEFAULT.getValor());
+		ImageIcon iconLoco = new ImageIcon(ConfiguracionSprites.PACMAN_LOCO.getValor());
+		ImageIcon iconMalvado = new ImageIcon(ConfiguracionSprites.PACMAN_MALVADO.getValor());
+		ImageIcon iconBowWow = new ImageIcon(ConfiguracionSprites.PACMAN_BOWWOW.getValor());
+		ImageIcon iconMelon = new ImageIcon(ConfiguracionSprites.PACMAN_MELON.getValor());
+		ImageIcon iconYin = new ImageIcon(ConfiguracionSprites.PACMAN_YIN.getValor());
+		ImageIcon iconBrasil = new ImageIcon(ConfiguracionSprites.PACMAN_BRASIL.getValor());
 				
 		JLabel lblPacMan = new JLabel("ELIJA UN MODELO");
 		lblPacMan.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
@@ -114,7 +116,8 @@ public class SkinWindow extends JFrame {
 		JButton btnNormal = new JButton("Normal");
 		btnNormal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("normal");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_DEFAULT);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_DEFAULT);
 				dispose();
 			}
 		});
@@ -128,7 +131,8 @@ public class SkinWindow extends JFrame {
 		JButton btnLoco = new JButton("Loco");
 		btnLoco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("loco");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_LOCO);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_LOCO);
 				dispose();
 			}
 		});
@@ -142,7 +146,8 @@ public class SkinWindow extends JFrame {
 		JButton btnMalvado = new JButton("Malvado");
 		btnMalvado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("malvado");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_MALVADO);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_MALVADO);
 				dispose();
 			}
 		});
@@ -156,7 +161,8 @@ public class SkinWindow extends JFrame {
 		JButton btnBowWow = new JButton("Bow wow");
 		btnBowWow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("bowwow");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_BOWWOW);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_BOWWOW);
 				dispose();
 			}
 		});
@@ -197,7 +203,8 @@ public class SkinWindow extends JFrame {
 		JButton btnMelon  = new JButton("Sandia");
 		btnMelon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("melon");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_MELON);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_MELON);
 				dispose();
 			}
 		});
@@ -211,7 +218,8 @@ public class SkinWindow extends JFrame {
 		JButton btnYin = new JButton("Yin Yang");
 		btnYin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("yin");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_YIN);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_YIN);
 				dispose();
 			}
 		});
@@ -225,7 +233,8 @@ public class SkinWindow extends JFrame {
 		JButton btnBrasil = new JButton("Brasil");
 		btnBrasil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paren.setSkinP("brasil");
+				paren.setSkinPacman(ConfiguracionSprites.PACMAN_BRASIL);
+				paren.setSkinFantasma(ConfiguracionSprites.FANTASMA_BRASIL);
 				dispose();
 			}
 		});

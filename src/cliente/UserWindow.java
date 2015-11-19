@@ -51,6 +51,8 @@ public class UserWindow extends JFrame {
 	private int abajo;
 	private int izquierda;
 	private int derecha;
+	private ConfiguracionSprites skinPacman;
+	private ConfiguracionSprites skinFantasma;
 	private JButton btnUnirsePartida;
 	private JButton btnActualizar;
 	private JList<String> listPartidas;
@@ -75,6 +77,8 @@ public class UserWindow extends JFrame {
 		thisWindow = this;
 		datos = new ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>>();
 		userName = nombre;
+		skinPacman = ConfiguracionSprites.PACMAN_DEFAULT;
+		skinFantasma = ConfiguracionSprites.FANTASMA_DEFAULT;
 		setTitle("Menu principal");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 441, 263);
@@ -124,7 +128,7 @@ public class UserWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				cliente.enviarDatosPartida(new PaqueteUnirsePartida(listPartidas.getSelectedValue()));
 				PaqueteUnirsePartida paquete = (PaqueteUnirsePartida) cliente.recibirDatosPartida();
-				//cliente.enviarDatosPartida(new PaqueteSkins(ConfiguracionSprites.PACMAN_DEFAULT, ConfiguracionSprites.FANTASMA_DEFAULT)); //Esto deberia levantarlo de la config window
+				cliente.enviarDatosPartida(new PaqueteSkins(skinPacman, skinFantasma)); //Esto deberia levantarlo de la config window
 				if(paquete!=null && paquete.getResultado() == true) {
 					System.out.println("Entrando a la partida "+listPartidas.getSelectedValue());
 					lanzarJuego();
@@ -206,6 +210,8 @@ public class UserWindow extends JFrame {
 		gameWindow = new GameWindow(this);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
+		gameWindow.setSkinPacman(skinPacman);
+		gameWindow.setSkinFantasma(skinFantasma);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
 		gameWindow.setControles(this.getControles());
@@ -261,5 +267,12 @@ public class UserWindow extends JFrame {
 	
 	public Cliente getCliente(){
 		return this.cliente;
+	}
+	
+	public void setSkinPacman(ConfiguracionSprites pacman) {
+		skinPacman = pacman;
+	}
+	public void setSkinFantasma(ConfiguracionSprites fantasma) {
+		skinFantasma = fantasma;
 	}
 }
