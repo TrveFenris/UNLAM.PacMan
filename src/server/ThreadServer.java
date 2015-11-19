@@ -83,12 +83,15 @@ public class ThreadServer extends Thread {
 							break;
 						case JUGADOR_LISTO:
 							PaquetejugadorListo paqListo = (PaquetejugadorListo)paquete;
+							System.out.println("El usuario "+user.getNombre()+" esta listo: "+paqListo.isReady());
 							user.setReady(paqListo.isReady());
 							break;
 						
 						case LANZAR_PARTIDA:
 							PaqueteLanzarPartida paqLaunch = (PaqueteLanzarPartida) paquete;
+							System.out.println("Lanzando partida -> Usuarios en la partida: "+servidor.getUsuariosEnPartida(partida).size());
 							if(servidor.getUsuariosEnPartida(partida)!=null && servidor.getUsuariosEnPartida(partida).size()>=2) {
+								System.out.println("Cantidad de usuarios alcanzada.");
 								int usuariosListos = 0;
 								for(Usuario u : servidor.getUsuariosEnPartida(partida)) {
 									if(u.isReady()) {
@@ -96,7 +99,11 @@ public class ThreadServer extends Thread {
 									}
 								}
 								if(usuariosListos>=2) { //Cambiar por mayor a 2
+									System.out.println("Cantidad de usuarios listos alcanzada.");
 									//servidor.getNombresDePartida().get(partida);
+									paqLaunch.setReady(true);
+									o.writeObject(paqLaunch);
+									o.flush();
 									o.writeObject(new PaquetePartida(servidor.getNombresDePartida().get(partida)));
 									o.flush();
 								}
@@ -162,10 +169,9 @@ public class ThreadServer extends Thread {
 							o.flush();
 							
 							//Aca se deberia sortear el ID para que al agregar el user a la partida queden dentro todos sus datos
-							
-							
 							if(res) {
 								PaqueteSkins paqSkinsUser = (PaqueteSkins) is.readObject();
+								partida = paqUnir.getNombrePartida();
 								user.setSkinPacman(paqSkinsUser.getSkinPacman());
 								user.setSkinFantasma(paqSkinsUser.getSkinFantasma());
 								Partida part = servidor.getNombresDePartida().get(paqUnir.getNombrePartida());
