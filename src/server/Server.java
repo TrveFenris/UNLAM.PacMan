@@ -1,10 +1,8 @@
 package server;
 
 import game.Configuracion;
-import game.ConfiguracionSprites;
+import game.Mapa;
 import game.Partida;
-import gameobject.Fantasma;
-import gameobject.Pacman;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -14,8 +12,6 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import punto.Punto;
 
 /**
  * Objeto que permite aceptar y manejar conexiones
@@ -136,19 +132,15 @@ public class Server {
     			*/
     			partidas.get(p).add(usuario);
     			usuario.setPartida(partida);
-    			System.out.println(usuario.getNombre()+" agregado a la partida "+nombrePartida);
-//    	    	if(usuarios.size()==2){
-//    	    		for(Usuario s : usuarios){
-//    	        		s.setUserThread(new UserThread(s, 1, servidor, thisThread, usuarios));
-//    	            	s.getUserThread().start();	
-//    	        	}
-//    	    	}
+    			System.out.println(usuario.getNombre()+" agregado a la partida " + nombrePartida);
     			return true;
     		}
     	}
     	return false;
     }
-
+    public void eliminarDePartida(Usuario usuario, String partida) {
+    	//nombresDePartida.get(partida).
+    }
     /**
      * Acepta una conexion
      * @return Socket con la informacion del cliente
@@ -238,6 +230,9 @@ public class Server {
 	public int getCantJugadores(String nombrePartida){
 		return nombresDePartida.get(nombrePartida).getCantJugadores();
 	}
+	public HashMap<String, Partida> getNombresDePartida() {
+		return nombresDePartida;
+	}
 	
 	/**
 	 * Crea una partida en el servidor
@@ -250,6 +245,7 @@ public class Server {
 		}
 		else {
 			Partida p = new Partida(nombre);
+			p.agregarMapa(new Mapa("mapa1"));
 			partidas.put(p,new ArrayList<Usuario>());
 			nombresDePartida.put(nombre, p);
 			return true;
