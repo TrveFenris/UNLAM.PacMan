@@ -1,12 +1,10 @@
 package cliente;
 
 import game.ConfiguracionSprites;
-import game.Mapa;
 import game.Partida;
 import gameobject.Bolita;
 import gameobject.Direcciones;
 import gameobject.Jugador;
-import gameobject.Pacman;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -28,8 +26,8 @@ import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteJugadorEliminado;
+import paquetes.PaquetePartida;
 import paquetes.PaqueteScore;
-import punto.Punto;
 import rectas.Rectas;
 
 public class GameWindow extends JFrame {
@@ -43,7 +41,7 @@ public class GameWindow extends JFrame {
 	private GameThread gameLoopThread;
 	private int[]controles;
 	//ID que representa al jugador local
-	private int IDJugadorLocal = 1;
+	private int IDJugadorLocal;
 	private ConfiguracionSprites skinPacman;
 	private ConfiguracionSprites skinFantasma;
 	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
@@ -93,18 +91,18 @@ public class GameWindow extends JFrame {
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
 		//PARTIDA PROVENIENTE DEL SERVER
-		//PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirDatosPartida();
-		//partida = packet.getPartida();
+		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirDatosPartida();
+		partida = packet.getPartida();
 		//CREACION DE PARTIDA LOCAL
-		partida = new Partida("Local");
+		//partida = new Partida("Local");
 		//partida.agregarMapa(new Mapa("mapa1"));
-		partida.agregarMapa(new Mapa("mapaoriginal"));
+		//partida.agregarMapa(new Mapa("mapaoriginal"));
 		partida.getMapa().dibujar(contentPane);
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
-		partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
+		//partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
 		ultimaAccion=Direcciones.NINGUNA;
 		//Creación del 2do jugador (manejado por otra ventana)
-		partida.agregarJugador(new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO, 2));
+		//partida.agregarJugador(new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO, 2));
 		for(Jugador j: partida.getJugadores()) {
 			j.dibujar(contentPane);
 			if(j.getID() == IDJugadorLocal) {
@@ -308,7 +306,9 @@ public class GameWindow extends JFrame {
 	public void setNameLabel(String s){
 		lblName.setText(s);
 	}
-	
+	public void setIDJugadorLocal(int id) {
+		IDJugadorLocal = id;
+	}
 	/**
 	 * Thread que maneja el Game Loop 
 	 * */
