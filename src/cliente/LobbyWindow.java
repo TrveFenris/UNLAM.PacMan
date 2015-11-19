@@ -5,12 +5,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+
+import paquetes.PaqueteLanzarPartida;
+import paquetes.PaquetejugadorListo;
+
 import java.awt.SystemColor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -26,8 +33,11 @@ public class LobbyWindow extends JFrame {
 	private UserWindow mainWindow;
 	private LobbyWindow thisWindow;
 	private JComboBox<String> comboBoxPartidas;
+	private boolean ready;
+	private int IDJugadorLocal;
 
-	public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
+	//public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
+	public LobbyWindow(String nombrePartida, UserWindow main, int idJugador) {
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
@@ -41,11 +51,11 @@ public class LobbyWindow extends JFrame {
 				}
 			}
 		});
-		
 		mainWindow = main;
 		thisWindow = this;
-		
-		setTitle("Seleccion de partida");
+		IDJugadorLocal = idJugador;
+		//setTitle("Seleccion de partida");
+		setTitle("Lobby de la partida \""+nombrePartida+"\"");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -102,22 +112,47 @@ public class LobbyWindow extends JFrame {
 		textAreaNombres.setText("");
 		
 		JButton btnJugadorListo = new JButton("Listo");
+		btnJugadorListo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!ready) {
+					mainWindow.getCliente().enviarDatosPartida(new PaquetejugadorListo(true));
+					//Cambiar el label ready a una tilde
+				}
+				else {
+					mainWindow.getCliente().enviarDatosPartida(new PaquetejugadorListo(false));
+					//cambiar el label ready a una cruz
+				}
+			}
+		});
 		btnJugadorListo.setBounds(35, 237, 89, 23);
 		contentPane.add(btnJugadorListo);
 		
 		JButton btnLanzarPartida = new JButton("Lanzar Partida");
+		btnLanzarPartida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.getCliente().enviarDatosPartida(new PaqueteLanzarPartida());
+				PaqueteLanzarPartida paq = (PaqueteLanzarPartida)mainWindow.getCliente().recibirDatosPartida();
+				if(paq.isReady()) {
+					mainWindow.lanzarJuego(IDJugadorLocal);
+				}
+				else {
+					System.out.println("No se pudo lanzar la partida.");
+				}
+			}
+		});
 		btnLanzarPartida.setBounds(227, 237, 109, 23);
 		contentPane.add(btnLanzarPartida);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(134, 232, 34, 28);
-		contentPane.add(lblNewLabel);
+		JLabel lblReady = new JLabel("ready");
+		lblReady.setBounds(134, 232, 34, 28);
+		contentPane.add(lblReady);
+		/*
 		for(SimpleImmutableEntry<String, Integer> s : datosPartidas){
 			textAreaNombres.setText(textAreaNombres.getText()+s.getKey()+"\n");
 			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+s.getValue()+"\n");
 			comboBoxPartidas.addItem(s.getKey());
 		}
-		
+		*/
 	}
 
 	private void lanzarJuego() {
@@ -130,7 +165,7 @@ public class LobbyWindow extends JFrame {
 			return;
 		}
 		this.setVisible(false);
-		mainWindow.lanzarJuego();
+		//mainWindow.lanzarJuego();
 		dispose();
 	}
 }
