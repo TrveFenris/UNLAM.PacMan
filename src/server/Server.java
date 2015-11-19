@@ -116,26 +116,24 @@ public class Server {
      * @return true/false -Si pudo o no, agregar al jugador.
      */
     public boolean agregarAPartida(Usuario usuario, String partida){
-    	for(String nombrePartida : nombresDePartida.keySet()){
-    		if(nombrePartida.equals(partida)){
-    			Partida p = nombresDePartida.get(nombrePartida);
-    			if(p.getCantJugadores()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
-    				return false;
-    			}
-    			/*
-    			if(usuario.esPacman()) {
-    				nombresDePartida.get(partida).agregarJugador(new Pacman(new Punto(0,0), usuario.getNombre(), usuario.getSkinPacman(), usuario.getId()) ); //FIXME
-    			}
-    			else {
-    				nombresDePartida.get(partida).agregarJugador(new Fantasma(new Punto(0,0), usuario.getNombre(), usuario.getSkinFantasma(), usuario.getId()) ); //FIXME
-    			}
-    			*/
-    			partidas.get(p).add(usuario);
-    			usuario.setPartida(partida);
-    			System.out.println(usuario.getNombre()+" agregado a la partida " + nombrePartida);
-    			return true;
+    			Partida p = nombresDePartida.get(partida);
+    			if(p!=null){		
+	    			if(partidas.get(p).size()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
+	    				return false;
+	    			}
+	    			/*
+	    			if(usuario.esPacman()) {
+	    				nombresDePartida.get(partida).agregarJugador(new Pacman(new Punto(0,0), usuario.getNombre(), usuario.getSkinPacman(), usuario.getId()) ); //FIXME
+	    			}
+	    			else {
+	    				nombresDePartida.get(partida).agregarJugador(new Fantasma(new Punto(0,0), usuario.getNombre(), usuario.getSkinFantasma(), usuario.getId()) ); //FIXME
+	    			}
+	    			*/
+	    			partidas.get(p).add(usuario);
+	    			usuario.setPartida(partida);
+	    			System.out.println(usuario.getNombre()+" agregado a la partida " + partida);
+	    			return true;
     		}
-    	}
     	return false;
     }
     public void eliminarDePartida(Usuario usuario, String partida) {
