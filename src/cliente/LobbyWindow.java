@@ -28,11 +28,13 @@ public class LobbyWindow extends JFrame {
 	private JComboBox<String> comboBoxPartidas;
 
 	public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
+		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				if(mainWindow != null) {
+					//Si cierro la ventana deberia quitarme de la partida
 					setVisible(false);
 					mainWindow.setVisible(true);
 					dispose();
@@ -43,83 +45,51 @@ public class LobbyWindow extends JFrame {
 		mainWindow = main;
 		thisWindow = this;
 		
-		setTitle("Selecci\u00F3n de partida");
+		setTitle("Seleccion de partida");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 182, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		contentPane.setLayout(null);
 		
 		JLabel lblSeleccioneUnaPartida = new JLabel("Seleccione una partida:");
-		GridBagConstraints gbc_lblSeleccioneUnaPartida = new GridBagConstraints();
-		gbc_lblSeleccioneUnaPartida.gridwidth = 2;
-		gbc_lblSeleccioneUnaPartida.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSeleccioneUnaPartida.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblSeleccioneUnaPartida.gridx = 1;
-		gbc_lblSeleccioneUnaPartida.gridy = 1;
-		contentPane.add(lblSeleccioneUnaPartida, gbc_lblSeleccioneUnaPartida);
+		lblSeleccioneUnaPartida.setBounds(35, 35, 359, 14);
+		contentPane.add(lblSeleccioneUnaPartida);
 		
 		comboBoxPartidas = new JComboBox<String>();
-		GridBagConstraints gbc_comboBoxPartidas = new GridBagConstraints();
-		gbc_comboBoxPartidas.gridwidth = 2;
-		gbc_comboBoxPartidas.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBoxPartidas.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxPartidas.gridx = 1;
-		gbc_comboBoxPartidas.gridy = 2;
-		contentPane.add(comboBoxPartidas, gbc_comboBoxPartidas);
+		comboBoxPartidas.setBounds(35, 54, 359, 20);
+		contentPane.add(comboBoxPartidas);
 		
 		JLabel lblNombrePartida = new JLabel("Partida");
-		GridBagConstraints gbc_lblNombrePartida = new GridBagConstraints();
-		gbc_lblNombrePartida.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNombrePartida.gridx = 1;
-		gbc_lblNombrePartida.gridy = 3;
-		contentPane.add(lblNombrePartida, gbc_lblNombrePartida);
+		lblNombrePartida.setBounds(106, 79, 34, 14);
+		contentPane.add(lblNombrePartida);
 		
 		JLabel lblCantidadDeJugadores = new JLabel("Cantidad de jugadores");
-		GridBagConstraints gbc_lblCantidadDeJugadores = new GridBagConstraints();
-		gbc_lblCantidadDeJugadores.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCantidadDeJugadores.gridx = 2;
-		gbc_lblCantidadDeJugadores.gridy = 3;
-		contentPane.add(lblCantidadDeJugadores, gbc_lblCantidadDeJugadores);
+		lblCantidadDeJugadores.setBounds(251, 79, 109, 14);
+		contentPane.add(lblCantidadDeJugadores);
 		
 		JTextArea textAreaNombres = new JTextArea();
+		textAreaNombres.setBounds(35, 98, 177, 65);
 		textAreaNombres.setBackground(SystemColor.control);
-		GridBagConstraints gbc_textAreaNombres = new GridBagConstraints();
-		gbc_textAreaNombres.insets = new Insets(0, 0, 5, 5);
-		gbc_textAreaNombres.fill = GridBagConstraints.BOTH;
-		gbc_textAreaNombres.gridx = 1;
-		gbc_textAreaNombres.gridy = 4;
-		contentPane.add(textAreaNombres, gbc_textAreaNombres);
+		contentPane.add(textAreaNombres);
 		
 		JTextArea textAreaCantJugadores = new JTextArea();
+		textAreaCantJugadores.setBounds(217, 98, 177, 65);
 		textAreaCantJugadores.setBackground(SystemColor.control);
-		GridBagConstraints gbc_textAreaCantJugadores = new GridBagConstraints();
-		gbc_textAreaCantJugadores.insets = new Insets(0, 0, 5, 5);
-		gbc_textAreaCantJugadores.fill = GridBagConstraints.BOTH;
-		gbc_textAreaCantJugadores.gridx = 2;
-		gbc_textAreaCantJugadores.gridy = 4;
-		contentPane.add(textAreaCantJugadores, gbc_textAreaCantJugadores);
+		contentPane.add(textAreaCantJugadores);
 		
 		JButton btnUnirse = new JButton("Unirse");
+		btnUnirse.setBounds(35, 198, 177, 23);
 		btnUnirse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lanzarJuego();
 			}
 		});
-		GridBagConstraints gbc_btnUnirse = new GridBagConstraints();
-		gbc_btnUnirse.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnUnirse.insets = new Insets(0, 0, 5, 5);
-		gbc_btnUnirse.gridx = 1;
-		gbc_btnUnirse.gridy = 6;
-		contentPane.add(btnUnirse, gbc_btnUnirse);
+		contentPane.add(btnUnirse);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(217, 198, 177, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
@@ -127,14 +97,21 @@ public class LobbyWindow extends JFrame {
 				dispose();
 			}
 		});
-		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnCancelar.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCancelar.gridx = 2;
-		gbc_btnCancelar.gridy = 6;
-		contentPane.add(btnCancelar, gbc_btnCancelar);
+		contentPane.add(btnCancelar);
 		
 		textAreaNombres.setText("");
+		
+		JButton btnJugadorListo = new JButton("Listo");
+		btnJugadorListo.setBounds(35, 237, 89, 23);
+		contentPane.add(btnJugadorListo);
+		
+		JButton btnLanzarPartida = new JButton("Lanzar Partida");
+		btnLanzarPartida.setBounds(227, 237, 109, 23);
+		contentPane.add(btnLanzarPartida);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(134, 232, 34, 28);
+		contentPane.add(lblNewLabel);
 		for(SimpleImmutableEntry<String, Integer> s : datosPartidas){
 			textAreaNombres.setText(textAreaNombres.getText()+s.getKey()+"\n");
 			textAreaCantJugadores.setText(textAreaCantJugadores.getText()+s.getValue()+"\n");
