@@ -213,12 +213,12 @@ public class UserWindow extends JFrame {
 
 	public void lanzarJuego(int id){
 		this.setVisible(false);
-		gameWindow = new GameWindow(this);
+		gameWindow = new GameWindow(this, id);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
 		gameWindow.setSkinPacman(skinPacman);
 		gameWindow.setSkinFantasma(skinFantasma);
-		gameWindow.setIDJugadorLocal(id);
+		//gameWindow.setIDJugadorLocal(id);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
 		gameWindow.setControles(this.getControles());

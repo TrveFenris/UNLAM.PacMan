@@ -60,7 +60,11 @@ public class GameWindow extends JFrame {
 	private ListenThread threadEscucha;
 	
 	/* GameWindow constructor */
-	public GameWindow(UserWindow window) {
+	public GameWindow(UserWindow window, int id) {
+		userWindow = window;
+		IDJugadorLocal = id;
+		//PARTIDA PROVENIENTE DEL SERVER
+		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirDatosPartida();
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -90,8 +94,7 @@ public class GameWindow extends JFrame {
 		lblName.setFont(Font.getFont(Font.SANS_SERIF));
 		lblName.setBounds(5, 5, 774, 14);
 		contentPane.add(lblName);
-		//PARTIDA PROVENIENTE DEL SERVER
-		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirDatosPartida();
+		
 		partida = packet.getPartida();
 		//CREACION DE PARTIDA LOCAL
 		//partida = new Partida("Local");
@@ -109,7 +112,6 @@ public class GameWindow extends JFrame {
 				jugadorLocal = j;
 			}
 		}
-		userWindow = window;
 		gameRunning = true;
 		gameLoopThread = new GameThread();
 		threadEscucha = new ListenThread();
