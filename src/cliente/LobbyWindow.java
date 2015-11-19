@@ -93,7 +93,7 @@ public class LobbyWindow extends JFrame {
 		btnUnirse.setBounds(35, 198, 177, 23);
 		btnUnirse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				lanzarJuego();
+				//lanzarJuego();
 			}
 		});
 		contentPane.add(btnUnirse);
@@ -116,12 +116,15 @@ public class LobbyWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!ready) {
 					mainWindow.getCliente().enviarDatosPartida(new PaquetejugadorListo(true));
+					ready = true;
 					//Cambiar el label ready a una tilde
 				}
 				else {
 					mainWindow.getCliente().enviarDatosPartida(new PaquetejugadorListo(false));
+					ready = false;
 					//cambiar el label ready a una cruz
 				}
+				System.out.println(ready);
 			}
 		});
 		btnJugadorListo.setBounds(35, 237, 89, 23);
@@ -154,7 +157,7 @@ public class LobbyWindow extends JFrame {
 		}
 		*/
 	}
-
+/*
 	private void lanzarJuego() {
 		if(mainWindow.getCliente().unirseAPartida(comboBoxPartidas.getSelectedItem().toString()) ) {
 			System.out.println("Entrando a la partida");
@@ -168,4 +171,5 @@ public class LobbyWindow extends JFrame {
 		//mainWindow.lanzarJuego();
 		dispose();
 	}
+	*/
 }
