@@ -186,30 +186,17 @@ public class ThreadServer extends Thread {
     	            }
                 }
         	}
-        	user.getSocket().close();
         	servidor.eliminarCliente(user);
         	System.out.println(user.getNombre()+" se ha desconectado del servidor");
         }
         catch(EOFException e){
-            try {
-            	user.getSocket().close();
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
-            }
-            catch (IOException e1) {
-                e1.printStackTrace();
-            }
         }
         catch(IOException e) {
         	e.printStackTrace();
-            try {
-            	user.getSocket().close();
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
-            }
-            catch (IOException e1) {
-                e1.printStackTrace();
-            }
         } catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}

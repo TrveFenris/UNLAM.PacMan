@@ -24,6 +24,7 @@ public class Usuario {
 	
 	public Usuario(Socket socket){
 		this.socket = socket;
+		this.partida="";
 		try {
 			//this.outputStream = new ObjectOutputStream(new DataOutputStream(this.socket.getOutputStream()));
 			this.outputStream = new ObjectOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));

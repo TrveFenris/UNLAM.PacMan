@@ -156,16 +156,15 @@ public class Cliente {
         	//Datos a recibir
             try {
             	paquete=(PaqueteLogout)inputStream.readObject();
+            	if(paquete.getResultado()){
+                	respuesta=true;
+                	cerrarCliente();
+    	        }
             	
             }
             catch(ClassCastException e) {
             	System.out.println("Error: No se recibio un paquete de Logout.");
             }
-            
-            if(paquete.getResultado()){
-            	respuesta=true;
-            	cerrarCliente();
-	        }
         }
         catch(EOFException e){
         	System.out.println("Error en la comunicación con el servidor (iniciarSesion)");
