@@ -1,6 +1,7 @@
 package cliente;
 
 import game.ConfiguracionSprites;
+import gameobject.Direcciones;
 
 import java.awt.Button;
 import java.awt.Font;
@@ -46,6 +47,8 @@ public class ConfigWindow extends JFrame {
 	/* ConfigWindow Constructor */
 	public ConfigWindow(UserWindow window) {
 		userWindow=window;
+		skinPacman = ConfiguracionSprites.PACMAN_DEFAULT;
+		skinFantasma = ConfiguracionSprites.FANTASMA_DEFAULT;
 		setTitle("Configuracion");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -257,8 +260,8 @@ public class ConfigWindow extends JFrame {
 		textFieldAbajo.setText(KeyEvent.getKeyText(controles[ABAJO]));
 		textFieldIzq.setText(KeyEvent.getKeyText(controles[IZQUIERDA]));
 		textFieldDer.setText(KeyEvent.getKeyText(controles[DERECHA]));
-		ImageIcon arg0 = new ImageIcon(skinPacman.getValor());
-		ImageIcon arg1 = new ImageIcon(skinFantasma.getValor());
+		ImageIcon arg0 = new ImageIcon(skinPacman.getValor(Direcciones.DERECHA));
+		ImageIcon arg1 = new ImageIcon(skinFantasma.getValor(Direcciones.DERECHA));
 		lblPacmanSkin.setIcon(arg0);
 		lblFantasmaSkin.setIcon(arg1);
 	}
@@ -316,6 +319,12 @@ public class ConfigWindow extends JFrame {
 	}
 	public void setSkinFantasma(ConfiguracionSprites fantasma) {
 		userWindow.setSkinFantasma(fantasma);
+	}
+	public void refrescarSkinsSeleccionadas() {
+		lblPacmanSkin.setIcon(new ImageIcon(skinPacman.getValor(Direcciones.DERECHA)));
+		lblFantasmaSkin.setIcon(new ImageIcon(skinFantasma.getValor(Direcciones.DERECHA)));
+		lblPacmanSkin.repaint();
+		lblFantasmaSkin.repaint();
 	}
 	/*
 	public ConfiguracionSprites getSkinPacman() {
