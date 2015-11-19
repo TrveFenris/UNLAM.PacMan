@@ -17,19 +17,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import paquetes.PaqueteBuscarPartida;
+import paquetes.PaqueteID;
 import paquetes.PaqueteSkins;
 import paquetes.PaqueteUnirsePartida;
-
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
 
 public class UserWindow extends JFrame {
 
@@ -126,12 +126,18 @@ public class UserWindow extends JFrame {
 		btnUnirsePartida = new JButton("Unirse a Partida");
 		btnUnirsePartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cliente.enviarDatosPartida(new PaqueteUnirsePartida(listPartidas.getSelectedValue()));
+				String nomPartida = listPartidas.getSelectedValue();
+				cliente.enviarDatosPartida(new PaqueteUnirsePartida(nomPartida));
 				PaqueteUnirsePartida paquete = (PaqueteUnirsePartida) cliente.recibirDatosPartida();
-				cliente.enviarDatosPartida(new PaqueteSkins(skinPacman, skinFantasma)); //Esto deberia levantarlo de la config window
 				if(paquete!=null && paquete.getResultado() == true) {
+					cliente.enviarDatosPartida(new PaqueteSkins(skinPacman, skinFantasma));
+					PaqueteID paqID = (PaqueteID) cliente.recibirDatosPartida();
 					System.out.println("Entrando a la partida "+listPartidas.getSelectedValue());
-					lanzarJuego();
+					//LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
+					LobbyWindow winPartidas = new LobbyWindow(nomPartida,thisWindow,paqID.getID());
+					winPartidas.setVisible(true);
+					thisWindow.setVisible(false);
+					//lanzarJuego(paqID.getID());
 					//Recibir paquete partida.
 				}
 				else {
@@ -205,13 +211,14 @@ public class UserWindow extends JFrame {
 		}
 	}
 
-	public void lanzarJuego(){
+	public void lanzarJuego(int id){
 		this.setVisible(false);
 		gameWindow = new GameWindow(this);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
 		gameWindow.setSkinPacman(skinPacman);
 		gameWindow.setSkinFantasma(skinFantasma);
+		gameWindow.setIDJugadorLocal(id);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
 		gameWindow.setControles(this.getControles());
@@ -223,8 +230,8 @@ public class UserWindow extends JFrame {
 			System.out.println("Error al recibir la lista de partidas.");
 			return;
 		}
-		LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
-		winPartidas.setVisible(true);
+		//LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
+		//winPartidas.setVisible(true);
 		this.setVisible(false);
 	}
 	
