@@ -1,12 +1,16 @@
 package gameobject;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import punto.Punto;
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
+
+	private static final long serialVersionUID = 5189116667650641624L;
 	protected boolean alive;
 	protected JLabel imagen;
 	protected String nombreSprite;

@@ -1,11 +1,9 @@
 package gameobject;
 
-import java.io.Serializable;
-
 import game.ConfiguracionSprites;
 import punto.Punto;
 
-public class Bolita extends GameObject implements Serializable{
+public class Bolita extends GameObject {
 	private static final long serialVersionUID = 6993990489804338135L;
 	private boolean superpoder;
 	public Bolita(Punto posInicial, boolean especial) {

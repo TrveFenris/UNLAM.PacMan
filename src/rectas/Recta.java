@@ -1,14 +1,16 @@
 package rectas;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import punto.Punto;
 
-public class Recta {
-	
+public class Recta implements Serializable{
+
+	private static final long serialVersionUID = 7222569371365291375L;
 	private Punto puntoInicial;
 	private Punto puntoFinal;
 	private Rectas tipo;

@@ -6,6 +6,8 @@ import game.ConfiguracionSprites;
 import punto.Punto;
 
 public class Fantasma extends Jugador{
+
+	private static final long serialVersionUID = -6977500924335097519L;
 	protected int pacmansComidos;
 	protected int vecesAturdido;
 	protected int muertes;

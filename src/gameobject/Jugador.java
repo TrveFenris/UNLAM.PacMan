@@ -9,7 +9,9 @@ import punto.Punto;
 import rectas.Recta;
 import rectas.Rectas;
 
-public abstract class Jugador extends GameObject{
+public abstract class Jugador extends GameObject {
+
+	private static final long serialVersionUID = 8114208291715223635L;
 	protected int velocidad;
 	protected int velX;
 	protected int velY;

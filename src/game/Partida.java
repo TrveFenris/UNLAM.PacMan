@@ -2,12 +2,12 @@ package game;
 
 import gameobject.Jugador;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-public class Partida {
+public class Partida implements Serializable {
+	private static final long serialVersionUID = 2838984202343155881L;
 	private Mapa mapa;
 	private ArrayList<Jugador> jugadores;
 	private boolean activa;

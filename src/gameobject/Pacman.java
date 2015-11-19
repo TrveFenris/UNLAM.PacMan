@@ -8,6 +8,8 @@ import java.util.Calendar;
 import punto.Punto;
 
 public class Pacman extends Jugador {	
+
+	private static final long serialVersionUID = -8404310041617236427L;
 	private boolean superpoder;
 	private Calendar timerSuperpoder;
 	private int bolitasComidas;

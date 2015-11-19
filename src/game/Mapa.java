@@ -5,6 +5,7 @@ import gameobject.Bolita;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -15,8 +16,9 @@ import rectas.Recta.RectaInvalidaException;
 import rectas.Rectas;
 
 
-public class Mapa {
-	
+public class Mapa implements Serializable {
+
+	private static final long serialVersionUID = -1003977761766317877L;
 	private ArrayList<Recta> rectas;
 	private ArrayList<Bolita> bolitas;
 	
