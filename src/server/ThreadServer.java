@@ -88,7 +88,7 @@ public class ThreadServer extends Thread {
 						
 						case LANZAR_PARTIDA:
 							PaqueteLanzarPartida paqLaunch = (PaqueteLanzarPartida) paquete;
-							if(servidor.getUsuariosEnPartida(partida)!=null && servidor.getUsuariosEnPartida(partida).size()>2) {
+							if(servidor.getUsuariosEnPartida(partida)!=null && servidor.getUsuariosEnPartida(partida).size()>=2) {
 								int usuariosListos = 0;
 								for(Usuario u : servidor.getUsuariosEnPartida(partida)) {
 									if(u.isReady()) {
@@ -98,6 +98,7 @@ public class ThreadServer extends Thread {
 								if(usuariosListos>=2) { //Cambiar por mayor a 2
 									//servidor.getNombresDePartida().get(partida);
 									o.writeObject(new PaquetePartida(servidor.getNombresDePartida().get(partida)));
+									o.flush();
 								}
 								else {
 									paqLaunch.setReady(false);
@@ -174,7 +175,7 @@ public class ThreadServer extends Thread {
 								o.writeObject(new PaqueteID(id));
 								o.flush();
 								part.tomarID(id);
-								servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).tomarID(id);
+								//servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).tomarID(id);
 								servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).agregarJugador(new Pacman(new Punto(15,35), user.getNombre(), user.getSkinPacman(), id));
 							}
 							break;
