@@ -17,6 +17,7 @@ public class Usuario {
 	private ObjectOutputStream outputStream;
 	private ConfiguracionSprites skinPacman;
 	private ConfiguracionSprites skinFantasma;
+	private boolean ready;
 	private boolean esPacman;
 	@Deprecated
 	private ArrayList<Usuario> usuariosEnPartida;
@@ -92,6 +93,12 @@ public class Usuario {
 	}
 	public void setEsPacman(boolean set) {
 		esPacman = set;
+	}
+	public boolean isReady() {
+		return ready;
+	}
+	public void setReady(boolean estado) {
+		ready = estado;
 	}
 	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
