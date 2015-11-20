@@ -13,6 +13,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Objeto que permite aceptar y manejar conexiones
@@ -32,6 +33,9 @@ public class Server {
     private ArrayList<Usuario> usuarios;
     private HashMap<Partida, ArrayList<Usuario>> partidas;
     private HashMap<String, Partida> nombresDePartida;
+    private HashMap<String, ReentrantLock>semaforosJugador;
+    private HashMap<String, ReentrantLock>semaforosBolitas;
+    
     /**
      * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar,
      * y la ventana principal, donde escribirá su lista de nombres.
@@ -56,6 +60,8 @@ public class Server {
         usuarios = new ArrayList<Usuario>();
         this.partidas=new HashMap<Partida, ArrayList<Usuario>>();
         this.nombresDePartida=new HashMap<String, Partida>(); 
+        this.semaforosJugador=new HashMap<String, ReentrantLock>();
+        this.semaforosBolitas=new HashMap<String, ReentrantLock>();
     }
 
     /**
@@ -269,7 +275,17 @@ public class Server {
 			p.getMapa().generarBolitas();
 			partidas.put(p,new ArrayList<Usuario>());
 			nombresDePartida.put(nombre, p);
+			semaforosJugador.put(nombre, new ReentrantLock());
+			semaforosBolitas.put(nombre, new ReentrantLock());
 			return true;
 		}
+	}
+	
+	public ReentrantLock getSemaforoJugador(String nombrePartida){
+		return semaforosJugador.get(nombrePartida);
+	}
+	
+	public ReentrantLock getSemaforoBolita(String nombrePartida){
+		return semaforosBolitas.get(nombrePartida);
 	}
 }

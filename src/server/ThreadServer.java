@@ -7,6 +7,7 @@ import gameobject.Jugador;
 import gameobject.Pacman;
 
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,6 +38,7 @@ public class ThreadServer extends Thread {
     private Usuario user;
     private String partida; //Utilizado para cachear la partida en la que se encuentra el usuario
     private boolean running;
+    private boolean partidaCorriendo;
     
     public ThreadServer(Server servidor, Usuario usuario) {
         this.servidor=servidor;
@@ -44,12 +46,17 @@ public class ThreadServer extends Thread {
         usuario.setNombre("");
         user = usuario;
         running = true;
+        partidaCorriendo=false;
+    }
+    
+    public void setPartidaCorriendo(boolean valor){
+    	partidaCorriendo=valor;
     }
 
     public synchronized  void run() {
         try {
-        	//ObjectInputStream is = new ObjectInputStream(new DataInputStream(user.getSocket().getInputStream()));
-        	ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(user.getSocket().getInputStream()));
+        	ObjectInputStream is = new ObjectInputStream(new DataInputStream(user.getSocket().getInputStream()));
+        	//ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(user.getSocket().getInputStream()));
         	while(running){
         		Paquete paquete=(Paquete)is.readObject();
                 if (!user.getSocket().isClosed()) {
@@ -82,15 +89,19 @@ public class ThreadServer extends Thread {
     	            		user.setPartida("");
     	            		break;
 						case BOLITA_ELIMINADA:
-							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
-							Partida pa = servidor.getNombresDePartida().get(partida);
-							pa.getMapa().removerBolita(paqBolita.getIndice());
-							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
-		            				ObjectOutputStream os = u.getOutputStream();
-		            				os.writeObject(paqBolita);
-		            				os.flush();
-		            			}
+							if(partidaCorriendo){
+								PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
+								Partida pa = servidor.getNombresDePartida().get(partida);
+								servidor.getSemaforoBolita(partida).lock();
+								pa.getMapa().removerBolita(paqBolita.getIndice());
+								servidor.getSemaforoBolita(partida).unlock();
+								for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
+			            				ObjectOutputStream os = u.getOutputStream();
+			            				os.writeObject(paqBolita);
+			            				os.flush();
+			            			}
+								}
 							}
 							break;
 							
@@ -100,21 +111,25 @@ public class ThreadServer extends Thread {
 							break;
 							
 						case COORDENADAS:
-							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
-							Partida p = servidor.getNombresDePartida().get(partida);
-							for(Jugador j : p.getJugadores()){
-								if(j.getID()==paqCoord.getIDJugador()){
-									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
-									j.cambiarSentido(paqCoord.getDireccion());
+							if(partidaCorriendo){
+								PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
+								Partida p = servidor.getNombresDePartida().get(partida);
+								for(Jugador j : p.getJugadores()){
+									if(j.getID()==paqCoord.getIDJugador()){
+										servidor.getSemaforoJugador(partida).lock();
+										j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
+										//j.cambiarSentido(paqCoord.getDireccion());
+										servidor.getSemaforoJugador(partida).unlock();
+									}
 								}
+								for(Usuario u : servidor.getUsuariosEnPartida(partida)){
+			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()&&u.getId()!=paqCoord.getIDJugador()){
+			            				ObjectOutputStream os = u.getOutputStream();
+			            				os.writeObject((Paquete)paqCoord);
+			            				os.flush();
+			            			}
+			            		}
 							}
-							for(Usuario u : servidor.getUsuariosEnPartida(partida)){
-		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()&&u.getId()!=paqCoord.getIDJugador()){
-		            				ObjectOutputStream os = u.getOutputStream();
-		            				os.writeObject((Paquete)paqCoord);
-		            				os.flush();
-		            			}
-		            		}
 							break;
 						case ID: break; //el server no deberia recibir este paquete
 						
@@ -149,11 +164,12 @@ public class ThreadServer extends Thread {
 				            				os.flush();
 				            			}
 				            		}
-									System.out.println("paqLaunch rnviado");
+									System.out.println("paqLaunch enviado");
 									Partida part = servidor.getNombresDePartida().get(partida);
 									Random r = new Random();
 									int i=0;
 									boolean hayPacman = false;
+									System.out.println();
 									for(Usuario us : servidor.getUsuariosEnPartida(user.getPartida())){
 										part.sortearIDs();
 										int id = part.getIdsDisponibles().get(0);
@@ -186,6 +202,9 @@ public class ThreadServer extends Thread {
 				            			}
 				            		}
 									System.out.println("partidas enviadas");
+									for(Usuario u: servidor.getUsuariosEnPartida(user.getPartida())){
+										u.getSesion().setPartidaCorriendo(true);
+									}
 								}
 								else {
 									System.out.println("false 1");
@@ -270,19 +289,22 @@ public class ThreadServer extends Thread {
         	System.out.println(user.getNombre()+" se ha desconectado del servidor");
         }
         catch(EOFException e){
+        		running=false;
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         }
         catch(SocketException e){
+        	running=false;
         	System.out.println("SocketException "+ user.getNombre()+user.getId());
-        	 servidor.eliminarCliente(user);
-             System.out.println(user.getNombre()+" se ha desconectado del servidor");
+        	servidor.eliminarCliente(user);
+        	System.out.println(user.getNombre()+" se ha desconectado del servidor");
 	    }
         catch(IOException e) {
-        	e.printStackTrace();
-                servidor.eliminarCliente(user);
-                System.out.println(user.getNombre()+" se ha desconectado del servidor");
-        } catch (ClassNotFoundException e1) {
+        	running=false;
+        	servidor.eliminarCliente(user);
+        	System.out.println(user.getNombre()+" se ha desconectado del servidor");
+        } 
+        catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
         }
     }

@@ -70,6 +70,7 @@ public class GameWindow extends JFrame {
 		
 		//PARTIDA PROVENIENTE DEL SERVER
 		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirPaqueteBloqueante();
+		System.out.println("INICIANDO PARTIDAAAAAAAAAAAAAAAAAAAAAAAAA");
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -316,7 +317,7 @@ public class GameWindow extends JFrame {
 		public void run() {
 			running = true;
 			while(running){
-				Paquete p = userWindow.getCliente().recibirDatosPartida();
+				Paquete p = userWindow.getCliente().recibirPaqueteBloqueante();
 				if(p!=null){
 					switch(p.getTipo()) {
 						case BOLITA_ELIMINADA:
@@ -330,7 +331,7 @@ public class GameWindow extends JFrame {
 							for(Jugador j : partida.getJugadores()){
 								if(j.getID()==paqCoord.getIDJugador()){
 									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
-									j.cambiarSentido(paqCoord.getDireccion());
+									//j.cambiarSentido(paqCoord.getDireccion());
 								}
 							}
 							break;

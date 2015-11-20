@@ -79,8 +79,8 @@ public class Cliente {
         	outputStream.writeObject(paquete);
         	outputStream.flush();
         	//Datos a recibir
-            //inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
-            inputStream = new ObjectInputStream(new BufferedInputStream(cliente.getInputStream()));
+            inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
+            //inputStream = new ObjectInputStream(new BufferedInputStream(cliente.getInputStream()));
             try {
             	paquete=(PaqueteLogin)inputStream.readObject();
             	if(paquete.getResultado()) {
@@ -285,7 +285,7 @@ public class Cliente {
      */
     public void enviarPosicion(Jugador j){
     	try {
-        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),j.getID(), j.getSentido());
+        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),j.getID()/*, j.getSentido()*/);
         	outputStream.writeObject(paquete);
         	outputStream.flush();
         }
@@ -352,10 +352,12 @@ public class Cliente {
         }
     	catch (ClassNotFoundException e) {
 			System.out.println("Error de serializacion (recibirDatosPartida)");
+			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
 			System.out.println("Error: IOException (recibirDatosPartida)");
+			e.printStackTrace();
 			return null;
 		}
     }

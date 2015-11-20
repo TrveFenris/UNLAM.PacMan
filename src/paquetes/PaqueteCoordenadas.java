@@ -8,12 +8,12 @@ public class PaqueteCoordenadas extends Paquete {
 	private static final long serialVersionUID = 6990615650451885236L;
 	private Punto coordenadas;
 	private int IDJugador;
-	private Direcciones direccion;
+	//private Direcciones direccion;
 	
-	public PaqueteCoordenadas(Punto punto, int id, Direcciones direccion) {
+	public PaqueteCoordenadas(Punto punto, int id/*, Direcciones direccion*/) {
 		coordenadas = punto;
 		IDJugador = id;
-		this.direccion = direccion;
+		//this.direccion = direccion;
 	}
 	
 	public Punto getCoordenadas() {
@@ -24,9 +24,9 @@ public class PaqueteCoordenadas extends Paquete {
 		return IDJugador;
 	}
 	
-	public Direcciones getDireccion(){
-		return direccion;
-	}
+//	public Direcciones getDireccion(){
+//		return direccion;
+//	}
 
 	@Override
 	public TipoPaquete getTipo() {
