@@ -11,6 +11,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.SocketException;
 import java.util.Random;
 
 import paquetes.Paquete;
@@ -104,6 +105,7 @@ public class ThreadServer extends Thread {
 							for(Jugador j : p.getJugadores()){
 								if(j.getID()==paqCoord.getIDJugador()){
 									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
+									j.cambiarSentido(paqCoord.getDireccion());
 								}
 							}
 							for(Usuario u : servidor.getUsuariosEnPartida(partida)){
@@ -271,13 +273,18 @@ public class ThreadServer extends Thread {
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         }
+        catch(SocketException e){
+        	System.out.println("SocketException "+ user.getNombre()+user.getId());
+        	 servidor.eliminarCliente(user);
+             System.out.println(user.getNombre()+" se ha desconectado del servidor");
+	    }
         catch(IOException e) {
         	e.printStackTrace();
                 servidor.eliminarCliente(user);
                 System.out.println(user.getNombre()+" se ha desconectado del servidor");
         } catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
-		}
+        }
     }
     
     private PaqueteBuscarPartida enviarListaDePartidas(){
