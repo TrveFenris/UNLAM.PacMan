@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import paquetes.Paquete;
+import paquetes.PaqueteAbandonarPartida;
 import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteCoordenadas;
 import paquetes.PaqueteID;
@@ -139,6 +140,12 @@ public class GameWindow extends JFrame {
 			gameRunning = false;
 			gameLoopThread.timer.cancel();
 			threadEscucha.pararThread();
+			//Avisar al servidor
+			PaqueteAbandonarPartida p = new PaqueteAbandonarPartida();
+			if(jugadorLocal.isPacman())
+				p.setPacman();
+			userWindow.getCliente().enviarPaquete(p);
+			//
 			this.dispose();
 			userWindow.setVisible(true);
 		}
@@ -179,59 +186,7 @@ public class GameWindow extends JFrame {
 			jugadorLocal.cambiarSentido(Direcciones.DERECHA);
 		}
 	}
-	/*
-	private void update(){
-		for(Jugador jug : partida.getJugadores()) {
-			jug.actualizarUbicacion(partida.getMapa().getArrayRectas());
-			ultimaDireccion=jug.getTipoUbicacion();
-			switch(ultimaDireccion){
-				case HORIZONTAL:
-					jug.setLeftBound(jug.getRectaActual(0).getPuntoInicialX());
-					jug.setRightBound(jug.getRectaActual(0).getPuntoFinalX());
-					jug.setUpperBound(jug.getRectaActual(0).getPuntoInicialY());
-					jug.setLowerBound(jug.getRectaActual(0).getPuntoInicialY());
-					break;
-				case VERTICAL:
-					jug.setUpperBound(jug.getRectaActual(0).getPuntoInicialY());
-					jug.setLowerBound(jug.getRectaActual(0).getPuntoFinalY());
-					jug.setLeftBound(jug.getRectaActual(0).getPuntoInicialX());
-					jug.setRightBound(jug.getRectaActual(0).getPuntoInicialX());
-					
-					break;
-				case AMBAS:
-					//System.out.println("Interseccion");
-					for(int i=0;i<2;i++){
-						if(jug.getRectaActual(i).getTipo()==Rectas.HORIZONTAL){
-							jug.setLeftBound(jug.getRectaActual(i).getPuntoInicialX());
-							jug.setRightBound(jug.getRectaActual(i).getPuntoFinalX());
-						}
-						else
-							if(jug.getRectaActual(i).getTipo()==Rectas.VERTICAL){
-								jug.setUpperBound(jug.getRectaActual(i).getPuntoInicialY());
-								jug.setLowerBound(jug.getRectaActual(i).getPuntoFinalY());
-							}
-					}
-					jug.cambiarSentido(ultimaAccion);
-					break;
-			}
-			jug.mover();
-			userWindow.getCliente().enviarPosicion(jug.getLocation());
-			semaforo.lock();	     
-			try {
-				for(Jugador j : partida.getJugadores()) {
-					//partida.getJugador(1).setLocation(paux.getX(), paux.getY());
-					if(j.getID()!=IDJugadorLocal)
-						j.setLocation(paux.getX(), paux.getY());
-				}
-			} 
-			finally {
-				semaforo.unlock();
-			}
-			restrictBoundaries(jug);
-			calcularColisiones (jug);
-		}
-	}
-	*/
+	
 	private void update(){
 		jugadorLocal.actualizarUbicacion(partida.getMapa().getArrayRectas());
 		ultimaDireccion=jugadorLocal.getTipoUbicacion();
@@ -380,7 +335,13 @@ public class GameWindow extends JFrame {
 						case SCORE:
 							PaqueteScore paqScore = (PaqueteScore)p;
 							break;
-
+						case ABANDONAR_PARTIDA:
+							pararThread();
+							gameRunning = false;
+							gameLoopThread.timer.cancel();
+							dispose();
+							userWindow.setVisible(true);
+							break;
 						case ID: break; //No deberia recibirse
 						case BUSCAR_PARTIDA: break; //No deberia recibirse	
 						case LOGIN: break; //No deberia recibirse
