@@ -137,7 +137,9 @@ public class Server {
     	return false;
     }
     public void eliminarDePartida(Usuario usuario, String partida) {
-    	//nombresDePartida.get(partida).
+    	partidas.get(nombresDePartida.get(partida)).remove(usuario);
+    	System.out.println(usuario.getNombre()+" ha abandonado la partida "+partida+"\t"+partidas.get(nombresDePartida.get(partida)).size());
+    	serverWindow.actualizarListaDePartidas();
     }
     /**
      * Acepta una conexion
@@ -228,6 +230,11 @@ public class Server {
 	public int getCantJugadores(String nombrePartida){
 		return nombresDePartida.get(nombrePartida).getCantJugadores();
 	}
+	
+	public int getCantUsuariosEnPartida(String nombrePartida){
+		return partidas.get(nombresDePartida.get(nombrePartida)).size();
+	}
+	
 	public HashMap<String, Partida> getNombresDePartida() {
 		return nombresDePartida;
 	}
