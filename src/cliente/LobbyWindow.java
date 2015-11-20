@@ -4,9 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+
+import paquetes.PaqueteAbandonarPartida;
 import paquetes.PaqueteLanzarPartida;
 import paquetes.PaquetejugadorListo;
 
@@ -35,10 +38,7 @@ public class LobbyWindow extends JFrame {
 			public void windowClosing(WindowEvent arg0) {
 				if(mainWindow != null) {
 					//Si cierro la ventana deberia quitarme de la partida
-					setVisible(false);
-					mainWindow.setVisible(true);
-					dispose();
-					thread.pararThread();
+					confirmarSalirDelLobby();
 				}
 			}
 		});
@@ -93,9 +93,7 @@ public class LobbyWindow extends JFrame {
 		btnCancelar.setBounds(217, 198, 177, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				mainWindow.setVisible(true);
-				dispose();
+				confirmarSalirDelLobby();
 			}
 		});
 		contentPane.add(btnCancelar);
@@ -159,6 +157,22 @@ public class LobbyWindow extends JFrame {
 	}
 	*/
 	
+	private void confirmarSalirDelLobby(){
+		int res= JOptionPane.showConfirmDialog(this,
+			    "¿Esta seguro?",
+			    "Cerrando sesion",
+			    JOptionPane.YES_NO_OPTION);
+		if(res == JOptionPane.YES_OPTION) {
+			thread.pararThread();
+			mainWindow.getCliente().enviarDatosPartida(new PaqueteAbandonarPartida());
+			setVisible(false);
+			mainWindow.setVisible(true);
+			dispose();
+			System.out.println("Saliendo de la partida");
+			//Aviso al servidor para que me elimine de la partida
+		}
+	}
+	
 	/**
 	 * Thread que espera confirmación de inicio de partida
 	 */
@@ -168,9 +182,10 @@ public class LobbyWindow extends JFrame {
 		public void run() {
 			running = true;
 			while(running){
-				PaqueteLanzarPartida p = (PaqueteLanzarPartida)mainWindow.getCliente().recibirDatosPartida();
+				PaqueteLanzarPartida p = mainWindow.getCliente().recibirConfirmacionInicioDePartida();
 				if(p!=null){
 					if(p.isReady()) {
+						System.out.println("LANZANDO JUEGO");
 						mainWindow.lanzarJuego(IDJugadorLocal);
 						pararThread();
 						dispose();
@@ -180,6 +195,7 @@ public class LobbyWindow extends JFrame {
 					}
 				}
 			}
+			System.out.println("THREAD \"LanzarJuego\" detenido");
 		}
 
 		public void pararThread(){
