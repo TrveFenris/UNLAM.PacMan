@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import paquetes.PaqueteAbandonarPartida;
+import paquetes.PaqueteAbandonarLobby;
 import paquetes.PaqueteLanzarPartida;
 import paquetes.PaquetejugadorListo;
 
@@ -174,7 +174,7 @@ public class LobbyWindow extends JFrame {
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
 			thread.pararThread();
-			mainWindow.getCliente().enviarDatosPartida(new PaqueteAbandonarPartida());
+			mainWindow.getCliente().enviarDatosPartida(new PaqueteAbandonarLobby());
 			setVisible(false);
 			mainWindow.setVisible(true);
 			dispose();
