@@ -108,6 +108,7 @@ public class GameWindow extends JFrame {
 		//partida.agregarJugador(new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO, 2));
 		for(Jugador j: partida.getJugadores()) {
 			j.dibujar(contentPane);
+			System.out.println("Jugador: "+j.getNombre()+"\tID: "+j.getID());
 			if(j.getID() == IDJugadorLocal) {
 				jugadorLocal = j;
 			}
