@@ -1,39 +1,35 @@
 package editor;
 
-import java.awt.EventQueue;
-import java.awt.Robot;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.AWTException;
 import java.awt.Color;
-
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-
+import java.awt.Cursor;
+import java.awt.EventQueue;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import punto.Punto;
 import rectas.Recta;
 import rectas.Recta.RectaInvalidaException;
-import punto.Punto;
-
-import java.awt.event.MouseAdapter;
-
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import java.awt.Cursor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MapEditor extends JFrame {
 
