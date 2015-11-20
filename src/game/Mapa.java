@@ -103,11 +103,11 @@ public class Mapa implements Serializable {
 	}
 	
 	public void dibujar(JPanel area){
-		for(Recta rec : rectas) {
-			rec.dibujar(area);
-		}
 		for(Bolita b : bolitas) {
 			b.dibujar(area);
+		}
+		for(Recta rec : rectas) {
+			rec.dibujar(area);
 		}
 	}
 	
