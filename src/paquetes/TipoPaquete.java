@@ -1,6 +1,6 @@
 package paquetes;
 /**
- * Define los posibles tipos de PaqueteSesion
+ * Define los posibles tipos de Paquetes
  *
  */
 
@@ -21,6 +21,7 @@ public enum TipoPaquete {
 	SERVIDOR_LLENO,
 	SKINS,
 	UNIRSE_PARTIDA,
+	ABANDONAR_PARTIDA,
 	;
 }
 
