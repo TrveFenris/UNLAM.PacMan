@@ -359,4 +359,56 @@ public class Cliente {
 			return null;
 		}
     }
+    
+    public void enviarPaquete(Paquete paquete) {
+    	try {
+        	outputStream.writeObject(paquete);
+        	outputStream.flush();
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (enviarDatosPartida)");
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (enviarDatosPartida)");
+        }
+    }
+    
+    public Paquete recibirPaqueteBloqueante() {
+    	try {
+    		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
+    		cliente.setSoTimeout(0);
+			return (Paquete) inputStream.readObject();
+		} 
+    	catch(SocketTimeoutException e){
+    		//System.out.println("TimeOut");
+        	return null;
+        }
+    	catch (ClassNotFoundException e) {
+			System.out.println("Error de serializacion (recibirDatosPartida)");
+			return null;
+		} 
+    	catch (IOException e) {
+			System.out.println("Error: IOException (recibirDatosPartida)");
+			return null;
+		}
+    }
+    public Paquete recibirPaqueteNoBloqueante() {
+    	try {
+    		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
+    		cliente.setSoTimeout(1000); //TODO verificar este tiempo, posiblemente lo pongamos en una Configuracion
+			return (Paquete) inputStream.readObject();
+		} 
+    	catch(SocketTimeoutException e){
+    		//System.out.println("TimeOut");
+        	return null;
+        }
+    	catch (ClassNotFoundException e) {
+			System.out.println("Error de serializacion (recibirDatosPartida)");
+			return null;
+		} 
+    	catch (IOException e) {
+			System.out.println("Error: IOException (recibirDatosPartida)");
+			return null;
+		}
+    }
 }
