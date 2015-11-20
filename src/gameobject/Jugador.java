@@ -78,6 +78,10 @@ public abstract class Jugador extends GameObject {
 	public void actualizarPuntaje(int cant){
 		puntaje=cant;
 	}
+	
+	public String getNombre(){
+		return nombre;
+	}
 	/*
 	public boolean colisionaCon(Bolita obj) {
 		if( this.getCentroCoordenadas().equals(obj.getCentroCoordenadas()) ) {
