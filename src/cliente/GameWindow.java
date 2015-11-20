@@ -336,6 +336,7 @@ public class GameWindow extends JFrame {
 							PaqueteScore paqScore = (PaqueteScore)p;
 							break;
 						case ABANDONAR_PARTIDA:
+							System.out.println("PACMAN ha abandonado la partida");
 							pararThread();
 							gameRunning = false;
 							gameLoopThread.timer.cancel();
