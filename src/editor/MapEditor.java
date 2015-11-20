@@ -251,6 +251,46 @@ public class MapEditor extends JFrame {
 		textAreaLisaRectas.setEditable(false);
 		textAreaLisaRectas.setBounds(800, 40, 128, 610);
 		contentPane.add(textAreaLisaRectas);
+		
+		JButton btnAgregarRecta = new JButton("+");
+		btnAgregarRecta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String s = (String)JOptionPane.showInputDialog(
+		                thisFrame,
+		                "Ingrese recta:",
+		                "Nueva Recta",
+		                JOptionPane.PLAIN_MESSAGE,
+		                null,
+		                null,
+		                null);
+
+				if ((s != null) && (s.length() > 0)) {
+					String [] datos = s.split(" ");
+					try {
+						Recta r=new Recta(new Punto(Integer.parseInt(datos[0]),Integer.parseInt(datos[1])), new Punto(Integer.parseInt(datos[2]),Integer.parseInt(datos[3])));
+						rectas.add(r);
+						r.dibujar(areaDibujo);
+						actualizarListaRectas();
+						contentPane.repaint();
+					}
+					catch(RectaInvalidaException e) {
+						System.out.println("Recta invalida!");
+					}
+					
+					return;
+				}
+				else {
+					if (s != null)
+						JOptionPane.showMessageDialog(thisFrame,
+							"Ingrese datos para la recta.",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+		});
+		btnAgregarRecta.setBounds(580, 0, 41, 20);
+		contentPane.add(btnAgregarRecta);
 	}
 	
 	private void actualizarListaRectas(){

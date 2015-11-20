@@ -27,7 +27,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import paquetes.PaqueteBuscarPartida;
-import paquetes.PaqueteID;
 import paquetes.PaqueteSkins;
 import paquetes.PaqueteUnirsePartida;
 
@@ -41,7 +40,6 @@ public class UserWindow extends JFrame {
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
 	private JButton btnConfig;
-	private JButton btnBuscarPartida;
 	private JLabel lblBienvenida;
 	private JLabel lblCantJugadores;
 	private Cliente cliente;
@@ -61,7 +59,6 @@ public class UserWindow extends JFrame {
 	private ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datos; //Usado para cachear las partidas disponibles en el server
 	
 	/* UserWindow Constructor */
-	//public UserWindow(MainWindow window,String nombre) {
 	public UserWindow(ClientWindow window,String nombre, Cliente client) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -95,18 +92,8 @@ public class UserWindow extends JFrame {
 		lblBienvenida.setText("Bienvenid@ "+userName+"! ");
 		contentPane.add(lblBienvenida);
 		
-		btnBuscarPartida = new JButton("Buscar partida (Deprecated)");
-		btnBuscarPartida.setBounds(10, 40, 150, 25);
-		btnBuscarPartida.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//lanzarJuego();
-				buscarPartida();
-			}
-		});
-		contentPane.add(btnBuscarPartida);
-		
 		btnConfig = new JButton("Configuracion");
-		btnConfig.setBounds(10, 120, 150, 25);
+		btnConfig.setBounds(10, 78, 150, 25);
 		btnConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				lanzarVentanaConfiguracion();
@@ -115,7 +102,7 @@ public class UserWindow extends JFrame {
 		contentPane.add(btnConfig);
 		
 		btnCerrarSesion = new JButton("Cerrar sesion");
-		btnCerrarSesion.setBounds(10, 160, 150, 25);
+		btnCerrarSesion.setBounds(10, 114, 150, 25);
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				confirmarCerrarSesion();
@@ -132,12 +119,9 @@ public class UserWindow extends JFrame {
 				if(paquete!=null && paquete.getResultado() == true) {
 					cliente.enviarDatosPartida(new PaqueteSkins(skinPacman, skinFantasma));
 					System.out.println("Entrando a la partida "+listPartidas.getSelectedValue());
-					//LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
 					LobbyWindow winPartidas = new LobbyWindow(nomPartida,thisWindow);
 					winPartidas.setVisible(true);
 					thisWindow.setVisible(false);
-					//lanzarJuego(paqID.getID());
-					//Recibir paquete partida.
 				}
 				else {
 					System.out.println("Error al unirse a la partida");
@@ -145,7 +129,7 @@ public class UserWindow extends JFrame {
 				}
 			}
 		});
-		btnUnirsePartida.setBounds(10, 80, 150, 25);
+		btnUnirsePartida.setBounds(10, 42, 150, 25);
 		contentPane.add(btnUnirsePartida);
 		
 		listModelPartidas = new DefaultListModel<String>();
@@ -163,7 +147,7 @@ public class UserWindow extends JFrame {
 				lblCantJugadores.setText(cant.toString());
 			}
 		});
-		listPartidas.setBounds(180, 40, 175, 145);
+		listPartidas.setBounds(180, 40, 200, 145);
 		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		contentPane.add(listPartidas);
@@ -174,14 +158,13 @@ public class UserWindow extends JFrame {
 				cliente.enviarDatosPartida(new PaqueteBuscarPartida());
 				PaqueteBuscarPartida paquete = (PaqueteBuscarPartida) cliente.recibirDatosPartida();
 				datos = paquete.getPartidas();
-				//listPartidas.removeAll();
 				listModelPartidas.clear();
 				for(AbstractMap.SimpleImmutableEntry<String, Integer> partida : datos) {
 					listModelPartidas.addElement(partida.getKey());
 				}
 			}
 		});
-		btnActualizar.setBounds(375, 40, 48, 48);
+		btnActualizar.setBounds(390, 40, 28, 28);
 		btnActualizar.setIcon(new ImageIcon("img/icon-reload.gif"));
 		contentPane.add(btnActualizar);
 		
@@ -215,27 +198,13 @@ public class UserWindow extends JFrame {
 		gameWindow = new GameWindow(this);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
-		//gameWindow.setSkinPacman(skinPacman);
-		//gameWindow.setSkinFantasma(skinFantasma);
-		//gameWindow.setIDJugadorLocal(id);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
 		gameWindow.setControles(this.getControles());
 	}
 	
-	private void buscarPartida(){
-		ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datos = cliente.buscarPartidas();
-		if(datos==null){
-			System.out.println("Error al recibir la lista de partidas.");
-			return;
-		}
-		//LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
-		//winPartidas.setVisible(true);
-		this.setVisible(false);
-	}
-	
 	/**
-	 * Crga los controles por defecto.
+	 * Carga los controles por defecto.
 	 */
 	private void cargarControles() {
 			this.arriba=KeyEvent.VK_W;
