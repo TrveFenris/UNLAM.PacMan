@@ -51,16 +51,6 @@ public class WatchGameWindow extends JFrame {
 			jug.dibujar(contentPane);
 		}
 		partidaEnCurso.getMapa().dibujar(contentPane);
-		/*
-		// Carga todas las bolitas al JPanel de la ventana
-		for(Bolita b : partidaEnCurso.getMapa().getArrayBolitas()) {
-			b.dibujar(contentPane);
-		}
-		// Carga todas las rectas al JPanel de la ventana
-		for(Recta r : partidaEnCurso.getMapa().getArrayRectas()) {
-			r.dibujar(contentPane);
-		}
-		*/
 		setVisible(true);
 	}
 	
@@ -72,21 +62,6 @@ public class WatchGameWindow extends JFrame {
 		if(option == JOptionPane.YES_OPTION){
 			ventanaServidor.setEnabled(true);
 			this.dispose();
-		}
-	}
-	
-	private class WatchGameThread extends Thread {
-		private Timer timer;
-		
-		public void run() {
-			timer = new Timer();
-			timer.schedule( new TimerTask() {
-			    public void run() {
-			       if(partidaEnCurso.getActiva()){
-			    	   thisWindow.repaint();
-			       }
-			    }
-			 }, 0, 16);
 		}
 	}
 }
