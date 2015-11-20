@@ -1,18 +1,19 @@
 package server;
 
-import game.Configuracion;
+import game.Mapa;
 import game.Partida;
+import gameobject.Bolita;
 import gameobject.Fantasma;
 import gameobject.Jugador;
 import gameobject.Pacman;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.SocketException;
+import java.util.Iterator;
 import java.util.Random;
 
 import paquetes.Paquete;
@@ -116,10 +117,12 @@ public class ThreadServer extends Thread {
 								Partida p = servidor.getNombresDePartida().get(partida);
 								for(Jugador j : p.getJugadores()){
 									if(j.getID()==paqCoord.getIDJugador()){
+										calcularColisiones(j);
 										servidor.getSemaforoJugador(partida).lock();
 										j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
 										//j.cambiarSentido(paqCoord.getDireccion());
 										servidor.getSemaforoJugador(partida).unlock();
+										break;
 									}
 								}
 								for(Usuario u : servidor.getUsuariosEnPartida(partida)){
@@ -174,18 +177,28 @@ public class ThreadServer extends Thread {
 										part.sortearIDs();
 										int id = part.getIdsDisponibles().get(0);
 										part.tomarID(id);
+										user.setId(id);
 										if(r.nextBoolean()&&!hayPacman){
 											hayPacman=true;
 											//El punto original es (15,35)
 											//En el mapa nuevo es (25,55)
-											servidor.agregarJugadorAPartida(new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id), partida);
+											Pacman pac = new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id);
+											servidor.agregarJugadorAPartida(pac, partida);
+											user.setJugador(pac);
+											
 										}
-										else
+										else {
 											if(!hayPacman&&i==servidor.getUsuariosEnPartida(user.getPartida()).size()-1){
-												servidor.agregarJugadorAPartida(new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id), partida);
+												Pacman pac = new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id);
+												servidor.agregarJugadorAPartida(pac, partida);
+												user.setJugador(pac);
 											}
-											else
-												servidor.agregarJugadorAPartida(new Fantasma(new Punto(25,55), us.getNombre(), us.getSkinFantasma(), id), partida);
+											else {
+												Fantasma fan = new Fantasma(new Punto(25,55), us.getNombre(), us.getSkinFantasma(), id);
+												servidor.agregarJugadorAPartida(fan, partida);
+												user.setJugador(fan);
+											}
+										}
 										ObjectOutputStream os = us.getOutputStream();
 										os.writeObject(new PaqueteID(id));
 										os.flush();
@@ -308,6 +321,36 @@ public class ThreadServer extends Thread {
 			e1.printStackTrace();
         }
     }
+    
+    private void calcularColisiones(Jugador j) {
+    	Mapa map = servidor.getNombresDePartida().get(partida).getMapa();
+		if(j.isPacman()) {
+			Iterator<Bolita> it = map.getArrayBolitas().iterator();
+			while(it.hasNext()) {
+				Bolita b = it.next();
+				if(b.isAlive() && j.colisionaCon(b)) {
+					for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+            			if(!u.getSocket().isClosed()){
+            				try {
+            					ObjectOutputStream os = u.getOutputStream();
+            					os.writeObject(new PaqueteBolitaEliminada(map.getArrayBolitas().indexOf(b), b));
+            					os.flush();
+            				}
+            				catch(IOException e) {
+            					System.out.println("Problema al enviar bolita eliminada!");
+            					return;
+            				}
+            			}
+            		}
+					map.removerBolita(b);
+					it = map.getArrayBolitas().iterator();
+				}
+			}
+		}
+		else { //Entonces es un fantasma
+			
+		}
+	}
     
     private PaqueteBuscarPartida enviarListaDePartidas(){
     	PaqueteBuscarPartida paquete = new PaqueteBuscarPartida();
