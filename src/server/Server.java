@@ -265,7 +265,7 @@ public class Server {
 		}
 		else {
 			Partida p = new Partida(nombre);
-			p.agregarMapa(new Mapa("mapa1"));
+			p.agregarMapa(new Mapa("mapaoriginal"));//TODO Ojo con el mapa, con cada uno cambia el punto de "spawn"
 			partidas.put(p,new ArrayList<Usuario>());
 			nombresDePartida.put(nombre, p);
 			return true;

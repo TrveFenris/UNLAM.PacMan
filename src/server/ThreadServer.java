@@ -147,14 +147,16 @@ public class ThreadServer extends Thread {
 										part.tomarID(id);
 										if(r.nextBoolean()&&!hayPacman){
 											hayPacman=true;
-											servidor.agregarJugadorAPartida(new Pacman(new Punto(15,35), us.getNombre(), us.getSkinPacman(), id), partida);
+											//El punto original es (15,35)
+											//En el mapa nuevo es (25,55)
+											servidor.agregarJugadorAPartida(new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id), partida);
 										}
 										else
 											if(!hayPacman&&i==servidor.getUsuariosEnPartida(user.getPartida()).size()-1){
-												servidor.agregarJugadorAPartida(new Pacman(new Punto(15,35), us.getNombre(), us.getSkinPacman(), id), partida);
+												servidor.agregarJugadorAPartida(new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id), partida);
 											}
 											else
-												servidor.agregarJugadorAPartida(new Fantasma(new Punto(15,35), us.getNombre(), us.getSkinFantasma(), id), partida);
+												servidor.agregarJugadorAPartida(new Fantasma(new Punto(25,55), us.getNombre(), us.getSkinFantasma(), id), partida);
 										ObjectOutputStream os = us.getOutputStream();
 										os.writeObject(new PaqueteID(id));
 										os.flush();
