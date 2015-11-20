@@ -1,8 +1,8 @@
 package server;
 
 import game.ConfiguracionSprites;
+import gameobject.Jugador;
 
-import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Usuario {
 	private int inGameId;
+	private Jugador jugador;
 	private String nombre;
 	private Socket socket;
 	private ThreadServer sesion;
@@ -101,6 +102,12 @@ public class Usuario {
 	}
 	public void setReady(boolean estado) {
 		ready = estado;
+	}
+	public Jugador getJugador() {
+		return jugador;
+	}
+	public void setJugador(Jugador j) {
+		jugador = j;
 	}
 	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
