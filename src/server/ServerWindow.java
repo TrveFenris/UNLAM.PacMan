@@ -199,7 +199,7 @@ public class ServerWindow extends JFrame {
 					new WatchGameWindow(part, frame);
 				}
 				else {
-					if(!part.getActiva()) {
+					if(part != null && !part.getActiva()) {
 						JOptionPane.showMessageDialog(frame,
 								"No se puede ver la partida: no está activa.",
 								 "Error",
