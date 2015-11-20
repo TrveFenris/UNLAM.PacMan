@@ -194,22 +194,19 @@ public class ServerWindow extends JFrame {
 		JButton btnVerPartida = new JButton("Ver Partida");
 		btnVerPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*	Se supone que esto busca entre la lista de partidas y lanza la ventana
-					de espectador correspondiente. */
-				
-				//String partidaSeleccionada = listPartidas.getSelectedValue();
 				Partida part = servidor.getNombresDePartida().get(listPartidas.getSelectedValue());
 				if(part != null && part.getActiva()) {
 					new WatchGameWindow(part, frame);
 				}
-				/*
-				for(ThreadServerPartida part : servidor.getPartidas()) {
-					if(partidaSeleccionada.equals(part.getNombre())) {
-						new WatchGameWindow(part.getPartida(), frame);
-						break;
+				else {
+					if(!part.getActiva()) {
+						JOptionPane.showMessageDialog(frame,
+								"No se puede ver la partida: no está activa.",
+								 "Error",
+								 JOptionPane.ERROR_MESSAGE);
+						return;
 					}
 				}
-				*/
 			}
 		});
 		btnVerPartida.setBounds(165, 265, 145, 18);
@@ -263,7 +260,6 @@ public class ServerWindow extends JFrame {
 	 */
 	public void crearPartida(String nombre){
 		if(nombre!=null&&nombre!=""){
-			//SI CREAR DEVUELVE FALSO, TIRAR UN CARTEL QUE LO INFORME
 			if(servidor.crearPartida(nombre)) {
 				actualizarListaDePartidas();
 				listModelPartidas.addElement(nombre);
@@ -277,15 +273,6 @@ public class ServerWindow extends JFrame {
 			}
 		}
 	}
-	
-//	/**
-//	 * Detiene todos los threads de partidas que esten en ejecucion.
-//	 */
-//	public void detenerPartidas(){
-//		for(ThreadServerPartida thread : servidor.getPartidas()){
-//			thread.detener();
-//		}
-//	}
 	
 	/**
 	 * Lanza una ventana para el ingreso del nombre de la partida.
