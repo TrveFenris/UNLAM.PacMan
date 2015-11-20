@@ -248,7 +248,7 @@ public class ServerWindow extends JFrame {
 	public void actualizarListaDePartidas(){
 		textAreaCantJugadores.setText("");
 		for(String partida : servidor.getPartidas()) {
-			textAreaCantJugadores.append(servidor.getCantJugadores(partida)+"\n");
+			textAreaCantJugadores.append(servidor.getCantUsuariosEnPartida(partida)+"\n");
 		}
 	}
 	/**
