@@ -40,8 +40,8 @@ public class Cliente {
     public Cliente(String direccion, int port) throws UnknownHostException, IOException{
     	puerto = port;
     	cliente = new Socket(direccion, port);
-    	//outputStream = new ObjectOutputStream(new DataOutputStream(cliente.getOutputStream()));
-    	outputStream = new ObjectOutputStream(new BufferedOutputStream(cliente.getOutputStream()));
+    	outputStream = new ObjectOutputStream(new DataOutputStream(cliente.getOutputStream()));
+    	//outputStream = new ObjectOutputStream(new BufferedOutputStream(cliente.getOutputStream()));
     }
 
     public Socket getSocket() {
@@ -117,8 +117,8 @@ public class Cliente {
             outputStream.writeObject(paquete);
             outputStream.flush();
         	//Datos a recibir
-            //inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
-            inputStream = new ObjectInputStream(new BufferedInputStream(cliente.getInputStream()));
+            inputStream = new ObjectInputStream(new DataInputStream(cliente.getInputStream()));
+            //inputStream = new ObjectInputStream(new BufferedInputStream(cliente.getInputStream()));
             try {
             	paquete=(PaqueteRegistro)inputStream.readObject();
             	if(paquete.getResultado()) {
@@ -344,19 +344,24 @@ public class Cliente {
     	try {
     		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
     		cliente.setSoTimeout(1000);
-			return (Paquete) inputStream.readObject();
-		} 
+    		Paquete paq = (Paquete) inputStream.readObject();
+			return paq;
+		}
+    	catch(ClassCastException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
     	catch(SocketTimeoutException e){
     		//System.out.println("TimeOut");
         	return null;
         }
     	catch (ClassNotFoundException e) {
-			System.out.println("Error de serializacion (recibirDatosPartida)");
+			//System.out.println("Error de serializacion (recibirDatosPartida)");
 			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
-			System.out.println("Error: IOException (recibirDatosPartida)");
+			//System.out.println("Error: IOException (recibirDatosPartida)");
 			e.printStackTrace();
 			return null;
 		}
@@ -379,21 +384,29 @@ public class Cliente {
     	try {
     		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
     		cliente.setSoTimeout(0);
-			return (Paquete) inputStream.readObject();
-		} 
+    		Paquete paq = (Paquete) inputStream.readObject();
+			return paq;
+		}
+    	catch(ClassCastException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
     	catch(SocketTimeoutException e){
     		//System.out.println("TimeOut");
         	return null;
         }
     	catch (ClassNotFoundException e) {
-			System.out.println("Error de serializacion (recibirDatosPartida)");
+			//System.out.println("Error de serializacion (recibirPaqueteBloqueante)");
+			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
-			System.out.println("Error: IOException (recibirDatosPartida)");
+			//System.out.println("Error: IOException (recibirPaqueteBloqueante)");
+			e.printStackTrace();
 			return null;
 		}
     }
+
     public Paquete recibirPaqueteNoBloqueante() {
     	try {
     		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
@@ -405,12 +418,15 @@ public class Cliente {
         	return null;
         }
     	catch (ClassNotFoundException e) {
-			System.out.println("Error de serializacion (recibirDatosPartida)");
+			//System.out.println("Error de serializacion (recibirPaqueteNoBloqueante)");
+			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
-			System.out.println("Error: IOException (recibirDatosPartida)");
+			//System.out.println("Error: IOException (recibirPaqueteNoBloqueante)");
+			e.printStackTrace();
 			return null;
 		}
     }
+
 }
