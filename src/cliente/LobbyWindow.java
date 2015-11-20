@@ -1,23 +1,26 @@
 package cliente;
 
+import game.ConfiguracionSprites;
+
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
 
 import paquetes.PaqueteAbandonarPartida;
 import paquetes.PaqueteLanzarPartida;
 import paquetes.PaquetejugadorListo;
-
-import java.awt.SystemColor;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class LobbyWindow extends JFrame {
 	private static final long serialVersionUID = 2633638473228159143L;
@@ -25,9 +28,12 @@ public class LobbyWindow extends JFrame {
 	private UserWindow mainWindow;
 	private LobbyWindow thisWindow;
 	private JComboBox<String> comboBoxPartidas;
+	private JLabel lblReady;
 	private boolean ready;
 	private int IDJugadorLocal;
 	private ListenThread thread;
+	private ImageIcon iconoReady;
+	private ImageIcon iconoNotReady;
 
 	//public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
 	public LobbyWindow(String nombrePartida, UserWindow main, int idJugador) {
@@ -47,6 +53,8 @@ public class LobbyWindow extends JFrame {
 		IDJugadorLocal = idJugador;
 		//setTitle("Seleccion de partida");
 		setTitle("Lobby de la partida \""+nombrePartida+"\"");
+		iconoReady = new ImageIcon(ConfiguracionSprites.ICONO_READY.getValor());
+		iconoNotReady = new ImageIcon(ConfiguracionSprites.ICONO_NOTREADY.getValor());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -105,11 +113,13 @@ public class LobbyWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!ready) {
 					mainWindow.getCliente().enviarDatosPartida(new PaquetejugadorListo(true));
+					lblReady.setIcon(iconoReady);
 					ready = true;
 					//Cambiar el label ready a una tilde
 				}
 				else {
 					mainWindow.getCliente().enviarDatosPartida(new PaquetejugadorListo(false));
+					lblReady.setIcon(iconoNotReady);
 					ready = false;
 					//cambiar el label ready a una cruz
 				}
@@ -128,8 +138,9 @@ public class LobbyWindow extends JFrame {
 		btnLanzarPartida.setBounds(227, 237, 109, 23);
 		contentPane.add(btnLanzarPartida);
 		
-		JLabel lblReady = new JLabel("ready");
+		lblReady = new JLabel();
 		lblReady.setBounds(134, 232, 34, 28);
+		lblReady.setIcon(iconoNotReady);
 		contentPane.add(lblReady);
 		thread = new ListenThread();
 		thread.start();
