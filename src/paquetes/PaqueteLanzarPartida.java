@@ -16,5 +16,4 @@ public class PaqueteLanzarPartida extends Paquete {
 	public TipoPaquete getTipo() {
 		return TipoPaquete.LANZAR_PARTIDA;
 	}
-
 }
