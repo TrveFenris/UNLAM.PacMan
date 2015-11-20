@@ -12,6 +12,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import gameobject.Bolita;
 import punto.Punto;
 import rectas.Recta;
 import rectas.Recta.RectaInvalidaException;
@@ -197,6 +201,44 @@ public class MapEditor extends JFrame {
 		contentPane.add(btnCancelar);
 		
 		JButton btnAbrir = new JButton("Abrir");
+		btnAbrir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//rectas = new ArrayList<Recta>();
+				File archivo = null;
+			    FileReader fr = null;
+			    BufferedReader br = null;
+			    try {
+			    	archivo = new File ("maps/"+"mapaoriginal"+".pacmap");
+			    	fr = new FileReader (archivo);
+			    	br = new BufferedReader(fr);
+			    	String linea = br.readLine();
+			    	String[] datos;
+			    	int cantRectas = Integer.parseInt(linea);
+			    	for(int i=0;i<cantRectas;i++){
+			    		linea = br.readLine();
+			    		datos = linea.split(" ");
+			    		Recta r =new Recta(new Punto(Integer.parseInt(datos[0]),Integer.parseInt(datos[1])), new Punto(Integer.parseInt(datos[2]),Integer.parseInt(datos[3])));
+			    		rectas.add(r);
+			    		r.dibujar(areaDibujo);
+						actualizarListaRectas();
+			    		contentPane.repaint();
+			    	}
+			    }
+			    catch(Exception e){
+			    	e.printStackTrace();
+			    }
+			    finally{
+			    	try{                    
+			    		if( null != fr ){   
+			    			fr.close();     
+			    		}                  
+			    	}
+			    	catch (Exception e2){ 
+			    		e2.printStackTrace();
+			    	}
+			    }
+			}
+		});
 		btnAbrir.setBounds(0, 0, 89, 20);
 		contentPane.add(btnAbrir);
 		
