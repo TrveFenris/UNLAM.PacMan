@@ -74,11 +74,16 @@ public class ThreadServer extends Thread {
     							}
     	            			servidor.eliminarTodosLosJugadoresDePartida(partida);
     	            		}
+    	            		else{
+    	            			servidor.eliminarDePartida(user, partida);
+    	            		}
     	            		partida="";
     	            		user.setPartida("");
     	            		break;
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
+							Partida pa = servidor.getNombresDePartida().get(partida);
+							pa.getMapa().removerBolita(paqBolita.getIndice());
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
 		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
 		            				ObjectOutputStream os = u.getOutputStream();
@@ -95,15 +100,20 @@ public class ThreadServer extends Thread {
 							
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
-							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
+							Partida p = servidor.getNombresDePartida().get(partida);
+							for(Jugador j : p.getJugadores()){
+								if(j.getID()==paqCoord.getIDJugador()){
+									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
+								}
+							}
+							for(Usuario u : servidor.getUsuariosEnPartida(partida)){
+		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()&&u.getId()!=paqCoord.getIDJugador()){
 		            				ObjectOutputStream os = u.getOutputStream();
-		            				os.writeObject(paqCoord);
+		            				os.writeObject((Paquete)paqCoord);
 		            				os.flush();
 		            			}
 		            		}
 							break;
-						
 						case ID: break; //el server no deberia recibir este paquete
 						
 						case JUGADOR_ELIMINADO:
@@ -125,6 +135,7 @@ public class ThreadServer extends Thread {
 										usuariosListos++;
 									}
 								}
+								System.out.println("Usuarios listos: "+usuariosListos);
 								if(usuariosListos>=2) { //TODO Cambiar por mayor a 2.
 									System.out.println("Cantidad de usuarios listos alcanzada.");
 									//TODO Unificar (si es posible) estos asquerosos for each, en un unico for each.
@@ -136,7 +147,7 @@ public class ThreadServer extends Thread {
 				            				os.flush();
 				            			}
 				            		}
-									
+									System.out.println("paqLaunch rnviado");
 									Partida part = servidor.getNombresDePartida().get(partida);
 									Random r = new Random();
 									int i=0;
@@ -162,7 +173,9 @@ public class ThreadServer extends Thread {
 										os.flush();
 										i++;
 									}
-
+									System.out.println("IDs enviados");
+									Partida y = servidor.getNombresDePartida().get(partida);
+									y.setActiva(true);
 									for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
 				            			if(!u.getSocket().isClosed()){
 				            				ObjectOutputStream os = u.getOutputStream();
@@ -170,14 +183,17 @@ public class ThreadServer extends Thread {
 											os.flush();
 				            			}
 				            		}
+									System.out.println("partidas enviadas");
 								}
 								else {
+									System.out.println("false 1");
 									paqLaunch.setReady(false);
 									o.writeObject(paqLaunch);
 									o.flush();
 								}
 							}
 							else {
+								System.out.println("false 2");
 								paqLaunch.setReady(false);
 								o.writeObject(paqLaunch);
 								o.flush();
