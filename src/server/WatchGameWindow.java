@@ -7,6 +7,8 @@ import gameobject.Jugador;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,9 +23,11 @@ public class WatchGameWindow extends JFrame {
 	private JPanel contentPane;
 	private ServerWindow ventanaServidor;
 	private Partida partidaEnCurso;
+	private WatchGameWindow thisWindow;
 	
 	/* GameWindow constructor */
 	public WatchGameWindow(Partida partida, ServerWindow ventana) {
+		thisWindow = this;
 		setResizable(false);
 		partidaEnCurso = partida;
 		ventanaServidor = ventana;
@@ -46,14 +50,18 @@ public class WatchGameWindow extends JFrame {
 		for(Jugador jug : partidaEnCurso.getJugadores()) {
 			jug.dibujar(contentPane);
 		}
-		/* Carga todas las bolitas al JPanel de la ventana */
+		partidaEnCurso.getMapa().dibujar(contentPane);
+		/*
+		// Carga todas las bolitas al JPanel de la ventana
 		for(Bolita b : partidaEnCurso.getMapa().getArrayBolitas()) {
 			b.dibujar(contentPane);
 		}
-		/* Carga todas las rectas al JPanel de la ventana */
+		// Carga todas las rectas al JPanel de la ventana
 		for(Recta r : partidaEnCurso.getMapa().getArrayRectas()) {
 			r.dibujar(contentPane);
 		}
+		*/
+		setVisible(true);
 	}
 	
 	private void mensajeSalida(){
@@ -64,6 +72,21 @@ public class WatchGameWindow extends JFrame {
 		if(option == JOptionPane.YES_OPTION){
 			ventanaServidor.setEnabled(true);
 			this.dispose();
+		}
+	}
+	
+	private class WatchGameThread extends Thread {
+		private Timer timer;
+		
+		public void run() {
+			timer = new Timer();
+			timer.schedule( new TimerTask() {
+			    public void run() {
+			       if(partidaEnCurso.getActiva()){
+			    	   thisWindow.repaint();
+			       }
+			    }
+			 }, 0, 16);
 		}
 	}
 }

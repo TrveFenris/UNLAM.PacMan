@@ -1,6 +1,7 @@
 package server;
 
 import game.Configuracion;
+import game.Partida;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -195,8 +196,13 @@ public class ServerWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				/*	Se supone que esto busca entre la lista de partidas y lanza la ventana
 					de espectador correspondiente. */
+				
+				//String partidaSeleccionada = listPartidas.getSelectedValue();
+				Partida part = servidor.getNombresDePartida().get(listPartidas.getSelectedValue());
+				if(part != null && part.getActiva()) {
+					new WatchGameWindow(part, frame);
+				}
 				/*
-				String partidaSeleccionada = listPartidas.getSelectedValue();
 				for(ThreadServerPartida part : servidor.getPartidas()) {
 					if(partidaSeleccionada.equals(part.getNombre())) {
 						new WatchGameWindow(part.getPartida(), frame);
