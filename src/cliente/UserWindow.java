@@ -62,7 +62,7 @@ public class UserWindow extends JFrame {
 	
 	/* UserWindow Constructor */
 	//public UserWindow(MainWindow window,String nombre) {
-	public UserWindow(ClientWindow window,String nombre, Cliente cliente) {
+	public UserWindow(ClientWindow window,String nombre, Cliente client) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -72,7 +72,7 @@ public class UserWindow extends JFrame {
 				}
 			}
 		});
-		this.cliente=cliente;
+		this.cliente=client;
 		mainWindow = window;
 		thisWindow = this;
 		datos = new ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>>();
@@ -199,7 +199,7 @@ public class UserWindow extends JFrame {
 	/* Metodos */
 	private void confirmarCerrarSesion(){
 		int res= JOptionPane.showConfirmDialog(this,
-			    "¿Esta seguro?",
+			    "Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
