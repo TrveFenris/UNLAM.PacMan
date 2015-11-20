@@ -131,10 +131,9 @@ public class UserWindow extends JFrame {
 				PaqueteUnirsePartida paquete = (PaqueteUnirsePartida) cliente.recibirDatosPartida();
 				if(paquete!=null && paquete.getResultado() == true) {
 					cliente.enviarDatosPartida(new PaqueteSkins(skinPacman, skinFantasma));
-					PaqueteID paqID = (PaqueteID) cliente.recibirDatosPartida();
 					System.out.println("Entrando a la partida "+listPartidas.getSelectedValue());
 					//LobbyWindow winPartidas = new LobbyWindow(datos, thisWindow);
-					LobbyWindow winPartidas = new LobbyWindow(nomPartida,thisWindow,paqID.getID());
+					LobbyWindow winPartidas = new LobbyWindow(nomPartida,thisWindow);
 					winPartidas.setVisible(true);
 					thisWindow.setVisible(false);
 					//lanzarJuego(paqID.getID());
@@ -211,9 +210,9 @@ public class UserWindow extends JFrame {
 		}
 	}
 
-	public void lanzarJuego(int id){
+	public void lanzarJuego(){
 		this.setVisible(false);
-		gameWindow = new GameWindow(this, id);
+		gameWindow = new GameWindow(this);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
 		//gameWindow.setSkinPacman(skinPacman);
