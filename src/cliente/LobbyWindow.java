@@ -3,27 +3,16 @@ package cliente;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.GridBagLayout;
-
 import javax.swing.JLabel;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
-
 import paquetes.PaqueteLanzarPartida;
 import paquetes.PaquetejugadorListo;
 
 import java.awt.SystemColor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -35,6 +24,7 @@ public class LobbyWindow extends JFrame {
 	private JComboBox<String> comboBoxPartidas;
 	private boolean ready;
 	private int IDJugadorLocal;
+	private ListenThread thread;
 
 	//public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
 	public LobbyWindow(String nombrePartida, UserWindow main, int idJugador) {
@@ -48,6 +38,7 @@ public class LobbyWindow extends JFrame {
 					setVisible(false);
 					mainWindow.setVisible(true);
 					dispose();
+					thread.pararThread();
 				}
 			}
 		});
@@ -134,13 +125,6 @@ public class LobbyWindow extends JFrame {
 		btnLanzarPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.getCliente().enviarDatosPartida(new PaqueteLanzarPartida());
-				PaqueteLanzarPartida paq = (PaqueteLanzarPartida)mainWindow.getCliente().recibirDatosPartida();
-				if(paq.isReady()) {
-					mainWindow.lanzarJuego(IDJugadorLocal);
-				}
-				else {
-					System.out.println("No se pudo lanzar la partida.");
-				}
 			}
 		});
 		btnLanzarPartida.setBounds(227, 237, 109, 23);
@@ -149,6 +133,8 @@ public class LobbyWindow extends JFrame {
 		JLabel lblReady = new JLabel("ready");
 		lblReady.setBounds(134, 232, 34, 28);
 		contentPane.add(lblReady);
+		thread = new ListenThread();
+		thread.start();
 		/*
 		for(SimpleImmutableEntry<String, Integer> s : datosPartidas){
 			textAreaNombres.setText(textAreaNombres.getText()+s.getKey()+"\n");
@@ -172,4 +158,32 @@ public class LobbyWindow extends JFrame {
 		dispose();
 	}
 	*/
+	
+	/**
+	 * Thread que espera confirmación de inicio de partida
+	 */
+	private class ListenThread extends Thread {
+		
+		private boolean running;
+		public void run() {
+			running = true;
+			while(running){
+				PaqueteLanzarPartida p = (PaqueteLanzarPartida)mainWindow.getCliente().recibirDatosPartida();
+				if(p!=null){
+					if(p.isReady()) {
+						mainWindow.lanzarJuego(IDJugadorLocal);
+						pararThread();
+						dispose();
+					}
+					else {
+						System.out.println("No se pudo lanzar la partida.");
+					}
+				}
+			}
+		}
+
+		public void pararThread(){
+			running = false;
+		}
+	}
 }
