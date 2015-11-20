@@ -1,6 +1,6 @@
 package cliente;
 
-import game.ConfiguracionSprites;
+//import game.ConfiguracionSprites;
 import game.Partida;
 import gameobject.Bolita;
 import gameobject.Direcciones;
