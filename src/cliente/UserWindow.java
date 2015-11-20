@@ -124,7 +124,10 @@ public class UserWindow extends JFrame {
 					thisWindow.setVisible(false);
 				}
 				else {
-					System.out.println("Error al unirse a la partida");
+					JOptionPane.showMessageDialog(thisWindow,
+							"No se pudo entrar a la partida.",
+							 "Error",
+							 JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			}
