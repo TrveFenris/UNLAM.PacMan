@@ -25,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteID;
 import paquetes.PaqueteJugadorEliminado;
 import paquetes.PaquetePartida;
 import paquetes.PaqueteScore;
@@ -60,11 +61,14 @@ public class GameWindow extends JFrame {
 	private ListenThread threadEscucha;
 	
 	/* GameWindow constructor */
-	public GameWindow(UserWindow window, int id) {
+	public GameWindow(UserWindow window) {
 		userWindow = window;
-		IDJugadorLocal = id;
+		//
+		PaqueteID paqID = (PaqueteID) userWindow.getCliente().recibirPaqueteBloqueante();
+		IDJugadorLocal = paqID.getID();
+		
 		//PARTIDA PROVENIENTE DEL SERVER
-		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirDatosPartida();
+		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirPaqueteBloqueante();
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -114,6 +118,11 @@ public class GameWindow extends JFrame {
 			}
 		}
 		System.out.println("IDJugadorLocal: "+IDJugadorLocal);
+		if(jugadorLocal.isPacman()){
+			System.out.println("Soy Pacman!");
+		}
+		else
+			System.out.println("Soy Fantasma!");
 		gameRunning = true;
 		gameLoopThread = new GameThread();
 		threadEscucha = new ListenThread();
@@ -280,6 +289,8 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
+		if(!j.isPacman())
+			return;
 		Iterator<Bolita> it = partida.getMapa().getArrayBolitas().iterator();
 		while(it.hasNext()) {
 			Bolita b = it.next();
