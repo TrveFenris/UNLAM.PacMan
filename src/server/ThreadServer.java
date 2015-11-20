@@ -1,6 +1,7 @@
 package server;
 
 import game.Partida;
+import gameobject.Jugador;
 import gameobject.Pacman;
 
 import java.io.BufferedInputStream;
@@ -188,11 +189,13 @@ public class ThreadServer extends Thread {
 								//Habria que controlar esto con un semaforo? para que varios threads no puedan modificar la partida a la vez...
 								part.sortearIDs();
 								int id = part.getIdsDisponibles().get(0);
+								System.out.println("ID del jugador: "+user.getNombre()+": "+id);
 								o.writeObject(new PaqueteID(id));
 								o.flush();
 								part.tomarID(id);
 								//servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).tomarID(id);
-								servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).agregarJugador(new Pacman(new Punto(15,35), user.getNombre(), user.getSkinPacman(), id));
+								servidor.agregarAPartida(new Pacman(new Punto(15,35), user.getNombre(), user.getSkinPacman(), id), paqUnir.getNombrePartida());
+								//servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).agregarJugador(new Pacman(new Punto(15,35), user.getNombre(), user.getSkinPacman(), id));
 							}
 							break;
 
