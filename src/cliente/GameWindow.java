@@ -112,6 +112,7 @@ public class GameWindow extends JFrame {
 				jugadorLocal = j;
 			}
 		}
+		System.out.println("IDJugadorLocal: "+IDJugadorLocal);
 		gameRunning = true;
 		gameLoopThread = new GameThread();
 		threadEscucha = new ListenThread();
