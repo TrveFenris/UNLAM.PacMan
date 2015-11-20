@@ -285,7 +285,7 @@ public class Cliente {
      */
     public void enviarPosicion(Jugador j){
     	try {
-        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),/*j.getID()*/2, j.getSentido());
+        	PaqueteCoordenadas paquete = new PaqueteCoordenadas(j.getLocation(),j.getID(), j.getSentido());
         	outputStream.writeObject(paquete);
         	outputStream.flush();
         }
