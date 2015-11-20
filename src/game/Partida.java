@@ -19,10 +19,9 @@ public class Partida implements Serializable {
 		activa = true;
 		nombre = name;
 		idsDisponibles = new ArrayList<Integer>(4);
-		idsDisponibles.add(1);
-		idsDisponibles.add(2);
-		//idsDisponibles.add(3);
-		//idsDisponibles.add(4);
+		for(int i=0;i<Configuracion.MAX_JUGADORES_PARTIDA.getValor();i++){
+			idsDisponibles.add(i+1);
+		}
 	}
 	//No se si se va a usar, pero ante la duda...
 	public ArrayList<Integer> getIdsDisponibles() {
