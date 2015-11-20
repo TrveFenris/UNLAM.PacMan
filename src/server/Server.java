@@ -116,7 +116,7 @@ public class Server {
      * Agrega el usuario a la partida seleccionada.
      * @return true/false -Si pudo o no, agregar al usuario.
      */
-    public boolean agregarAPartida(Usuario usuario, String partida){
+    public boolean agregarUsuarioAPartida(Usuario usuario, String partida){
     			Partida p = nombresDePartida.get(partida);
     			if(p!=null){		
 	    			if(partidas.get(p).size()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
@@ -142,7 +142,7 @@ public class Server {
      * Agrega el jugador a la partida seleccionada.
      * @return true/false -Si pudo o no, agregar al jugador.
      */
-    public void agregarAPartida(Jugador jugador, String partida){
+    public void agregarJugadorAPartida(Jugador jugador, String partida){
     			Partida p = nombresDePartida.get(partida);
 	    		p.agregarJugador(jugador);
     }
