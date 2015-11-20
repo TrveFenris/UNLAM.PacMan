@@ -366,10 +366,10 @@ public class Cliente {
         	outputStream.flush();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicación con el servidor (enviarDatosPartida)");
+        	System.out.println("Error en la comunicación con el servidor (enviarPaquete)");
         }
         catch(IOException e) {
-        	System.out.println("Error: IOException (enviarDatosPartida)");
+        	System.out.println("Error: IOException (enviarPaquete)");
         }
     }
     
