@@ -36,7 +36,7 @@ public class LobbyWindow extends JFrame {
 	private ImageIcon iconoNotReady;
 
 	//public LobbyWindow(ArrayList<AbstractMap.SimpleImmutableEntry<String, Integer>> datosPartidas, UserWindow main) {
-	public LobbyWindow(String nombrePartida, UserWindow main, int idJugador) {
+	public LobbyWindow(String nombrePartida, UserWindow main) {
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
@@ -50,7 +50,6 @@ public class LobbyWindow extends JFrame {
 		});
 		mainWindow = main;
 		thisWindow = this;
-		IDJugadorLocal = idJugador;
 		//setTitle("Seleccion de partida");
 		setTitle("Lobby de la partida \""+nombrePartida+"\"");
 		iconoReady = new ImageIcon(ConfiguracionSprites.ICONO_READY.getValor());
@@ -197,7 +196,7 @@ public class LobbyWindow extends JFrame {
 				if(p!=null){
 					if(p.isReady()) {
 						System.out.println("LANZANDO JUEGO");
-						mainWindow.lanzarJuego(IDJugadorLocal);
+						mainWindow.lanzarJuego();
 						pararThread();
 						dispose();
 					}
