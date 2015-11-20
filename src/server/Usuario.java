@@ -3,6 +3,7 @@ package server;
 import game.ConfiguracionSprites;
 
 import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -26,8 +27,8 @@ public class Usuario {
 		this.socket = socket;
 		this.partida="";
 		try {
-			//this.outputStream = new ObjectOutputStream(new DataOutputStream(this.socket.getOutputStream()));
-			this.outputStream = new ObjectOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));
+			this.outputStream = new ObjectOutputStream(new DataOutputStream(this.socket.getOutputStream()));
+			//this.outputStream = new ObjectOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
