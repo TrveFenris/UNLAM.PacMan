@@ -106,11 +106,12 @@ public class Mapa implements Serializable {
 		for(Recta rec : rectas) {
 			rec.dibujar(area);
 		}
-		generarBolitas(area);
-		System.out.println(bolitas.size());
+		for(Bolita b : bolitas) {
+			b.dibujar(area);
+		}
 	}
 	
-	public void generarBolitas(JPanel area){
+	public void generarBolitas(){
 		for(Recta rec : rectas) {
 			int cantBolitas = (rec.getLongitud())/20;
 			for(int i=0;i<cantBolitas;i++){
@@ -134,7 +135,6 @@ public class Mapa implements Serializable {
 				if(!colision) {
 					Bolita b = new Bolita(pInicial, false);
 					bolitas.add(b);
-					b.dibujar(area);
 				}
 			}
 		}
