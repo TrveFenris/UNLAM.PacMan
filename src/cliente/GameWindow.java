@@ -87,7 +87,7 @@ public class GameWindow extends JFrame {
 		});
 			
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 800, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -249,19 +249,21 @@ public class GameWindow extends JFrame {
  	}
 	
 	private void calcularColisiones(Jugador j) {
-		if(!j.isPacman())
-			return;
-		Iterator<Bolita> it = partida.getMapa().getArrayBolitas().iterator();
-		while(it.hasNext()) {
-			Bolita b = it.next();
-			if(b.isAlive() && j.colisionaCon(b)) {
-				userWindow.getCliente().enviarDatosPartida(new PaqueteBolitaEliminada(partida.getMapa().getArrayBolitas().indexOf(b), b));
-				/*b.setAliveState(false);
-				b.borrarImagen();
-				it.remove();*/
-				partida.getMapa().removerBolita(b);
-				it = partida.getMapa().getArrayBolitas().iterator();
+		if(j.isPacman()) {
+			Iterator<Bolita> it = partida.getMapa().getArrayBolitas().iterator();
+			while(it.hasNext()) {
+				Bolita b = it.next();
+				if(b.isAlive() && j.colisionaCon(b)) {
+					userWindow.getCliente().enviarDatosPartida(new PaqueteBolitaEliminada(partida.getMapa().getArrayBolitas().indexOf(b), b));
+					/*b.setAliveState(false);
+					b.borrarImagen();
+					it.remove();*/
+					partida.getMapa().removerBolita(b);
+					it = partida.getMapa().getArrayBolitas().iterator();
+				}
 			}
+		}
+		else { //Entonces es un fantasma
 			
 		}
 	}
