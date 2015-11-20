@@ -50,6 +50,11 @@ public class ThreadServer extends Thread {
                 	ObjectOutputStream o = user.getOutputStream();
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
     	            switch(paquete.getTipo()) {
+    	            	case ABANDONAR_PARTIDA:
+    	            		System.out.println("RECIBÍ: ABANDONAR_PARTIDA");
+    	            		servidor.eliminarDePartida(user, user.getPartida());
+    	            		partida="";
+    	            		break;
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
 							for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
