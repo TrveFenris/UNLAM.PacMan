@@ -42,8 +42,8 @@ public class GameWindow extends JFrame {
 	private int[]controles;
 	//ID que representa al jugador local
 	private int IDJugadorLocal;
-	private ConfiguracionSprites skinPacman;
-	private ConfiguracionSprites skinFantasma;
+	//private ConfiguracionSprites skinPacman; //no se usa
+	//private ConfiguracionSprites skinFantasma; //no se usa
 	//CONSTANTES PARA EL MANEJO COMPRENSIBLE DEL VECTOR CONTROLES
 	private final int ARRIBA=0;
 	private final int ABAJO=1;
@@ -301,12 +301,14 @@ public class GameWindow extends JFrame {
 			this.controles[i]=controles[i];
 		}
 	}
+	/*
 	public void setSkinPacman(ConfiguracionSprites pacman) {
 		skinPacman = pacman;
 	}
 	public void setSkinFantasma(ConfiguracionSprites fantasma) {
 		skinFantasma = fantasma;
 	}
+	*/
 	public void setNameLabel(String s){
 		lblName.setText(s);
 	}
@@ -331,33 +333,7 @@ public class GameWindow extends JFrame {
 			 }, 0, 16);
 		}
 	}
-	
-	/*
-	 * Thread que recibe actualizaciones de los demas jugadores
-	 *//*
-	private class ListenThread extends Thread {
-		
-		private boolean running;
-		
-		public void run() {
-			running = true;
-			while(running){
-				PaqueteCoordenadas p = userWindow.getCliente().recibirPosicion();
-				if(p!=null){
-					for(Jugador j : partida.getJugadores()){
-						if(j.getID()==p.getIDJugador()){
-							j.setLocation(p.getCoordenadas().getX(), p.getCoordenadas().getY());
-							j.cambiarSentido(p.getDireccion());
-						}
-					}
-				}
-			}
-		}
-		
-		public void pararThread(){
-			running = false;
-		}
-	}*/
+
 	/**
 	 * Thread que recibe actualizaciones de los demas jugadores
 	 */

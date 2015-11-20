@@ -216,8 +216,8 @@ public class UserWindow extends JFrame {
 		gameWindow = new GameWindow(this, id);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setNameLabel(userName);
-		gameWindow.setSkinPacman(skinPacman);
-		gameWindow.setSkinFantasma(skinFantasma);
+		//gameWindow.setSkinPacman(skinPacman);
+		//gameWindow.setSkinFantasma(skinFantasma);
 		//gameWindow.setIDJugadorLocal(id);
 		gameWindow.setVisible(true);
 		gameWindow.runGameLoop();
