@@ -308,7 +308,7 @@ public class ServerWindow extends JFrame {
 						 JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			this.crearPartida(s);
+			this.crearPartida(s.trim());
 			return;
 		}
 		else {
