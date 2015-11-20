@@ -189,6 +189,7 @@ public class GameWindow extends JFrame {
 	
 	private void update(){
 		jugadorLocal.actualizarUbicacion(partida.getMapa().getArrayRectas());
+		Rectas aux = ultimaDireccion;
 		ultimaDireccion=jugadorLocal.getTipoUbicacion();
 		switch(ultimaDireccion){
 			case HORIZONTAL:
@@ -218,10 +219,14 @@ public class GameWindow extends JFrame {
 				}
 				jugadorLocal.cambiarSentido(ultimaAccion);
 				break;
+			case INVALIDA://TODO REVISAR
+				//ultimaDireccion=aux;
+				System.out.println("Recta invalida");
+				break;
 		}
 		jugadorLocal.mover();
-		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
 		restrictBoundaries(jugadorLocal);
+		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
 		calcularColisiones (jugadorLocal);
 	}
 	

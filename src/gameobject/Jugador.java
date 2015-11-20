@@ -147,8 +147,7 @@ public abstract class Jugador extends GameObject {
 		else
 			if(rectasActuales.size()>0)
 				return rectasActuales.get(0).getTipo();
-		System.out.println("ERROR EN TIPO DE UBICACION");
-		return Rectas.HORIZONTAL;
+		return Rectas.INVALIDA;
 	}
 	
 	public int getUpperBound() {
