@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import paquetes.Paquete;
+import paquetes.PaqueteAbandonarPartida;
 import paquetes.PaqueteBolitaEliminada;
 import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
@@ -54,10 +55,27 @@ public class ThreadServer extends Thread {
                 	ObjectOutputStream o = user.getOutputStream();
     	            //ACCIONES A REALIZAR SEGUN EL TIPO DE PAQUETE RECIBIDO
     	            switch(paquete.getTipo()) {
-    	            	case ABANDONAR_PARTIDA:
-    	            		System.out.println("RECIBÍ: ABANDONAR_PARTIDA");
+    	            	case ABANDONAR_LOBBY:
     	            		servidor.eliminarDePartida(user, user.getPartida());
     	            		partida="";
+    	            		user.setPartida("");
+    	            		break;
+    	            	case ABANDONAR_PARTIDA:
+    	            		PaqueteAbandonarPartida paq = (PaqueteAbandonarPartida)paquete;
+    	            		//servidor.eliminarDePartida(user, user.getPartida());
+    	            		if(paq.isPacman()){
+    	            			for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+    		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
+    		            				ObjectOutputStream os = u.getOutputStream();
+    		            				os.writeObject(paq);
+    		            				os.flush();
+    		            			}
+    		            			u.setPartida("");
+    							}
+    	            			servidor.eliminarTodosLosJugadoresDePartida(partida);
+    	            		}
+    	            		partida="";
+    	            		user.setPartida("");
     	            		break;
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
