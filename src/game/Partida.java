@@ -16,7 +16,6 @@ public class Partida implements Serializable {
 	
 	public Partida(String name) {
 		jugadores = new ArrayList<Jugador>();
-		activa = true;
 		nombre = name;
 		idsDisponibles = new ArrayList<Integer>(4);
 		for(int i=0;i<Configuracion.MAX_JUGADORES_PARTIDA.getValor();i++){
