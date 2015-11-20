@@ -102,10 +102,15 @@ public class ThreadServer extends Thread {
 									System.out.println("Cantidad de usuarios listos alcanzada.");
 									//servidor.getNombresDePartida().get(partida);
 									paqLaunch.setReady(true);
-									o.writeObject(paqLaunch);
-									o.flush();
-									o.writeObject(new PaquetePartida(servidor.getNombresDePartida().get(partida)));
-									o.flush();
+									for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+				            			if(!u.getSocket().isClosed()){
+				            				ObjectOutputStream os = u.getOutputStream();
+				            				os.writeObject(paqLaunch);
+				            				os.flush();
+											os.writeObject(new PaquetePartida(servidor.getNombresDePartida().get(partida)));
+											os.flush();
+				            			}
+				            		}
 								}
 								else {
 									paqLaunch.setReady(false);
