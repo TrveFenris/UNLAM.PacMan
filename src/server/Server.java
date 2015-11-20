@@ -3,6 +3,7 @@ package server;
 import game.Configuracion;
 import game.Mapa;
 import game.Partida;
+import gameobject.Jugador;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -112,8 +113,8 @@ public class Server {
     }
     
     /**
-     * Agrega el jugador a la partida seleccionada.
-     * @return true/false -Si pudo o no, agregar al jugador.
+     * Agrega el usuario a la partida seleccionada.
+     * @return true/false -Si pudo o no, agregar al usuario.
      */
     public boolean agregarAPartida(Usuario usuario, String partida){
     			Partida p = nombresDePartida.get(partida);
@@ -136,6 +137,16 @@ public class Server {
     		}
     	return false;
     }
+    
+    /**
+     * Agrega el jugador a la partida seleccionada.
+     * @return true/false -Si pudo o no, agregar al jugador.
+     */
+    public void agregarAPartida(Jugador jugador, String partida){
+    			Partida p = nombresDePartida.get(partida);
+	    		p.agregarJugador(jugador);
+    }
+    
     public void eliminarDePartida(Usuario usuario, String partida) {
     	partidas.get(nombresDePartida.get(partida)).remove(usuario);
     	System.out.println(usuario.getNombre()+" ha abandonado la partida "+partida+"\t"+partidas.get(nombresDePartida.get(partida)).size());
