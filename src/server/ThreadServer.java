@@ -1,6 +1,8 @@
 package server;
 
+import game.Configuracion;
 import game.Partida;
+import gameobject.Fantasma;
 import gameobject.Jugador;
 import gameobject.Pacman;
 
@@ -9,6 +11,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Random;
 
 import paquetes.Paquete;
 import paquetes.PaqueteBolitaEliminada;
@@ -104,15 +107,45 @@ public class ThreadServer extends Thread {
 										usuariosListos++;
 									}
 								}
-								if(usuariosListos>=2) { //Cambiar por mayor a 2
+								if(usuariosListos>=2) { //TODO Cambiar por mayor a 2.
 									System.out.println("Cantidad de usuarios listos alcanzada.");
-									//servidor.getNombresDePartida().get(partida);
+									//TODO Unificar (si es posible) estos asquerosos for each, en un unico for each.
 									paqLaunch.setReady(true);
 									for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
 				            			if(!u.getSocket().isClosed()){
 				            				ObjectOutputStream os = u.getOutputStream();
 				            				os.writeObject(paqLaunch);
 				            				os.flush();
+				            			}
+				            		}
+									
+									Partida part = servidor.getNombresDePartida().get(partida);
+									Random r = new Random();
+									int i=0;
+									boolean hayPacman = false;
+									for(Usuario us : servidor.getUsuariosEnPartida(user.getPartida())){
+										part.sortearIDs();
+										int id = part.getIdsDisponibles().get(0);
+										part.tomarID(id);
+										if(r.nextBoolean()&&!hayPacman){
+											hayPacman=true;
+											servidor.agregarJugadorAPartida(new Pacman(new Punto(15,35), us.getNombre(), us.getSkinPacman(), id), partida);
+										}
+										else
+											if(!hayPacman&&i==servidor.getUsuariosEnPartida(user.getPartida()).size()-1){
+												servidor.agregarJugadorAPartida(new Pacman(new Punto(15,35), us.getNombre(), us.getSkinPacman(), id), partida);
+											}
+											else
+												servidor.agregarJugadorAPartida(new Fantasma(new Punto(15,35), us.getNombre(), us.getSkinFantasma(), id), partida);
+										ObjectOutputStream os = us.getOutputStream();
+										os.writeObject(new PaqueteID(id));
+										os.flush();
+										i++;
+									}
+
+									for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+				            			if(!u.getSocket().isClosed()){
+				            				ObjectOutputStream os = u.getOutputStream();
 											os.writeObject(new PaquetePartida(servidor.getNombresDePartida().get(partida)));
 											os.flush();
 				            			}
@@ -174,28 +207,18 @@ public class ThreadServer extends Thread {
 						*/
 						case UNIRSE_PARTIDA:
 							PaqueteUnirsePartida paqUnir = (PaqueteUnirsePartida)paquete;
-							boolean res = servidor.agregarAPartida(user, paqUnir.getNombrePartida());
+							boolean res = servidor.agregarUsuarioAPartida(user, paqUnir.getNombrePartida());
 							paqUnir.setResultado(res);
+							partida = paqUnir.getNombrePartida();
 							o.writeObject(paqUnir);
 							o.flush();
-							
-							//Aca se deberia sortear el ID para que al agregar el user a la partida queden dentro todos sus datos
-							if(res) {
+							if(res){
+								System.out.println("Esperando skins de: "+user.getNombre());
 								PaqueteSkins paqSkinsUser = (PaqueteSkins) is.readObject();
 								partida = paqUnir.getNombrePartida();
 								user.setSkinPacman(paqSkinsUser.getSkinPacman());
 								user.setSkinFantasma(paqSkinsUser.getSkinFantasma());
-								Partida part = servidor.getNombresDePartida().get(paqUnir.getNombrePartida());
-								//Habria que controlar esto con un semaforo? para que varios threads no puedan modificar la partida a la vez...
-								part.sortearIDs();
-								int id = part.getIdsDisponibles().get(0);
-								System.out.println("ID del jugador: "+user.getNombre()+": "+id);
-								o.writeObject(new PaqueteID(id));
-								o.flush();
-								part.tomarID(id);
-								//servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).tomarID(id);
-								servidor.agregarAPartida(new Pacman(new Punto(15,35), user.getNombre(), user.getSkinPacman(), id), paqUnir.getNombrePartida());
-								//servidor.getNombresDePartida().get(paqUnir.getNombrePartida()).agregarJugador(new Pacman(new Punto(15,35), user.getNombre(), user.getSkinPacman(), id));
+								System.out.println("Skins recibidas.");
 							}
 							break;
 
