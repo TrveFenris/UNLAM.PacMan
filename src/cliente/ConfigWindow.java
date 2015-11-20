@@ -132,7 +132,6 @@ public class ConfigWindow extends JFrame {
 		JButton btnCambiar = new JButton("Cambiar");
 		btnCambiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				///AGREGAR AQUI CAMBIO DE SKIN
 				new SkinWindow(thisWindow).setVisible(true);
 			}
 		});
@@ -199,8 +198,6 @@ public class ConfigWindow extends JFrame {
 		contentPane.add(textFieldIzq, gbc_textFieldIzq);
 		
 		lblFantasmaSkin = new JLabel("");
-		//ImageIcon iconFan = new ImageIcon("img/pacman/pacman-" + userWindow.getSkinPac() + ".gif"); // ICONO DE FANTASMA
-		//lblFantasmaSkin.setIcon(iconFan);
 		GridBagConstraints gbc_lblFantasmaSkin = new GridBagConstraints();
 		gbc_lblFantasmaSkin.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFantasmaSkin.gridx = 3;
@@ -226,16 +223,18 @@ public class ConfigWindow extends JFrame {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				userWindow.setControles(controles[ARRIBA],controles[ABAJO],controles[IZQUIERDA],controles[DERECHA]);
-				dispose();
+				userWindow.setSkinPacman(skinPacman);
+				userWindow.setSkinFantasma(skinFantasma);
 				userWindow.setVisible(true);
+				dispose();
 			}
 		});
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				userWindow.setVisible(true);
+				dispose();
 			}
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
@@ -315,10 +314,10 @@ public class ConfigWindow extends JFrame {
 	}
 
 	public void setSkinPacman(ConfiguracionSprites pacman) {
-		userWindow.setSkinPacman(pacman);
+		skinPacman = pacman;
 	}
 	public void setSkinFantasma(ConfiguracionSprites fantasma) {
-		userWindow.setSkinFantasma(fantasma);
+		skinFantasma = fantasma;
 	}
 	public void refrescarSkinsSeleccionadas() {
 		lblPacmanSkin.setIcon(new ImageIcon(skinPacman.getValor(Direcciones.DERECHA)));
