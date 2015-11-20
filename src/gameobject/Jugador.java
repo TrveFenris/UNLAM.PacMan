@@ -21,13 +21,14 @@ public abstract class Jugador extends GameObject {
 	protected ConfiguracionSprites skin;
 	protected int ID;
 	protected Direcciones sentido;
+	protected boolean isPacman;//TODO ver si hay algun metodo mas conveniente para identificar al pacman
 	//Variables delimitadoras
 	protected int upperBound;
 	protected int lowerBound;
 	protected int leftBound;
 	protected int rightBound;
 	
-	public Jugador(String nombre, int velocidad, ConfiguracionSprites skin){
+	public Jugador(String nombre, int velocidad, ConfiguracionSprites skin, boolean isPacman){
 		super();
 		this.velocidad=velocidad;
 		this.nombre=nombre;
@@ -37,6 +38,15 @@ public abstract class Jugador extends GameObject {
 		velY = 0;
 		rectasActuales=new ArrayList<Recta>();
 		sentido = Direcciones.DERECHA;
+		this.isPacman=isPacman;
+	}
+	
+	public boolean isPacman(){
+		return isPacman;
+	}
+	
+	public void setPacman(){
+		isPacman=true;
 	}
 
 	public void cambiarSentido(Direcciones a){

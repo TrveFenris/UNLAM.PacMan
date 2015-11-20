@@ -13,7 +13,7 @@ public class Fantasma extends Jugador{
 	protected int muertes;
 
 	public Fantasma(Punto posInicial, String nombre, ConfiguracionSprites configSprites, int id) {
-		super(nombre, Configuracion.FANTASMA_VELOCIDAD.getValor(), configSprites);
+		super(nombre, Configuracion.FANTASMA_VELOCIDAD.getValor(), configSprites,false);
 		pacmansComidos=vecesAturdido=muertes=0;
 		setImagen(configSprites.getValor(Direcciones.DERECHA));
 		imagen.setLocation(posInicial.getX(),posInicial.getY());
