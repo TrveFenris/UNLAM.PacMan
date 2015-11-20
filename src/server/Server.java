@@ -152,6 +152,10 @@ public class Server {
     	System.out.println(usuario.getNombre()+" ha abandonado la partida "+partida+"\t"+partidas.get(nombresDePartida.get(partida)).size());
     	serverWindow.actualizarListaDePartidas();
     }
+    
+    public void eliminarTodosLosJugadoresDePartida(String partida){
+    	partidas.get(nombresDePartida.get(partida)).clear();
+    }
     /**
      * Acepta una conexion
      * @return Socket con la informacion del cliente
