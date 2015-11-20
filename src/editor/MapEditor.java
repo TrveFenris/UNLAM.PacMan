@@ -303,7 +303,7 @@ public class MapEditor extends JFrame {
 	
 	private void mensajeSalida() {
 		int option = JOptionPane.showConfirmDialog(thisFrame,
-			    "¿Esta seguro que quiere salir?",
+			    "Esta seguro que quiere salir?",
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION) {

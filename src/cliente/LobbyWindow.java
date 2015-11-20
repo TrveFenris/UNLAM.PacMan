@@ -100,7 +100,7 @@ public class LobbyWindow extends JFrame {
 	
 	private void confirmarSalirDelLobby(){
 		int res= JOptionPane.showConfirmDialog(this,
-			    "¿Esta seguro?",
+			    "Esta seguro?",
 			    "Cerrando sesion",
 			    JOptionPane.YES_NO_OPTION);
 		if(res == JOptionPane.YES_OPTION) {
