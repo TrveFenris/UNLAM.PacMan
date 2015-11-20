@@ -58,6 +58,9 @@ public enum ConfiguracionSprites {
 	BOLITA ("img/bolitas/bolitaNormal.gif"),
 	BOLITA_ESPECIAL ("img/bolitas/bolitaEspecial.gif"),
 	//MAPA
+	//ICONOS
+	ICONO_READY("img/icons/check.gif"),
+	ICONO_NOTREADY("img/icons/cancel-icon.gif"),
 	;
 
 	private ArrayList<String> valores = new ArrayList<String>();
