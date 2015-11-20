@@ -38,11 +38,7 @@ public abstract class Jugador extends GameObject {
 		rectasActuales=new ArrayList<Recta>();
 		sentido = Direcciones.DERECHA;
 	}
-	
-	public void input(){
-		
-	}
-	
+
 	public void cambiarSentido(Direcciones a){
 		sentido=a;
 		switch(a){
@@ -82,15 +78,7 @@ public abstract class Jugador extends GameObject {
 	public String getNombre(){
 		return nombre;
 	}
-	/*
-	public boolean colisionaCon(Bolita obj) {
-		if( this.getCentroCoordenadas().equals(obj.getCentroCoordenadas()) ) {
-			//System.out.println("Colisiono con una bolita");
-			return true;
-		}
-		else return false;
-	}
-	*/
+
 	public boolean colisionaCon(Bolita obj) {
 		if( this.getCentroCoordenadas().distanciaCon(obj.getCentroCoordenadas()) <= Configuracion.PACMAN_DISTANCIA_PARA_COMER_BOLITA.getValor() ) {
 			return true;
@@ -134,8 +122,8 @@ public abstract class Jugador extends GameObject {
 		rectasActuales.clear();
 		//Agregar las rectas actuales
 		for(Recta rec : rectas) {
-				if(estaEn(rec)) {
-					rectasActuales.add(rec);
+			if(estaEn(rec)) {
+				rectasActuales.add(rec);
 			}
 		}
 	}
