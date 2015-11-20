@@ -20,6 +20,7 @@ import java.util.Calendar;
 import paquetes.Paquete;
 import paquetes.PaqueteBuscarPartida;
 import paquetes.PaqueteCoordenadas;
+import paquetes.PaqueteLanzarPartida;
 import paquetes.PaqueteLogin;
 import paquetes.PaqueteLogout;
 import paquetes.PaqueteRegistro;
@@ -213,6 +214,40 @@ public class Cliente {
     }
     
     /**
+     * Solicita la lista de partidas disponibles al servidor.
+     * @return PaqueteListaPartidas -Paquete con informacion de las partidas disponibles. Si hubo un error devuelve null.
+     */
+    public PaqueteLanzarPartida recibirConfirmacionInicioDePartida(){;
+    	try {
+            //Datos a recibir
+            try {
+            	//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
+        		cliente.setSoTimeout(1000);
+            	PaqueteLanzarPartida paquete=(PaqueteLanzarPartida)inputStream.readObject();
+            	return paquete;
+            }
+            catch(ClassCastException ex) {
+            	System.out.println("ERROR: El cliente recibio un paquete erroneo (Esperado un PaqueteBuscarPartida).");
+            	return null;
+            }
+        }
+    	catch(SocketTimeoutException e){
+    		//System.out.println("TimeOut");
+        	return null;
+        }
+        catch(EOFException e){
+        	System.out.println("Error en la comunicación con el servidor (buscarPartidas)");
+        	return null;
+        }
+        catch(IOException e) {
+        	System.out.println("Error: IOException (buscarPartidas)");
+        	return null;
+        } catch (ClassNotFoundException e1) {
+        	return null;
+		}
+    }
+    
+    /**
      * Solicita unirse a la partida seleccionada.
      * @param nombre -Nombre de la partida a la que desea unirse.
      * @return true/false, si pudo unirse a la partida o no.
@@ -262,6 +297,7 @@ public class Cliente {
         }
     }
     
+    @Deprecated
     public PaqueteCoordenadas recibirPosicion(){
     	try {
     		cliente.setSoTimeout(1000);
@@ -306,11 +342,19 @@ public class Cliente {
     
     public Paquete recibirDatosPartida() {
     	try {
+    		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
+    		cliente.setSoTimeout(1000);
 			return (Paquete) inputStream.readObject();
-		} catch (ClassNotFoundException e) {
+		} 
+    	catch(SocketTimeoutException e){
+    		//System.out.println("TimeOut");
+        	return null;
+        }
+    	catch (ClassNotFoundException e) {
 			System.out.println("Error de serializacion (recibirDatosPartida)");
 			return null;
-		} catch (IOException e) {
+		} 
+    	catch (IOException e) {
 			System.out.println("Error: IOException (recibirDatosPartida)");
 			return null;
 		}
