@@ -260,7 +260,7 @@ public class ThreadServer extends Thread {
 							PaqueteLogin paqLogin = (PaqueteLogin) paquete;
 							user.setNombre(paqLogin.getNombreUsuario());
 							System.out.println(user.getNombre()+" se ha conectado al servidor");
-							paqLogin.setResultado(true);
+							//paqLogin.setResultado(true);
 							paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
 							o.writeObject(paqLogin);
 							o.flush();
@@ -278,7 +278,7 @@ public class ThreadServer extends Thread {
 						
 						case REGISTRO:
 							PaqueteRegistro paqReg = (PaqueteRegistro) paquete;
-							paqReg.setResultado(false);
+							//paqReg.setResultado(false);
 							paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
 							running=false;
 							o.writeObject(paqReg);
@@ -340,20 +340,20 @@ public class ThreadServer extends Thread {
         	System.out.println(user.getNombre()+" se ha desconectado del servidor");
         } 
         catch (ClassNotFoundException e1) {
-			System.out.println("Tipo de paquete invalido");
+		System.out.println("Tipo de paquete invalido");
         }
     }
     
     private void calcularColisiones(Jugador j) {
-    	/*
+    	
     	Partida p = servidor.getNombresDePartida().get(partida);
     	for(Jugador jug : p.getJugadores()) {
-    		if(j.colisionaCon(jug)) {
-    			if(j.tieneSuperpoder() && !jug.tieneSuperpoder()) {
+    		if(j.colisionaCon(jug) && j!=jug) {
+    			//if(j.tieneSuperpoder() && !jug.tieneSuperpoder()) {
     				Punto pto = p.getMapa().getPuntos().get(new Random().nextInt(p.getMapa().getPuntos().size()));
     				servidor.getSemaforoJugador(partida).lock();
     				//p.getJugador(jug.getID()).setLocation(pto.getX(), pto.getY());
-    				p.getJugadores().get(p.getJugadores().indexOf(jug)).setLocation(pto.getX(), pto.getY());
+    				p.getJugadores().get(p.getJugadores().indexOf(jug)).setLocation(pto.getX(), pto.getY(),true);
     				servidor.getSemaforoJugador(partida).unlock();
     				for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
     					try {
@@ -365,7 +365,8 @@ public class ThreadServer extends Thread {
     						System.out.println("FAIL al enviar coordenada tras colision");
     					}
     				}
-    			}
+    			//}
+    			/*
     			else {
     				Punto pto = p.getMapa().getPuntos().get(new Random().nextInt(p.getMapa().getPuntos().size()));
     				servidor.getSemaforoJugador(partida).lock();
@@ -383,9 +384,10 @@ public class ThreadServer extends Thread {
     					}
     				}
     			}
+    			*/
     		}
     	}
-    	*/
+    	
     	Mapa map = servidor.getNombresDePartida().get(partida).getMapa();
 		if(j.isPacman()) {
 			Iterator<Bolita> it = map.getArrayBolitas().iterator();
