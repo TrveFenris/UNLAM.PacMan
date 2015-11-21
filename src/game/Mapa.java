@@ -21,10 +21,14 @@ public class Mapa implements Serializable {
 	private static final long serialVersionUID = -1003977761766317877L;
 	private ArrayList<Recta> rectas;
 	private ArrayList<Bolita> bolitas;
+	private ArrayList<Punto> puntos;
+	private ArrayList<Punto> puntosExtremos;
+	
 	
 	/**
 	 * Genera un mapa por defecto.
 	 */
+	@Deprecated
 	public Mapa() {
 		rectas = new ArrayList<Recta>();
 		bolitas = new ArrayList<Bolita>();
@@ -47,6 +51,8 @@ public class Mapa implements Serializable {
 	 * @param nombre -El nombre del mapa
 	 */
 	public Mapa(String nombre){
+		puntos = new ArrayList<Punto>();
+		puntosExtremos = new ArrayList<Punto>();
 		rectas = new ArrayList<Recta>();
 		bolitas = new ArrayList<Bolita>();
 		File archivo = null;
@@ -64,6 +70,8 @@ public class Mapa implements Serializable {
 	    		datos = linea.split(" ");
 	    		agregarRecta(new Punto(Integer.parseInt(datos[0]),Integer.parseInt(datos[1])), new Punto(Integer.parseInt(datos[2]),Integer.parseInt(datos[3])));
 	    	}
+	    	inicializarPuntos();
+	    	inicializarPuntosExtremos();
 	    }
 	    catch(Exception e){
 	    	e.printStackTrace();
@@ -116,6 +124,7 @@ public class Mapa implements Serializable {
 			int cantBolitas = (rec.getLongitud())/20;
 			for(int i=0;i<cantBolitas;i++){
 				Punto pInicial = null;
+				boolean especial = false;
 				if(rec.getTipo()==Rectas.HORIZONTAL){
 					pInicial = new Punto(rec.getPuntoInicialX() + i*20-5, rec.getPuntoInicialY()-5);
 				}
@@ -133,13 +142,65 @@ public class Mapa implements Serializable {
 					}
 				}
 				if(!colision) {
-					Bolita b = new Bolita(pInicial, false);
+					if(i%20==0) especial = true;
+					Bolita b = new Bolita(pInicial, especial);
 					bolitas.add(b);
 				}
 			}
 		}
 	}
 	
+	private void inicializarPuntos() {
+		for(Recta r : rectas) {
+			puntos.add(r.getPuntoInicial());
+			puntos.add(r.getPuntoFinal());
+		}
+		//System.out.println("Puntos inicializados: TOTAL "+puntos.size());
+	}
+	private void inicializarPuntosExtremos() {
+		Punto mayorXY = puntos.get(0);
+		Punto menorXY = puntos.get(0);
+		Punto mayorXmenorY = puntos.get(0);
+		Punto menorXmayorY = puntos.get(0);
+		for(Punto p : puntos) {
+			if(p.getX()>=mayorXY.getX() && p.getY()>=mayorXY.getY()) {
+				
+				mayorXY = p;
+			}
+		}
+		for(Punto p : puntos) {
+			if(p.getX()<=menorXY.getX() && p.getY()<=menorXY.getY()) {
+				menorXY = p;
+			}
+		}
+		for(Punto p : puntos) {
+			if(p.getX()>=mayorXmenorY.getX() && p.getY()<=mayorXmenorY.getY()) {
+				mayorXmenorY = p;
+			}
+		}
+		for(Punto p : puntos) {
+			if(p.getX()<=menorXmayorY.getX() && p.getY()>=menorXmayorY.getY()) {
+				menorXmayorY = p;
+			}
+		}
+		puntosExtremos.add(mayorXY);
+		puntosExtremos.add(menorXY);
+		puntosExtremos.add(mayorXmenorY);
+		puntosExtremos.add(menorXmayorY);
+		/*
+		System.out.print("Puntos extremos inicializados: ");
+		for(Punto p : puntosExtremos) {
+			System.out.print(puntosExtremos.get(puntosExtremos.indexOf(p)).toString());
+		}
+		*/
+	}
+	public ArrayList<Punto> getPuntos() {
+		return puntos;
+	}
+	public ArrayList<Punto> getPuntosExtremos() {
+		return puntosExtremos;
+	}
+
 	public void removerBolita(Bolita b) {
 		b.setAliveState(false);
 		b.borrarImagen();
