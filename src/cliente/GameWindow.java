@@ -236,7 +236,6 @@ public class GameWindow extends JFrame {
 		jugadorLocal.mover();
 		restrictBoundaries(jugadorLocal);
 		userWindow.getCliente().enviarPosicion(jugadorLocal); //Aun no anda porque no recibo un ID generado por el server
-		//calcularColisiones (jugadorLocal);
 	}
 	
 	/**
@@ -256,41 +255,14 @@ public class GameWindow extends JFrame {
 		if( j.getCentroCoordenadasY() > j.getLowerBound() ) /* Limite hacia abajo (anda mal) */		
 			j.setLocation(j.getX(), j.getLowerBound() - (j.getHeight()/2));		
  	}
-	
-	private void calcularColisiones(Jugador j) {
-		if(j.isPacman()) {
-			Iterator<Bolita> it = partida.getMapa().getArrayBolitas().iterator();
-			while(it.hasNext()) {
-				Bolita b = it.next();
-				if(b.isAlive() && j.colisionaCon(b)) {
-					userWindow.getCliente().enviarDatosPartida(new PaqueteBolitaEliminada(partida.getMapa().getArrayBolitas().indexOf(b), b));
-					/*b.setAliveState(false);
-					b.borrarImagen();
-					it.remove();*/
-					partida.getMapa().removerBolita(b);
-					it = partida.getMapa().getArrayBolitas().iterator();
-				}
-			}
-		}
-		else { //Entonces es un fantasma
-			
-		}
-	}
-	
+
 	public void setControles(int[] controles){
 		this.controles=new int[4];
 		for(int i=0;i<4;i++){
 			this.controles[i]=controles[i];
 		}
 	}
-	/*
-	public void setSkinPacman(ConfiguracionSprites pacman) {
-		skinPacman = pacman;
-	}
-	public void setSkinFantasma(ConfiguracionSprites fantasma) {
-		skinFantasma = fantasma;
-	}
-	*/
+
 	public void setNameLabel(String s){
 		lblName.setText(s);
 	}
