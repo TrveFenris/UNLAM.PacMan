@@ -57,7 +57,7 @@ public class Cliente {
             //System.exit(1);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error al cerar el cliente");
         }
     }
 
@@ -92,7 +92,7 @@ public class Cliente {
             }
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (iniciarSesion)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (iniciarSesion)");
             cerrarCliente();
         }
         catch(IOException e) {
@@ -130,7 +130,7 @@ public class Cliente {
             }
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (iniciarSesion)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (iniciarSesion)");
             cerrarCliente();
         }
         catch(IOException e) {
@@ -168,7 +168,7 @@ public class Cliente {
             }
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (iniciarSesion)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (iniciarSesion)");
             cerrarCliente();
         }
         catch(IOException e) {
@@ -202,7 +202,7 @@ public class Cliente {
             }
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (buscarPartidas)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (buscarPartidas)");
         	return null;
         }
         catch(IOException e) {
@@ -221,7 +221,7 @@ public class Cliente {
     	try {
             //Datos a recibir
             try {
-            	//TODO Revisar el setSoTimeout. Una vez seteado podr韆 traer conflictos con las llamadas que deben ser bloqueantes.
+            	//TODO Revisar el setSoTimeout. Una vez seteado podr铆a traer conflictos con las llamadas que deben ser bloqueantes.
         		cliente.setSoTimeout(1000);
             	PaqueteLanzarPartida paquete=(PaqueteLanzarPartida)inputStream.readObject();
             	return paquete;
@@ -236,7 +236,7 @@ public class Cliente {
         	return null;
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (buscarPartidas)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (buscarPartidas)");
         	return null;
         }
         catch(IOException e) {
@@ -269,7 +269,7 @@ public class Cliente {
             }
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (unirsePartida)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (unirsePartida)");
         	return resultado;
         }
         catch(IOException e) {
@@ -290,7 +290,7 @@ public class Cliente {
         	outputStream.flush();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (enviarPosicion)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (enviarPosicion)");
         }
         catch(IOException e) {
         	System.out.println("Error: IOException (enviarPosicion)");
@@ -311,7 +311,7 @@ public class Cliente {
         	}            
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (recibirPosicion)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (recibirPosicion)");
         	return null;
         }
     	catch(SocketTimeoutException e){
@@ -333,7 +333,7 @@ public class Cliente {
         	outputStream.flush();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (enviarDatosPartida)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (enviarDatosPartida)");
         }
         catch(IOException e) {
         	System.out.println("Error: IOException (enviarDatosPartida)");
@@ -342,13 +342,12 @@ public class Cliente {
     
     public Paquete recibirDatosPartida() {
     	try {
-    		//TODO Revisar el setSoTimeout. Una vez seteado podr韆 traer conflictos con las llamadas que deben ser bloqueantes.
+    		//TODO Revisar el setSoTimeout. Una vez seteado podr铆a traer conflictos con las llamadas que deben ser bloqueantes.
     		cliente.setSoTimeout(1000);
     		Paquete paq = (Paquete) inputStream.readObject();
 			return paq;
 		}
     	catch(ClassCastException e) {
-    		e.printStackTrace();
     		return null;
     	}
     	catch(SocketTimeoutException e){
@@ -357,12 +356,10 @@ public class Cliente {
         }
     	catch (ClassNotFoundException e) {
 			//System.out.println("Error de serializacion (recibirDatosPartida)");
-			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
 			//System.out.println("Error: IOException (recibirDatosPartida)");
-			e.printStackTrace();
 			return null;
 		}
     }
@@ -373,7 +370,7 @@ public class Cliente {
         	outputStream.flush();
         }
         catch(EOFException e){
-        	System.out.println("Error en la comunicaci髇 con el servidor (enviarPaquete)");
+        	System.out.println("Error en la comunicaci贸n con el servidor (enviarPaquete)");
         }
         catch(IOException e) {
         	System.out.println("Error: IOException (enviarPaquete)");
@@ -382,13 +379,12 @@ public class Cliente {
     
     public Paquete recibirPaqueteBloqueante() {
     	try {
-    		//TODO Revisar el setSoTimeout. Una vez seteado podr韆 traer conflictos con las llamadas que deben ser bloqueantes.
+    		//TODO Revisar el setSoTimeout. Una vez seteado podr铆a traer conflictos con las llamadas que deben ser bloqueantes.
     		cliente.setSoTimeout(0);
     		Paquete paq = (Paquete) inputStream.readObject();
 			return paq;
 		}
     	catch(ClassCastException e) {
-    		e.printStackTrace();
     		return null;
     	}
     	catch(SocketTimeoutException e){
@@ -397,19 +393,17 @@ public class Cliente {
         }
     	catch (ClassNotFoundException e) {
 			//System.out.println("Error de serializacion (recibirPaqueteBloqueante)");
-			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
 			//System.out.println("Error: IOException (recibirPaqueteBloqueante)");
-			e.printStackTrace();
 			return null;
 		}
     }
 
     public Paquete recibirPaqueteNoBloqueante() {
     	try {
-    		//TODO Revisar el setSoTimeout. Una vez seteado podr韆 traer conflictos con las llamadas que deben ser bloqueantes.
+    		//TODO Revisar el setSoTimeout. Una vez seteado podr铆a traer conflictos con las llamadas que deben ser bloqueantes.
     		cliente.setSoTimeout(1000); //TODO verificar este tiempo, posiblemente lo pongamos en una Configuracion
     		Paquete paq = (Paquete) inputStream.readObject();
 			return paq;
@@ -424,12 +418,10 @@ public class Cliente {
         }
     	catch (ClassNotFoundException e) {
 			//System.out.println("Error de serializacion (recibirPaqueteNoBloqueante)");
-			e.printStackTrace();
 			return null;
 		} 
     	catch (IOException e) {
 			//System.out.println("Error: IOException (recibirPaqueteNoBloqueante)");
-			e.printStackTrace();
 			return null;
 		}
     }
