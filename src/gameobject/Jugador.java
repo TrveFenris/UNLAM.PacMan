@@ -95,6 +95,12 @@ public abstract class Jugador extends GameObject {
 		}
 		else return false;
 	}
+	public boolean colisionaCon(Jugador obj) {
+		if( this.getCentroCoordenadas().distanciaCon(obj.getCentroCoordenadas()) <= (this.getWidth()/2) + (obj.getWidth()/2) ) {
+			return true;
+		}
+		else return false;
+	}
 	/**
 	 * Devuelve la recta sobre la que se encuentra el jugador. 
 	 * Ya que la lista de rectasActuales puede tener 1 o 2 rectas en un determinado momento, es necesario indicar el indice.
