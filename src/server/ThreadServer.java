@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -186,23 +188,31 @@ public class ThreadServer extends Thread {
 										int id = part.getIdsDisponibles().get(0);
 										part.tomarID(id);
 										user.setId(id);
+										ArrayList<Punto> puntosSpawn = servidor.getNombresDePartida().get(user.getPartida()).getMapa().getPuntosExtremos();
+										Collections.shuffle(puntosSpawn);
+										Punto spawn = puntosSpawn.get(0);
+										//spawn.setXY(spawn.getX()-15, spawn.getY()-15);
+										puntosSpawn.remove(0);
 										if(r.nextBoolean()&&!hayPacman){
 											hayPacman=true;
 											//El punto original es (15,35)
 											//En el mapa nuevo es (25,55)
-											Pacman pac = new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id);
+											//Pacman pac = new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id);
+											Pacman pac = new Pacman(spawn, us.getNombre(), us.getSkinPacman(), id);
 											servidor.agregarJugadorAPartida(pac, partida);
 											user.setJugador(pac);
 											
 										}
 										else {
 											if(!hayPacman&&i==servidor.getUsuariosEnPartida(user.getPartida()).size()-1){
-												Pacman pac = new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id);
+												//Pacman pac = new Pacman(new Punto(25,55), us.getNombre(), us.getSkinPacman(), id);
+												Pacman pac = new Pacman(spawn, us.getNombre(), us.getSkinPacman(), id);
 												servidor.agregarJugadorAPartida(pac, partida);
 												user.setJugador(pac);
 											}
 											else {
-												Fantasma fan = new Fantasma(new Punto(25,55), us.getNombre(), us.getSkinFantasma(), id);
+												//Fantasma fan = new Fantasma(new Punto(25,55), us.getNombre(), us.getSkinFantasma(), id);
+												Fantasma fan = new Fantasma(spawn, us.getNombre(), us.getSkinFantasma(), id);
 												servidor.agregarJugadorAPartida(fan, partida);
 												user.setJugador(fan);
 											}
@@ -331,6 +341,47 @@ public class ThreadServer extends Thread {
     }
     
     private void calcularColisiones(Jugador j) {
+    	/*
+    	Partida p = servidor.getNombresDePartida().get(partida);
+    	for(Jugador jug : p.getJugadores()) {
+    		if(j.colisionaCon(jug)) {
+    			if(j.tieneSuperpoder() && !jug.tieneSuperpoder()) {
+    				Punto pto = p.getMapa().getPuntos().get(new Random().nextInt(p.getMapa().getPuntos().size()));
+    				servidor.getSemaforoJugador(partida).lock();
+    				//p.getJugador(jug.getID()).setLocation(pto.getX(), pto.getY());
+    				p.getJugadores().get(p.getJugadores().indexOf(jug)).setLocation(pto.getX(), pto.getY());
+    				servidor.getSemaforoJugador(partida).unlock();
+    				for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+    					try {
+    						u.getSemaforo().lock();
+    						u.getOutputStream().writeObject(new PaqueteCoordenadas(pto,jug.getID(),jug.getSentido()));
+    						u.getSemaforo().unlock();
+    					}
+    					catch(IOException e) {
+    						System.out.println("FAIL al enviar coordenada tras colision");
+    					}
+    				}
+    			}
+    			else {
+    				Punto pto = p.getMapa().getPuntos().get(new Random().nextInt(p.getMapa().getPuntos().size()));
+    				servidor.getSemaforoJugador(partida).lock();
+    				//p.getJugador(j.getID()).setLocation(pto.getX(), pto.getY());
+    				p.getJugadores().get(p.getJugadores().indexOf(j)).setLocation(pto.getX(), pto.getY());
+    				servidor.getSemaforoJugador(partida).unlock();
+    				for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+    					try {
+    						u.getSemaforo().lock();
+    						u.getOutputStream().writeObject(new PaqueteCoordenadas(pto,j.getID(),j.getSentido()));
+    						u.getSemaforo().unlock();
+    					}
+    					catch(IOException e) {
+    						System.out.println("FAIL al enviar coordenada tras colision");
+    					}
+    				}
+    			}
+    		}
+    	}
+    	*/
     	Mapa map = servidor.getNombresDePartida().get(partida).getMapa();
 		if(j.isPacman()) {
 			Iterator<Bolita> it = map.getArrayBolitas().iterator();
