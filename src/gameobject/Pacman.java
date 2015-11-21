@@ -10,15 +10,12 @@ import punto.Punto;
 public class Pacman extends Jugador {	
 
 	private static final long serialVersionUID = -8404310041617236427L;
-	private boolean superpoder;
-	private Calendar timerSuperpoder;
 	private int bolitasComidas;
 	private int muertes;
 	private int fantasmasComidos;
 	
 	public Pacman(Punto posInicial, String nombre, ConfiguracionSprites configSprites, int id) {
 		super(nombre, Configuracion.PACMAN_VELOCIDAD.getValor(), configSprites,true);
-		superpoder = false;
 		bolitasComidas=muertes=fantasmasComidos=0;
 		setImagen(configSprites.getValor(Direcciones.DERECHA));
 		imagen.setLocation(posInicial.getX(), posInicial.getY());
@@ -27,18 +24,6 @@ public class Pacman extends Jugador {
 	
 	public void reaparecer(){
 		
-	}
-	
-	public boolean tieneSuperpoder(){
-		return superpoder;
-	}
-	
-	public void startTimer() {
-		timerSuperpoder.clear();
-	}
-	
-	public long getTimerMilliseconds() {
-		return timerSuperpoder.getTimeInMillis();
 	}
 	
 	public void actualizarPuntaje(){

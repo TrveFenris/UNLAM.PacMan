@@ -4,6 +4,7 @@ import game.Configuracion;
 import game.ConfiguracionSprites;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import punto.Punto;
 import rectas.Recta;
@@ -27,6 +28,8 @@ public abstract class Jugador extends GameObject {
 	protected int lowerBound;
 	protected int leftBound;
 	protected int rightBound;
+	protected boolean superpoder;
+	protected Calendar timerSuperpoder;
 	
 	public Jugador(String nombre, int velocidad, ConfiguracionSprites skin, boolean isPacman){
 		super();
@@ -39,6 +42,20 @@ public abstract class Jugador extends GameObject {
 		rectasActuales=new ArrayList<Recta>();
 		sentido = Direcciones.DERECHA;
 		this.isPacman=isPacman;
+	}
+	
+	public boolean tieneSuperpoder(){
+		return superpoder;
+	}
+	public void setSuperpoder(boolean set) {
+		superpoder = set;
+	}
+	public void startTimerSuperpoder() {
+		timerSuperpoder.clear();
+	}
+	
+	public long getTimerSuperpoderMilliseconds() {
+		return timerSuperpoder.getTimeInMillis();
 	}
 	
 	public boolean isPacman(){
