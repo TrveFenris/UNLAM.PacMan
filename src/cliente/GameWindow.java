@@ -91,7 +91,7 @@ public class GameWindow extends JFrame {
 		});
 			
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 806, 625);
+		setBounds(100, 100, 806, 640);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -101,7 +101,7 @@ public class GameWindow extends JFrame {
 		lblName = new JLabel("New label");
 		lblName.setForeground(Color.CYAN);
 		lblName.setFont(Font.getFont(Font.SANS_SERIF));
-		lblName.setBounds(5, 5, 774, 14);
+		lblName.setBounds(0, 598, 272, 14);
 		contentPane.add(lblName);
 		
 		partida = packet.getPartida();
@@ -112,7 +112,7 @@ public class GameWindow extends JFrame {
 		lblPuntos = new JLabel("");
 		lblPuntos.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPuntos.setForeground(Color.CYAN);
-		lblPuntos.setBounds(61, 30, 65, 14);
+		lblPuntos.setBounds(299, 598, 65, 14);
 		contentPane.add(lblPuntos);
 		partida.getMapa().dibujar(contentPane);
 		
@@ -125,14 +125,14 @@ public class GameWindow extends JFrame {
 		
 		JLabel lblScore = new JLabel("Score:");
 		lblScore.setForeground(Color.CYAN);
-		lblScore.setBounds(5, 30, 46, 14);
+		lblScore.setBounds(254, 598, 46, 14);
 		contentPane.add(lblScore);
 		
 		
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
 		//partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
 		ultimaAccion=Direcciones.NINGUNA;
-		//Creación del 2do jugador (manejado por otra ventana)
+		//CreaciÃ³n del 2do jugador (manejado por otra ventana)
 		//partida.agregarJugador(new Pacman(new Punto(15,35), "botMalvado", ConfiguracionSprites.PACMAN_MALVADO, 2));
 		for(Jugador j: partida.getJugadores()) {
 			j.dibujar(contentPane);
