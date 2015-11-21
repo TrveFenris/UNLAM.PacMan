@@ -10,12 +10,14 @@ import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import rectas.Recta;
+import javax.swing.JLabel;
 
 public class WatchGameWindow extends JFrame {
 
@@ -27,8 +29,8 @@ public class WatchGameWindow extends JFrame {
 	
 	/* GameWindow constructor */
 	public WatchGameWindow(Partida partida, ServerWindow ventana) {
-		thisWindow = this;
 		setResizable(false);
+		thisWindow = this;
 		partidaEnCurso = partida;
 		ventanaServidor = ventana;
 		
@@ -39,7 +41,7 @@ public class WatchGameWindow extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 806, 625);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -51,6 +53,11 @@ public class WatchGameWindow extends JFrame {
 			jug.dibujar(contentPane);
 		}
 		partidaEnCurso.getMapa().dibujar(contentPane);
+		
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setBounds(0, 0, 800, 600);
+		lblFondo.setIcon(new ImageIcon("img/mapa-rectas.gif"));
+		contentPane.add(lblFondo);
 		setVisible(true);
 	}
 	

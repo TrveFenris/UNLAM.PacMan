@@ -1,3 +1,4 @@
-*Almacenar cambios de bolitas en la partida del server
 *Setear partida como inactiva cuando se queda sin jugadores
 *Eliminar partida cuando se queda sin jugadores
+
+*Al cerrar servidor informar a todos los usuarios de partidas en curso, que finalicen sus partidas

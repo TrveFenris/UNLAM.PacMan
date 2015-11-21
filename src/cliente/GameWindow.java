@@ -64,6 +64,7 @@ public class GameWindow extends JFrame {
 	
 	/* GameWindow constructor */
 	public GameWindow(UserWindow window) {
+		setResizable(false);
 		userWindow = window;
 		//
 		PaqueteID paqID = (PaqueteID) userWindow.getCliente().recibirPaqueteBloqueante();
@@ -88,7 +89,7 @@ public class GameWindow extends JFrame {
 		});
 			
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 816, 635);
+		setBounds(100, 100, 806, 625);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
