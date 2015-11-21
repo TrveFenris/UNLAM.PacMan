@@ -66,7 +66,7 @@ public class DataBase {
 			try {
 			sentencia.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("Error en la base de datos");
 			}
 		}	
 		return estado;
@@ -85,7 +85,7 @@ public class DataBase {
 			estado = this.Consultar(sql);
 		}
 		catch(Exception ex){
-			JOptionPane.showMessageDialog(null,"Error usuario y contraseÃ±a","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Error usuario y contraseÃƒÂ±a","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return estado;
 	}
@@ -124,7 +124,6 @@ public class DataBase {
 					pstmt.setString(2, password);
 					pstmt.execute();			
 				} catch(SQLException sqle) {
-					sqle.printStackTrace();
 					JOptionPane.showMessageDialog(null,"No se pudo lograr la coneccion con la base de datos","Error",JOptionPane.ERROR_MESSAGE);
 				} finally {
 					try {
@@ -151,7 +150,6 @@ public class DataBase {
 				pstmt.setInt(6, muertes);
 				pstmt.execute();			
 			} catch(SQLException sqle) {
-				sqle.printStackTrace();
 				JOptionPane.showMessageDialog(null,"No se pudo lograr la coneccion con la base de datos","Error",JOptionPane.ERROR_MESSAGE);
 			} finally {
 				try {
