@@ -72,9 +72,9 @@ public class ThreadServer extends Thread {
     	            	case ABANDONAR_PARTIDA:
     	            		PaqueteAbandonarPartida paq = (PaqueteAbandonarPartida)paquete;
     	            		//servidor.eliminarDePartida(user, user.getPartida());
-    	            		if(paq.isPacman()){
+    	            		//if(paq.isPacman()){
     	            			for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-    		            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
+    		            			if(/*u.getSocket()!=user.getSocket() && */!u.getSocket().isClosed()){
     		            				ObjectOutputStream os = u.getOutputStream();
     		            				os.writeObject(paq);
     		            				os.flush();
@@ -82,10 +82,10 @@ public class ThreadServer extends Thread {
     		            			u.setPartida("");
     							}
     	            			servidor.eliminarTodosLosJugadoresDePartida(partida);
-    	            		}
-    	            		else{
-    	            			servidor.eliminarDePartida(user, partida);
-    	            		}
+    	            		//}
+    	            		//else{
+    	            		//	servidor.eliminarDePartida(user, partida);
+    	            		//}
     	            		partida="";
     	            		user.setPartida("");
     	            		break;
@@ -99,8 +99,10 @@ public class ThreadServer extends Thread {
 								for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
 			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
 			            				ObjectOutputStream os = u.getOutputStream();
+			            				u.getSemaforo().lock();
 			            				os.writeObject(paqBolita);
 			            				os.flush();
+			            				u.getSemaforo().unlock();
 			            			}
 								}
 							}
@@ -120,7 +122,7 @@ public class ThreadServer extends Thread {
 										calcularColisiones(j);
 										servidor.getSemaforoJugador(partida).lock();
 										j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
-										//j.cambiarSentido(paqCoord.getDireccion());
+										j.cambiarSentido(paqCoord.getDireccion());
 										servidor.getSemaforoJugador(partida).unlock();
 										break;
 									}
@@ -128,8 +130,10 @@ public class ThreadServer extends Thread {
 								for(Usuario u : servidor.getUsuariosEnPartida(partida)){
 			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()&&u.getId()!=paqCoord.getIDJugador()){
 			            				ObjectOutputStream os = u.getOutputStream();
+			            				u.getSemaforo().lock();
 			            				os.writeObject((Paquete)paqCoord);
 			            				os.flush();
+			            				u.getSemaforo().unlock();
 			            			}
 			            		}
 							}

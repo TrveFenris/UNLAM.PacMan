@@ -138,17 +138,17 @@ public class GameWindow extends JFrame {
 			    "Saliendo del juego",
 			    JOptionPane.YES_NO_OPTION);
 		if(option == JOptionPane.YES_OPTION){
-			gameRunning = false;
-			gameLoopThread.timer.cancel();
-			threadEscucha.pararThread();
+			//gameRunning = false;
+			//gameLoopThread.timer.cancel();
+			//threadEscucha.pararThread();
 			//Avisar al servidor
 			PaqueteAbandonarPartida p = new PaqueteAbandonarPartida();
 			if(jugadorLocal.isPacman())
 				p.setPacman();
 			userWindow.getCliente().enviarPaquete(p);
 			//
-			this.dispose();
-			userWindow.setVisible(true);
+			//this.dispose();
+			//userWindow.setVisible(true);
 		}
 	}
 	
@@ -345,9 +345,9 @@ public class GameWindow extends JFrame {
 							break;
 						case ABANDONAR_PARTIDA:
 							System.out.println("PACMAN ha abandonado la partida");
+							gameLoopThread.timer.cancel();
 							pararThread();
 							gameRunning = false;
-							gameLoopThread.timer.cancel();
 							dispose();
 							userWindow.setVisible(true);
 							break;
