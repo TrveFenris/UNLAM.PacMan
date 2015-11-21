@@ -74,7 +74,7 @@ public class Mapa implements Serializable {
 	    	inicializarPuntosExtremos();
 	    }
 	    catch(Exception e){
-	    	e.printStackTrace();
+	    	System.out.println("Error al cargar el mapa");
 	    }
 	    finally{
 	    	try{                    
@@ -83,7 +83,7 @@ public class Mapa implements Serializable {
 	    		}                  
 	    	}
 	    	catch (Exception e2){ 
-	    		e2.printStackTrace();
+	    		System.out.println("Error al cerrar el archivo");
 	    	}
 	    }
 	}
