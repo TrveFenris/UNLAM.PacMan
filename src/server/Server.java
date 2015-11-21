@@ -38,18 +38,13 @@ public class Server {
     
     /**
      * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar,
-     * y la ventana principal, donde escribir· su lista de nombres.
+     * y la ventana principal, donde escribir√° su lista de nombres.
      * @param port
      * @param max_conexiones
      */
     public Server(int port, int max_conexiones, ServerWindow serverWindow) throws IOException{
-        try {
-            nombreHost = InetAddress.getLocalHost().getHostName().toString();
-            IPHost = InetAddress.getLocalHost().getHostAddress().toString();
-        }
-        catch (UnknownHostException e1) {
-            e1.printStackTrace();
-        }
+        nombreHost = InetAddress.getLocalHost().getHostName().toString();
+        IPHost = InetAddress.getLocalHost().getHostAddress().toString();
         this.serverWindow=serverWindow;
         puerto = port;
         max_clientes = max_conexiones;
@@ -108,7 +103,7 @@ public class Server {
     }
     
     /**
-     * Devuelve la lista de partidas que se est·n ejecutando.
+     * Devuelve la lista de partidas que se est√°n ejecutando.
      */
     public ArrayList<String> getPartidas(){
     	ArrayList<String> nombres = new ArrayList<String>();
@@ -189,7 +184,6 @@ public class Server {
         }
         catch (IOException e) {
             System.out.println("Error al aceptar conexiones, Cerrando el Servidor...");
-            e.printStackTrace();
             System.exit(-1);
         } 
         return cliente;
@@ -204,7 +198,7 @@ public class Server {
         		servidor.close();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error al cerrar el servidor");
         }
     }
     
