@@ -18,7 +18,7 @@ public class Pacman extends Jugador {
 		super(nombre, Configuracion.PACMAN_VELOCIDAD.getValor(), configSprites,true);
 		bolitasComidas=muertes=fantasmasComidos=0;
 		setImagen(configSprites.getValor(Direcciones.DERECHA));
-		imagen.setLocation(posInicial.getX(), posInicial.getY());
+		imagen.setLocation(posInicial.getX()-(imagen.getWidth()/2), posInicial.getY()-(imagen.getHeight()/2));
 		this.ID = id;
 	}
 	

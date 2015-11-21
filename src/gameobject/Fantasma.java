@@ -16,7 +16,7 @@ public class Fantasma extends Jugador{
 		super(nombre, Configuracion.FANTASMA_VELOCIDAD.getValor(), configSprites,false);
 		pacmansComidos=vecesAturdido=muertes=0;
 		setImagen(configSprites.getValor(Direcciones.DERECHA));
-		imagen.setLocation(posInicial.getX(),posInicial.getY());
+		imagen.setLocation(posInicial.getX()-(imagen.getWidth()/2),posInicial.getY()-(imagen.getHeight()/2));
 		this.ID = id;
 	}
 
