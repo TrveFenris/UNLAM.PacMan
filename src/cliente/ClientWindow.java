@@ -48,7 +48,7 @@ public class ClientWindow extends JFrame {
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Error al lanzar la ventana del cliente");
 				}
 			}
 		});
@@ -111,7 +111,7 @@ public class ClientWindow extends JFrame {
 		pwdFieldPassword.setToolTipText("Introduzca su contrase\u00F1a aqu\u00ED");
 		pwdFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
-			//¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
+			//Â¿keyTyped registra la 1ra letra recien la 2da vez que se llama?
 			public void keyReleased(KeyEvent e) {
 				verificarTextFieldsUser();
 //				if(e.getKeyCode()==KeyEvent.VK_ENTER&&btnLogin.isEnabled()){ //LOGIN CON LA TECLA ENTER
