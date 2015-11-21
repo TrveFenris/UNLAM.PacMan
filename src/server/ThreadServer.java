@@ -131,7 +131,7 @@ public class ThreadServer extends Thread {
 			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()&&u.getId()!=paqCoord.getIDJugador()){
 			            				ObjectOutputStream os = u.getOutputStream();
 			            				u.getSemaforo().lock();
-			            				os.writeObject((Paquete)paqCoord);
+			            				os.writeObject(paqCoord);
 			            				os.flush();
 			            				u.getSemaforo().unlock();
 			            			}

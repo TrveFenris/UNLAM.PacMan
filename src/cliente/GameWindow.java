@@ -331,7 +331,7 @@ public class GameWindow extends JFrame {
 							for(Jugador j : partida.getJugadores()){
 								if(j.getID()==paqCoord.getIDJugador()){
 									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
-									//j.cambiarSentido(paqCoord.getDireccion());
+									j.cambiarSentido(paqCoord.getDireccion());
 								}
 							}
 							break;
