@@ -1,10 +1,7 @@
 *Setear partida como inactiva cuando se queda sin jugadores
 *Eliminar partida cuando se queda sin jugadores
-
 *Al cerrar servidor informar a todos los usuarios de partidas en curso, que finalicen sus partidas
-
 * Colisiones ( "stun" cuando los fantasmas chocan, "stun" entre especiales, respawneo (revisar por que no anda), etc.)
-* Score
 * Si el size del array de bolitas es cero, ganó pacman
 * base de datos cuando termina una partida (asociado al score, muertes, etc.)
 * probar base de datos
