@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Usuario {
 	private int inGameId;
@@ -21,6 +22,7 @@ public class Usuario {
 	private ConfiguracionSprites skinFantasma;
 	private boolean ready;
 	private boolean esPacman;
+	private ReentrantLock semaforoStream;
 	@Deprecated
 	private ArrayList<Usuario> usuariosEnPartida;
 	
@@ -33,6 +35,7 @@ public class Usuario {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.semaforoStream = new ReentrantLock();
 	}
 	
 	public void setId(int inGameId){
@@ -109,6 +112,11 @@ public class Usuario {
 	public void setJugador(Jugador j) {
 		jugador = j;
 	}
+	
+	public ReentrantLock getSemaforo(){
+		return semaforoStream;
+	}
+	
 	@Deprecated
 	public void actualizarUsuariosEnPartida(ArrayList<Usuario> usuarios){
 		this.usuariosEnPartida=usuarios;
