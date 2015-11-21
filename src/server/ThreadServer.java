@@ -121,29 +121,31 @@ public class ThreadServer extends Thread {
 							if(partidaCorriendo){
 								PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)paquete;
 								Partida p = servidor.getNombresDePartida().get(partida);
-								for(Jugador j : p.getJugadores()){
-									if(j.getID()==paqCoord.getIDJugador()){
-										calcularColisiones(j);
-										servidor.getSemaforoJugador(p.getNombre()).lock();
-										System.out.println("Soy "+j.getNombre()+" y tome el semPartida");
-										j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
-										j.cambiarSentido(paqCoord.getDireccion());
-										servidor.getSemaforoJugador(p.getNombre()).unlock();
-										System.out.println("Soy "+j.getNombre()+" y libere el semPartida");
-										break;
+								if(p!=null) {
+									for(Jugador j : p.getJugadores()){
+										if(j.getID()==paqCoord.getIDJugador()){
+											calcularColisiones(j);
+											servidor.getSemaforoJugador(p.getNombre()).lock();
+											System.out.println("Soy "+j.getNombre()+" y tome el semPartida");
+											j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
+											j.cambiarSentido(paqCoord.getDireccion());
+											servidor.getSemaforoJugador(p.getNombre()).unlock();
+											System.out.println("Soy "+j.getNombre()+" y libere el semPartida");
+											break;
+										}
 									}
-								}
-								for(Usuario u : servidor.getUsuariosEnPartida(partida)){
-			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
-			            				ObjectOutputStream os = u.getOutputStream();
-			            				u.getSemaforo().lock();
-			            				System.out.println("Tomado el streamLock de "+u.getNombre());
-			            				os.writeObject(paqCoord);
-			            				os.flush();
-			            				u.getSemaforo().unlock();
-			            				System.out.println("Liberado el streamLock de "+u.getNombre());
-			            			}
-			            		}
+									for(Usuario u : servidor.getUsuariosEnPartida(partida)){
+				            					if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
+						            				ObjectOutputStream os = u.getOutputStream();
+						            				u.getSemaforo().lock();
+						            				System.out.println("Tomado el streamLock de "+u.getNombre());
+						            				os.writeObject(paqCoord);
+						            				os.flush();
+						            				u.getSemaforo().unlock();
+						            				System.out.println("Liberado el streamLock de "+u.getNombre());
+				            					}
+				            				}
+							    	}
 							}
 							break;
 						case ID: break; //el server no deberia recibir este paquete
