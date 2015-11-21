@@ -90,22 +90,22 @@ public class ThreadServer extends Thread {
     	            		user.setPartida("");
     	            		break;
 						case BOLITA_ELIMINADA:
-							if(partidaCorriendo){
-								PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
-								Partida pa = servidor.getNombresDePartida().get(partida);
-								servidor.getSemaforoBolita(partida).lock();
-								pa.getMapa().removerBolita(paqBolita.getIndice());
-								servidor.getSemaforoBolita(partida).unlock();
-								for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
-			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
-			            				ObjectOutputStream os = u.getOutputStream();
-			            				u.getSemaforo().lock();
-			            				os.writeObject(paqBolita);
-			            				os.flush();
-			            				u.getSemaforo().unlock();
-			            			}
-								}
-							}
+//							if(partidaCorriendo){
+//								PaqueteBolitaEliminada paqBolita = (PaqueteBolitaEliminada)paquete;
+//								Partida pa = servidor.getNombresDePartida().get(partida);
+//								servidor.getSemaforoBolita(partida).lock();
+//								pa.getMapa().removerBolita(paqBolita.getIndice());
+//								servidor.getSemaforoBolita(partida).unlock();
+//								for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
+//			            			if(u.getSocket()!=user.getSocket() && !u.getSocket().isClosed()){
+//			            				ObjectOutputStream os = u.getOutputStream();
+//			            				u.getSemaforo().lock();
+//			            				os.writeObject(paqBolita);
+//			            				os.flush();
+//			            				u.getSemaforo().unlock();
+//			            			}
+//								}
+//							}
 							break;
 							
 						case BUSCAR_PARTIDA:
@@ -349,7 +349,8 @@ public class ThreadServer extends Thread {
             			}
             		}
 					map.removerBolita(b);
-					it = map.getArrayBolitas().iterator();
+					//it = map.getArrayBolitas().iterator();
+					break;
 				}
 			}
 		}
