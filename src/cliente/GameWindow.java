@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -71,7 +72,6 @@ public class GameWindow extends JFrame {
 		//PARTIDA PROVENIENTE DEL SERVER
 		PaquetePartida packet = (PaquetePartida)userWindow.getCliente().recibirPaqueteBloqueante();
 		System.out.println("INICIANDO PARTIDAAAAAAAAAAAAAAAAAAAAAAAAA");
-		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -88,7 +88,7 @@ public class GameWindow extends JFrame {
 		});
 			
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 800, 700);
+		setBounds(100, 100, 816, 635);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -107,6 +107,13 @@ public class GameWindow extends JFrame {
 		//partida.agregarMapa(new Mapa("mapa1"));
 		//partida.agregarMapa(new Mapa("mapaoriginal"));
 		partida.getMapa().dibujar(contentPane);
+		
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setForeground(Color.WHITE);
+		lblFondo.setBackground(Color.BLACK);
+		lblFondo.setBounds(0, 0, 800, 596);
+		lblFondo.setIcon(new ImageIcon("img/mapa-rectas.gif"));
+		contentPane.add(lblFondo);
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
 		//partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
 		ultimaAccion=Direcciones.NINGUNA;
