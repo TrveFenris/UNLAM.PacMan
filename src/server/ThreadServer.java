@@ -340,7 +340,7 @@ public class ThreadServer extends Thread {
         	System.out.println(user.getNombre()+" se ha desconectado del servidor");
         } 
         catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
+			System.out.println("Tipo de paquete invalido");
         }
     }
     
