@@ -43,6 +43,10 @@ public abstract class Jugador extends GameObject {
 		sentido = Direcciones.DERECHA;
 		this.isPacman=isPacman;
 	}
+
+	public void setLocation(int x, int y, boolean i){
+		imagen.setLocation(x-(imagen.getWidth()/2)+1,y-(imagen.getHeight()/2)+1);
+	}
 	
 	public boolean tieneSuperpoder(){
 		return superpoder;
