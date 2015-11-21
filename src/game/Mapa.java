@@ -114,9 +114,9 @@ public class Mapa implements Serializable {
 		for(Bolita b : bolitas) {
 			b.dibujar(area);
 		}
-		for(Recta rec : rectas) {
-			rec.dibujar(area);
-		}
+//		for(Recta rec : rectas) {
+//			rec.dibujar(area);
+//		}
 	}
 	
 	public void generarBolitas(){
