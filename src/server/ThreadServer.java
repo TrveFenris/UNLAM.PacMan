@@ -335,10 +335,12 @@ public class ThreadServer extends Thread {
 				if(b.isAlive() && j.colisionaCon(b)) {
 					for(Usuario u : servidor.getUsuariosEnPartida(user.getPartida())){
             			if(!u.getSocket().isClosed()){
-            				try {
+            				try {	
             					ObjectOutputStream os = u.getOutputStream();
+            					u.getSemaforo().lock();
             					os.writeObject(new PaqueteBolitaEliminada(map.getArrayBolitas().indexOf(b), b));
             					os.flush();
+            					u.getSemaforo().unlock();
             				}
             				catch(IOException e) {
             					System.out.println("Problema al enviar bolita eliminada!");
