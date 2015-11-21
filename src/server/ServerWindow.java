@@ -80,7 +80,7 @@ public class ServerWindow extends JFrame {
 					frame = new ServerWindow();
 					frame.setVisible(true);			
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Error al lanzar la ventana del servidor");
 				}
 			}
 		});
@@ -201,7 +201,7 @@ public class ServerWindow extends JFrame {
 				else {
 					if(part != null && !part.getActiva()) {
 						JOptionPane.showMessageDialog(frame,
-								"No se puede ver la partida: no est· activa.",
+								"No se puede ver la partida: no est√° activa.",
 								 "Error",
 								 JOptionPane.ERROR_MESSAGE);
 						return;
