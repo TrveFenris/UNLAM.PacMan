@@ -411,8 +411,13 @@ public class Cliente {
     	try {
     		//TODO Revisar el setSoTimeout. Una vez seteado podría traer conflictos con las llamadas que deben ser bloqueantes.
     		cliente.setSoTimeout(1000); //TODO verificar este tiempo, posiblemente lo pongamos en una Configuracion
-			return (Paquete) inputStream.readObject();
-		} 
+    		Paquete paq = (Paquete) inputStream.readObject();
+			return paq;
+		}
+    	catch(ClassCastException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
     	catch(SocketTimeoutException e){
     		//System.out.println("TimeOut");
         	return null;
