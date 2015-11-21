@@ -329,12 +329,14 @@ public class GameWindow extends JFrame {
 					switch(p.getTipo()) {
 						case BOLITA_ELIMINADA:
 							PaqueteBolitaEliminada paqBolElim = (PaqueteBolitaEliminada)p;
+							System.out.println("Eliminando bolita");
 							//partida.getMapa().removerBolita(paqBolElim.getBolita()); //Esto se usara cuando el server envie la partida ya construida al cliente
 							partida.getMapa().removerBolita(paqBolElim.getIndice());
 							break;
 
 						case COORDENADAS:
 							PaqueteCoordenadas paqCoord = (PaqueteCoordenadas)p;
+							System.out.println(paqCoord.getIDJugador()+paqCoord.getCoordenadas().toString());
 							for(Jugador j : partida.getJugadores()){
 								if(j.getID()==paqCoord.getIDJugador()){
 									j.setLocation(paqCoord.getCoordenadas().getX(), paqCoord.getCoordenadas().getY());
@@ -351,7 +353,7 @@ public class GameWindow extends JFrame {
 							PaqueteScore paqScore = (PaqueteScore)p;
 							break;
 						case ABANDONAR_PARTIDA:
-							System.out.println("PACMAN ha abandonado la partida");
+							System.out.println("Un jugador ha abandonado la partida");
 							gameLoopThread.timer.cancel();
 							pararThread();
 							gameRunning = false;

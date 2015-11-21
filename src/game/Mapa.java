@@ -142,7 +142,7 @@ public class Mapa implements Serializable {
 					}
 				}
 				if(!colision) {
-					if(i%20==0) especial = true;
+					if(i%40==0) especial = true;
 					Bolita b = new Bolita(pInicial, especial);
 					bolitas.add(b);
 				}
