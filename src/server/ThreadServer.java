@@ -1,5 +1,6 @@
 package server;
 
+import game.Configuracion;
 import game.Mapa;
 import game.Partida;
 import gameobject.Bolita;
@@ -29,6 +30,7 @@ import paquetes.PaqueteLogin;
 import paquetes.PaqueteLogout;
 import paquetes.PaquetePartida;
 import paquetes.PaqueteRegistro;
+import paquetes.PaqueteScore;
 import paquetes.PaqueteSkins;
 import paquetes.PaqueteUnirsePartida;
 import paquetes.PaquetejugadorListo;
@@ -402,6 +404,22 @@ public class ThreadServer extends Thread {
             					return;
             				}
             			}
+            			try {	
+        					//ObjectOutputStream os = user.getOutputStream();
+            				int score = 0;
+            				if(b.isEspecial())
+            					score = Configuracion.PACMAN_PUNTAJE_POR_BOLITA_ESPECIAL.getValor();
+            				else
+            					score = Configuracion.PACMAN_PUNTAJE_POR_BOLITA.getValor();
+        					user.getSemaforo().lock();
+        					user.getOutputStream().writeObject(new PaqueteScore(score));
+        					user.getOutputStream().flush();
+        					user.getSemaforo().unlock();
+        				}
+            			catch(IOException e) {
+        					System.out.println("Problema al enviar socre!");
+        					return;
+        				}
             		}
 					map.removerBolita(b);
 					//it = map.getArrayBolitas().iterator();

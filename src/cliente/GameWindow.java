@@ -32,6 +32,7 @@ import paquetes.PaqueteJugadorEliminado;
 import paquetes.PaquetePartida;
 import paquetes.PaqueteScore;
 import rectas.Rectas;
+import javax.swing.SwingConstants;
 
 public class GameWindow extends JFrame {
 	
@@ -39,6 +40,7 @@ public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblName;
+	private JLabel lblPuntos;
 	private UserWindow userWindow;
 	private boolean gameRunning;
 	private GameThread gameLoopThread;
@@ -107,6 +109,11 @@ public class GameWindow extends JFrame {
 		//partida = new Partida("Local");
 		//partida.agregarMapa(new Mapa("mapa1"));
 		//partida.agregarMapa(new Mapa("mapaoriginal"));
+		lblPuntos = new JLabel("");
+		lblPuntos.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPuntos.setForeground(Color.CYAN);
+		lblPuntos.setBounds(61, 30, 65, 14);
+		contentPane.add(lblPuntos);
 		partida.getMapa().dibujar(contentPane);
 		
 		JLabel lblFondo = new JLabel("");
@@ -115,6 +122,13 @@ public class GameWindow extends JFrame {
 		lblFondo.setBounds(0, 0, 800, 596);
 		lblFondo.setIcon(new ImageIcon("img/mapa-rectas.gif"));
 		contentPane.add(lblFondo);
+		
+		JLabel lblScore = new JLabel("Score:");
+		lblScore.setForeground(Color.CYAN);
+		lblScore.setBounds(5, 30, 46, 14);
+		contentPane.add(lblScore);
+		
+		
 		//Creacion de pacman, por ahora se inicializa con la skin por defecto
 		//partida.agregarJugador(new Pacman(new Punto(15,35), lblName.getText(), ConfiguracionSprites.PACMAN_DEFAULT, 1));
 		ultimaAccion=Direcciones.NINGUNA;
@@ -324,6 +338,8 @@ public class GameWindow extends JFrame {
 
 						case SCORE:
 							PaqueteScore paqScore = (PaqueteScore)p;
+							jugadorLocal.actualizarPuntaje(paqScore.getScore());
+							lblPuntos.setText(String.valueOf(jugadorLocal.getScore()));
 							break;
 						case ABANDONAR_PARTIDA:
 							System.out.println("Un jugador ha abandonado la partida");

@@ -99,7 +99,11 @@ public abstract class Jugador extends GameObject {
 	}
 	
 	public void actualizarPuntaje(int cant){
-		puntaje=cant;
+		puntaje+=cant;
+	}
+	public int getScore() 
+	{
+		return puntaje;
 	}
 	
 	public String getNombre(){
