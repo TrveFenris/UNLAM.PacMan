@@ -261,7 +261,7 @@ public class ThreadServer extends Thread {
 							user.setNombre(paqLogin.getNombreUsuario());
 							System.out.println(user.getNombre()+" se ha conectado al servidor");
 							paqLogin.setResultado(true);
-							//paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
+							paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
 							o.writeObject(paqLogin);
 							o.flush();
 							break;
@@ -279,7 +279,7 @@ public class ThreadServer extends Thread {
 						case REGISTRO:
 							PaqueteRegistro paqReg = (PaqueteRegistro) paquete;
 							paqReg.setResultado(false);
-							//paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
+							paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
 							running=false;
 							o.writeObject(paqReg);
 							o.flush();
