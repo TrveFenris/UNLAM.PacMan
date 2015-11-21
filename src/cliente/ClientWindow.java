@@ -87,7 +87,7 @@ public class ClientWindow extends JFrame {
 		JButton btnCredits = new JButton("Cr\u00E9ditos");
 		btnCredits.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(frame, "Grupo 4: \n-Barja, Alex\n-Figueroa, Matias\n-Maidana, Diego\n-Maita, Martin");
+				JOptionPane.showMessageDialog(frame, "Grupo 4: \n-Barja, Alex\n-Figueroa, Matias\n-Maidana, Diego\n-Maita, Martin\n-Silva Hernan");
 			}
 		});
 		btnCredits.setBounds(110, 286, 120, 25);
@@ -295,14 +295,14 @@ public class ClientWindow extends JFrame {
 			}
 			catch(UnknownHostException e1) {
 	        	JOptionPane.showMessageDialog(frame,
-	        			"No se pudo conectar con el servidor.\nPuede que esté ocupado o no esté en línea.",
+	        			"No se pudo conectar con el servidor.\nPuede que este ocupado o no este en linea.",
 						 "Error",
 						 JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 	        catch (IOException e2) {
 	            JOptionPane.showMessageDialog(frame,
-	            		"No se pudo crear el socket.\nInténtelo nuevamente.",
+	            		"No se pudo crear el socket.\nIntentelo nuevamente.",
 						 "Error",
 						 JOptionPane.ERROR_MESSAGE);
 				return false;
