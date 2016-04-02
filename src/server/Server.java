@@ -31,10 +31,8 @@ public class Server {
     private DataBase database;
     private ServerWindow serverWindow;
     private ArrayList<Usuario> usuarios;
-    private HashMap<Partida, ArrayList<Usuario>> partidas;
+    private HashMap<Partida, DatosPartida> infoPartidas;
     private HashMap<String, Partida> nombresDePartida;
-    private HashMap<String, ReentrantLock>semaforosJugador;
-    private HashMap<String, ReentrantLock>semaforosBolitas;
     
     /**
      * Crea un nuevo servidor en un puerto determinado, con un maximo de clientes a manejar,
@@ -53,10 +51,8 @@ public class Server {
         database = new DataBase();
         servidor = new ServerSocket(puerto);
         usuarios = new ArrayList<Usuario>();
-        this.partidas=new HashMap<Partida, ArrayList<Usuario>>();
         this.nombresDePartida=new HashMap<String, Partida>(); 
-        this.semaforosJugador=new HashMap<String, ReentrantLock>();
-        this.semaforosBolitas=new HashMap<String, ReentrantLock>();
+        this.infoPartidas=new HashMap<Partida, DatosPartida>();
     }
 
     /**
@@ -103,7 +99,7 @@ public class Server {
     }
     
     /**
-     * Devuelve la lista de partidas que se están ejecutando.
+     * Devuelve la lista de partidas que se estan ejecutando.
      */
     public ArrayList<String> getPartidas(){
     	ArrayList<String> nombres = new ArrayList<String>();
@@ -119,8 +115,9 @@ public class Server {
      */
     public boolean agregarUsuarioAPartida(Usuario usuario, String partida){
     			Partida p = nombresDePartida.get(partida);
-    			if(p!=null){		
-	    			if(partidas.get(p).size()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
+    			if(p!=null){
+    				DatosPartida datos = infoPartidas.get(p);
+	    			if(datos.getUsuarios().size()>Configuracion.MAX_JUGADORES_PARTIDA.getValor()){
 	    				return false;
 	    			}
 	    			/*
@@ -131,7 +128,7 @@ public class Server {
 	    				nombresDePartida.get(partida).agregarJugador(new Fantasma(new Punto(0,0), usuario.getNombre(), usuario.getSkinFantasma(), usuario.getId()) ); //FIXME
 	    			}
 	    			*/
-	    			partidas.get(p).add(usuario);
+	    			datos.agregarUsuario(usuario);
 	    			usuario.setPartida(partida);
 	    			System.out.println(usuario.getNombre()+" agregado a la partida " + partida);
 	    			return true;
@@ -149,13 +146,17 @@ public class Server {
     }
     
     public void eliminarDePartida(Usuario usuario, String partida) {
-    	partidas.get(nombresDePartida.get(partida)).remove(usuario);
-    	System.out.println(usuario.getNombre()+" ha abandonado la partida "+partida+"\t"+partidas.get(nombresDePartida.get(partida)).size());
+    	Partida p = nombresDePartida.get(partida);
+    	DatosPartida datos = infoPartidas.get(p);
+    	datos.removerUsuario(usuario);
+    	System.out.println(usuario.getNombre()+" ha abandonado la partida "+partida+"\t"+datos.getUsuarios().size());
     	serverWindow.actualizarListaDePartidas();
     }
     
     public void eliminarTodosLosJugadoresDePartida(String partida){
-    	partidas.get(nombresDePartida.get(partida)).clear();
+    	Partida p = nombresDePartida.get(partida);
+    	DatosPartida datos = infoPartidas.get(p);
+    	datos.removerTodosLosUsuarios();
     }
     /**
      * Acepta una conexion
@@ -210,7 +211,9 @@ public class Server {
     		try {
 				usuario.getSocket().close();
 				if(!usuario.getPartida().equals("")){
-					partidas.get(nombresDePartida.get(usuario.getPartida())).remove(usuario);
+					Partida p = nombresDePartida.get(usuario.getPartida());
+			    	DatosPartida datos = infoPartidas.get(p);
+					datos.removerUsuario(usuario);
 					System.out.println(usuario.getNombre()+" se ha desconectado de la partida "+usuario.getPartida());
 				}
 				usuarios.remove(usuario);
@@ -239,7 +242,9 @@ public class Server {
 	}
 	
 	public ArrayList<Usuario> getUsuariosEnPartida(String nombrePartida){
-		return partidas.get(nombresDePartida.get(nombrePartida));
+		Partida p = nombresDePartida.get(nombrePartida);
+    	DatosPartida datos = infoPartidas.get(p);
+		return datos.getUsuarios();
 	}
 	
 	public int getCantJugadores(String nombrePartida){
@@ -247,7 +252,9 @@ public class Server {
 	}
 	
 	public int getCantUsuariosEnPartida(String nombrePartida){
-		return partidas.get(nombresDePartida.get(nombrePartida)).size();
+		Partida p = nombresDePartida.get(nombrePartida);
+    	DatosPartida datos = infoPartidas.get(p);
+		return datos.getUsuarios().size();
 	}
 	
 	public HashMap<String, Partida> getNombresDePartida() {
@@ -267,19 +274,21 @@ public class Server {
 			Partida p = new Partida(nombre);
 			p.agregarMapa(new Mapa("mapaoriginal"));//TODO Ojo con el mapa, con cada uno cambia el punto de "spawn"
 			p.getMapa().generarBolitas();
-			partidas.put(p,new ArrayList<Usuario>());
 			nombresDePartida.put(nombre, p);
-			semaforosJugador.put(nombre, new ReentrantLock());
-			semaforosBolitas.put(nombre, new ReentrantLock());
+			infoPartidas.put(p, new DatosPartida());
 			return true;
 		}
 	}
 	
 	public ReentrantLock getSemaforoJugador(String nombrePartida){
-		return semaforosJugador.get(nombrePartida);
+		Partida p = nombresDePartida.get(nombrePartida);
+    	DatosPartida datos = infoPartidas.get(p);
+		return datos.getSemaforoJugador();
 	}
 	
 	public ReentrantLock getSemaforoBolita(String nombrePartida){
-		return semaforosBolitas.get(nombrePartida);
+		Partida p = nombresDePartida.get(nombrePartida);
+    	DatosPartida datos = infoPartidas.get(p);
+		return datos.getSemaforoBolitas();
 	}
 }
