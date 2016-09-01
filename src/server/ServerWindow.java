@@ -195,6 +195,7 @@ public class ServerWindow extends JFrame {
 		btnVerPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Partida part = servidor.getNombresDePartida().get(listPartidas.getSelectedValue());
+				System.out.println("SELECCIONADA: "+listPartidas.getSelectedValue());
 				if(part != null && part.getActiva()) {
 					new WatchGameWindow(part, frame);
 				}

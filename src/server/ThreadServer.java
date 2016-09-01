@@ -39,7 +39,7 @@ import punto.Punto;
 public class ThreadServer extends Thread {
 
     private Server servidor;
-    private DataBase database;
+    private DatabaseLiteSQL database;
     private Usuario user;
     private String partida; //Utilizado para cachear la partida en la que se encuentra el usuario
     private boolean running;
@@ -260,8 +260,7 @@ public class ThreadServer extends Thread {
 							PaqueteLogin paqLogin = (PaqueteLogin) paquete;
 							user.setNombre(paqLogin.getNombreUsuario());
 							System.out.println(user.getNombre()+" se ha conectado al servidor");
-							paqLogin.setResultado(true);
-							//paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
+							paqLogin.setResultado(database.verificarDatos(paqLogin.getNombreUsuario(), paqLogin.getPassword()));
 							o.writeObject(paqLogin);
 							o.flush();
 							break;
@@ -279,7 +278,7 @@ public class ThreadServer extends Thread {
 						case REGISTRO:
 							PaqueteRegistro paqReg = (PaqueteRegistro) paquete;
 							paqReg.setResultado(false);
-							//paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
+							paqReg.setResultado(database.registrarUsuario(paqReg.getNombreUsuario(), paqReg.getPassword()));
 							running=false;
 							o.writeObject(paqReg);
 							o.flush();

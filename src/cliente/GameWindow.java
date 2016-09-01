@@ -2,7 +2,6 @@ package cliente;
 
 //import game.ConfiguracionSprites;
 import game.Partida;
-import gameobject.Bolita;
 import gameobject.Direcciones;
 import gameobject.Jugador;
 
@@ -12,7 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -212,7 +210,6 @@ public class GameWindow extends JFrame {
 	
 	private void update(){
 		jugadorLocal.actualizarUbicacion(partida.getMapa().getArrayRectas());
-		Rectas aux = ultimaDireccion;
 		ultimaDireccion=jugadorLocal.getTipoUbicacion();
 		switch(ultimaDireccion){
 			case HORIZONTAL:

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="sqlite_jdbc-156806a80d0-534795d650c99481" provider="generic" driver="sqlite_jdbc" name="SQLite - sqlite-jdbc-3.8.11.2.jar" create-date="1471033394721" login-date="1471033399879" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\UNLAM.PacMan.Grupo4\database\sqlite-jdbc-3.8.11.2.jar" url="jdbc:sqlite:G:\Workspace\UNLAM.PacMan.Grupo4\database\sqlite-jdbc-3.8.11.2.jar" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15680714148-8b09e776c7f9714" provider="generic" driver="sqlite_jdbc" name="SQLite - Pacman_Lite_SQL.sqlite" create-date="1471033732071" login-date="1471033978763" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\UNLAM.PacMan.Grupo4\database\Pacman_Lite_SQL.sqlite" url="jdbc:sqlite:G:\Workspace\UNLAM.PacMan.Grupo4\database\Pacman_Lite_SQL.sqlite" user="" type="dev">
+			<bootstrap autocommit="false"/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-1568074a2ac-57b23b99bd889d53" provider="generic" driver="sqlite_jdbc" name="SQLite - Pacman_Lite_SQL.sqlite" create-date="1471033948590" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\UNLAM.PacMan.Grupo4\database\Pacman_Lite_SQL.sqlite" url="jdbc:sqlite:G:\Workspace\UNLAM.PacMan.Grupo4\database\Pacman_Lite_SQL.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15681c59642-328fe5e03c8c2c3f" provider="generic" driver="sqlite_jdbc" name="SQLite - database.sqlite" create-date="1471056040927" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\LobbyServer\resources\database\database.sqlite" url="jdbc:sqlite:G:\Workspace\LobbyServer\resources\database\database.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15681c60d39-2139019a6d68a436" provider="generic" driver="sqlite_jdbc" name="SQLite - database.sqlite" create-date="1471056078631" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\LobbyServer\resources\database\database.sqlite" url="jdbc:sqlite:G:\Workspace\LobbyServer\resources\database\database.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15681c6e32d-373124fa69c925ba" provider="generic" driver="sqlite_jdbc" name="SQLite - database.sqlite" create-date="1471056136734" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\LobbyServer\resources\database\database.sqlite" url="jdbc:sqlite:G:\Workspace\LobbyServer\resources\database\database.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15685d324d4-29c795b2becb45f" provider="generic" driver="sqlite_jdbc" name="SQLite - database.sqlite" create-date="1471124030705" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\LobbyServer\resources\database\database.sqlite" url="jdbc:sqlite:G:\Workspace\LobbyServer\resources\database\database.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15685d47b48-a153e01062e9525" provider="generic" driver="sqlite_jdbc" name="SQLite - database.sqlite" create-date="1471124151912" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\LobbyServer\resources\database\database.sqlite" url="jdbc:sqlite:G:\Workspace\LobbyServer\resources\database\database.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+	<data-source id="sqlite_jdbc-15685d55a8f-48b8c8180a85becb" provider="generic" driver="sqlite_jdbc" name="SQLite - Pacman_Lite_SQL.sqlite" create-date="1471124182960" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="G:\Workspace\UNLAM.PacMan.Grupo4\database\Pacman_Lite_SQL.sqlite" url="jdbc:sqlite:G:\Workspace\UNLAM.PacMan.Grupo4\database\Pacman_Lite_SQL.sqlite" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+</data-sources>

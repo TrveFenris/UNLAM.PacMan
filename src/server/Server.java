@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -28,7 +27,7 @@ public class Server {
     private int puerto;
     private String nombreHost;
     private String IPHost;
-    private DataBase database;
+    private DatabaseLiteSQL database;
     private ServerWindow serverWindow;
     private ArrayList<Usuario> usuarios;
     private HashMap<Partida, DatosPartida> infoPartidas;
@@ -48,7 +47,7 @@ public class Server {
         max_clientes = max_conexiones;
         cantActualClientes = 0;
         sockets = new ArrayList<Socket>();
-        database = new DataBase();
+        database = new DatabaseLiteSQL();
         servidor = new ServerSocket(puerto);
         usuarios = new ArrayList<Usuario>();
         this.nombresDePartida=new HashMap<String, Partida>(); 
@@ -229,7 +228,7 @@ public class Server {
     /**
      * Devuelve el objeto DataBase utilizado por el servidor
      */
-    public DataBase getDatabase(){
+    public DatabaseLiteSQL getDatabase(){
     	return database;
     }
 	
